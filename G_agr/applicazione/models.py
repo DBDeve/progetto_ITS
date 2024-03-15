@@ -31,6 +31,7 @@ class services(models.model):
 #modello dei clienti
 class Clients(models.Models):
   name=models.CharField
+  Nprenotazione=models.IntegerField
   expense=models.IntegerField
 
 #modello dei lavoratori
@@ -44,4 +45,4 @@ class employee:
 
 class promotions:
   name=models.CharField
-  sconto=models.BigIntegerField
+  sconto=models.BigIntegerField 
