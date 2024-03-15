@@ -44,5 +44,5 @@ class employee:
 
 
 class promotions:
-  name=models.CharField
+  name=models.CharField(max_lenght=20)
   sconto=models.BigIntegerField 
