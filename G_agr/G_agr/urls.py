@@ -21,5 +21,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('applicazione/', include('applicazione.urls')),
+    #eventuale nome di un'altra applicazione che chiamo applicazione2 (devi anche aggiungerle ad installed_apps)
+    #path('applicazione2/', include('applicazione2.urls')),
+
     path('admin/', admin.site.urls),
 ]
