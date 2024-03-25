@@ -1,0 +1,263 @@
+{% extends "modello.html" %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <!-- inserire un modale -->
+
+
+
+    <!--aggiungono una stringa specifica in punti specifici della pagina-->
+    {% if nome_pagina %}
+       {% block title %} {{nome_pagina}} {% endblock %}
+       {%block h1%} {{nome_pagina}} {%endblock%}
+       {%block h2%} {{nome_pagina}}{%endblock%}
+    {% endif %}
+
+    
+
+    
+    <!--visualizza i dati delle camere-->
+    {% block data%}
+    {% if "camere" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_Room %}
+    <thead>
+      <tr>
+        <th>{{valore.number}}</th>
+        <th>{{valore.prize}} </th>
+        <th>{{valore.stato}}</th>
+        <th>{{valore.appunto_gestore}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor%}
+
+    <!-- visualizza i dati dei clienti-->
+    {% elif "clienti" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome cliente</th>
+        <th> mail </th>
+        <th> numero di telefono </th>
+        <th> numero di visite </th>
+        <th> spesa totale</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_Clients %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+        <th>{{valore.mail}} </th>
+        <th>{{valore.number_cell}}</th>
+        <th>{{valore.visit_numbers}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor %}
+
+    <!-- visualizza i dati dei dipendenti-->
+    {% elif "dipendenti" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome dipendente</th>
+        <th> codice fiscale </th>
+        <th> iban </th>
+        <th> mail </th>
+        <th> stipendio </th>
+        <th> pagamento del mese </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_employee %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+        <th>{{valore.codice_fiscale}} </th>
+        <th>{{valore.iban}}</th>
+        <th>{{valore.mail}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor %}
+
+    {% elif "servizzi" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome dipendente</th>
+        <th> codice fiscale </th>
+        <th> iban </th>
+        <th> mail </th>
+        <th> stipendio </th>
+        <th> pagamento del mese </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_employee %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+        <th>{{valore.codice_fiscale}} </th>
+        <th>{{valore.iban}}</th>
+        <th>{{valore.mail}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor %}
+
+    {% elif "promozioni" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome promozione</th>
+        <th> sconto della promozione </th>
+        <th> iban </th>
+        <th> mail </th>
+        <th> stipendio </th>
+        <th> pagamento del mese </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_employee %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+        <th>{{valore.codice_fiscale}} </th>
+        <th>{{valore.iban}}</th>
+        <th>{{valore.mail}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor %}
+    {% endif %}
+    {%endblock%}
+
+
+
+
+
+
+
+
+
+<!--
+    {% if "tutte" in scelta %}
+     <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_Room %}
+    <thead>
+      <tr>
+        <th>{{valore.number}}</th>
+        <th>{{valore.prize}} </th>
+        <th>{{valore.stato}}</th>
+        <th>{{valore.appunto_gestore}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor%}
+   
+
+    {%elif "occupate" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> cliente stanza </th>        
+        <th> fino a  </th>
+        <th> appunto </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for Room_occupata in Room_occupate %}
+    <thead>
+      <tr>
+        <th>{{camera_occupata.number}}</th>
+        <th>{{camera_occupata.prize}} </th>
+        {%for cliente in clienti%}
+        {%if cliente.id == camera_occupata.client_id%}
+        <th>{{cliente.name}}</th>
+        non funziona. rivedere
+        <th>{{cliente.to}}</th>
+        {%endif%}
+        {%endfor%}
+        <th>{{camera_occupata.appunto}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%endfor%}
+
+    {%elif "libere" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> appunti</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for Room in Room_libere %}
+    <thead>
+      <tr>
+        <th>{{camera.number}}</th>
+        <th>{{camera.prize}} </th>
+        <th>{{camera.appunto}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor%}
+
+
+    {%elif "aggiungi" in argomento%}
+    <form action="{% url 'aggiungi' argomento='camere' %}" method="post">
+      {{ csrf_input }}
+      <fieldset>
+              <label for=""> inserisci il numero della camera </label><br>
+              <input type="number" name="Room_number" id="" >
+              <label for=""> inserisci il prezzo </label><br>
+              <input type="number" name="Room_prize" id="" >
+              <label for=""> inserisci lo stato </label><br>
+              <input type="text" name="Room" id="" >
+              <label for=""> inserisci i clienti che può ospitare</label><br>
+              <input type="number" name="Room" id="" >
+              <label for=""> inserisci un appunto per te</label><br>
+              <input type="text" name="Room" id="" >
+              <label for=""></label> inserisci un appunto per i clienti <br>
+              <input type="text" name="Room" id="" >
+      </fieldset>
+      <input type="submit" value="inserisci camera">
+      </form>
+    {% endif %}
+
+        <!-- per scrivere solo parte di una data var_data|date:y-m-d o |time: H:m-->
+
+
+    
+
+      
+      
+      
+      
+    
+</body>
+</html>
+

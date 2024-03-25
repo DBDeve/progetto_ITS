@@ -1,0 +1,102 @@
+
+<!-- è uno stamino per le pagine--> 
+
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title> gestione {% block title %}  {% endblock %}</title>
+  {%block CSS%}
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style> 
+    div.col-md-2{
+      padding:0;
+    }
+    /* stile pulsanti boostrap*/
+    .btn { 
+      border-radius: 20px;
+      } 
+    #menu .btn{
+      width: 75%;
+      margin-top:3px;
+    }
+    </style>
+
+
+    {%endblock%}
+</head>
+<body>
+<div class="text-center">
+<br>
+<h1> gestione {%block h1%} {%endblock%}</h1>
+      <div class="text-center">
+         <a href="{% url 'visualizza' argomento='camere' scelta='libere' %}" class="btn btn-primary" role="button">  stanze  libere </a>
+         <a href="{% url 'visualizza' argomento='camere' scelta='occupate' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
+      </div>
+<br>
+<br>
+
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="text-center float-center" id="menu">
+        <!-- come scrivere gli url -->
+        <br>
+        <br>
+        <a href="{% url 'visualizza' argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
+        <a href="{% url 'visualizza' argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
+        <a href="{% url 'visualizza' argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizzi   </a> 
+        <a href="{% url 'visualizza' argomento='promozioni' scelta='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="container" >
+        <!-- blocco per l'inserimento dell'h1-->
+      <!-- blocco per inserimento dell'h2-->
+      <h2> lista {%block h2%}{%endblock%} </h2>   
+      <div class="table-responsive">          
+      <table class="table">
+          <!--blocco per inserimento indice della tabella-->
+          {% block ind%}
+          {%endblock%}
+          <!-- blocco per inserimento dei dati delle tabelle-->
+          {% block data%}
+          {%endblock%}
+      </table>
+      </div>
+    </div>
+
+
+
+
+<div class="text-center">
+  {% block pulsanti %}
+  <a href="{% url 'aggiungi' argomento='camere' %}" class="btn btn-primary" role="button">  aggiungi camera </a>
+  <a href="{% url 'modifica' argomento='camere'%}" class="btn btn-primary" role="button">  modifica camera </a>
+  <a href="{% url 'elimina' argomento='camere' %}" class="btn btn-primary" role="button">  elimina camera </a>
+  {% endblock %}
+</div>
+
+</body>
+</html>
