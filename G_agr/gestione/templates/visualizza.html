@@ -19,10 +19,10 @@
 
     
 
-    
-    <!--visualizza i dati delle camere-->
+
     {% block data%}
-    {% if "camere" in nome_pagina %}
+    <!--visualizza i dati di tutte le camere-->
+    {% if "camere" in nome_pagina and "tutte" in scelta%}
     <thead>
       <tr>
         <th> numero camera</th>
@@ -44,6 +44,55 @@
     </thead>
     <tbody>
     {% endfor%}
+    <!--visualizza i dati della camere occupate -->
+    {%elif "camere" in nome_pagina and "occupata" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> cliente stanza </th>        
+        <th> occupata fino a  </th>
+        <th> appunto </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for Room in Room_occupata %}
+    <thead>
+      <tr>
+        <th>{{Room.number}}</th>
+        <th>{{Room.prize}} </th>
+        {%for cliente in valori_Clients%}
+        {%if cliente.id == Room.client_id%}
+        <th>{{cliente.name}}</th>
+        <th>{{cliente.to}}</th>
+        {%endif%}
+        {%endfor%}
+        <th>{{Room.appunto}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%endfor%}
+    <!--visualizza i dati delle camere libere-->
+    {%elif "camere" in nome_pagina and "libera" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> appunti</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for camera in Room_libera %}
+    <thead>
+      <tr>
+        <th>{{camera.number}}</th>
+        <th>{{camera.prize}} </th>
+        <th>{{camera.appunto}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor%}
+
 
     <!-- visualizza i dati dei clienti-->
     {% elif "clienti" in nome_pagina %}
@@ -106,7 +155,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_employee %}
+    {% for valore in valori_services %}
     <thead>
       <tr>
         <th>{{valore.name}}</th>
@@ -130,7 +179,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_employee %}
+    {% for valore in valori_promotions %}
     <thead>
       <tr>
         <th>{{valore.name}}</th>

@@ -8,7 +8,7 @@ from .models import Room,Clients,services,promotions,employee
 # Create your views here.
 
 
-def visualizza(request,argomento, scelta):
+def visualizza(request,argomento,scelta):
    context={}
    #farne una per ogni argomento (camere,servizzi, ecc...)
    context['scelta']=scelta
@@ -27,12 +27,14 @@ def visualizza(request,argomento, scelta):
 
    for classe in classi:
       if scelta=="tutte":
-         #valori_camere/servizzi in base all'argomento passato e lo mette in context
+         #valori_camere/servizzi/dipendenti/servizzi/promozioni in base all'argomento passato e lo mette in context
          context[f'valori_{classe.__name__}']=classe.objects.all().values()
       else: 
          context[f'valori_{classe.__name__}']=classe.objects.all().values()
          if classe==Room:
             context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
+   
+   #print(context['Room_libera'])
 
    
    
