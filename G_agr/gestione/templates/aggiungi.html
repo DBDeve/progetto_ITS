@@ -11,35 +11,38 @@
 </head>
 <body>
     {%block form%}
-    <div class=float-center>
-    <h1> aggiungi {{argomento}}</h1>
+    <div class=float-center >
+        <div class="titolo">
+           <h1> aggiungi {{argomento}}</h1> 
+        </div>
+    
 
     {%if 'camere' in argomento%}
     <form action="{% url 'aggiungi' argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="numero_camera"> inserisci il numero della camera </label> <br>
-            <input type="number" name="number" id="numero_camera"> 
+            <input type="number" class="form-control" name="number" id="numero_camera" min="000" max="999"> 
         </div>
 
         <div class="form-group">
             <label for="prezzo"> inserisci il prezzo </label>
-            <input type="number" name="prize" id="prezzo">
+            <input type="number" class="form-control" name="prize" id="prezzo">
         </div>
 
         <div class="form-group">
             <label for="clienti_ospitabili"> inserisci il numero di clienti ospitabili  </label>
-            <input type="number" name="clienti_ospitabili">
+            <input type="number" class="form-control" name="clienti_ospitabili">
         </div>
 
         <div class="form-group">
             <label for="appunti_gestore"> inserisci appunti  </label>
-            <input type="text" name="appunti_gestore">
+            <input type="text" class="form-control" name="appunti_gestore" maxlength="100">
         </div>
 
         <div class="form-group">
             <label for="appunti_cliente"> inserisci appunti per il cliente </label>
-            <input type="text" name="appunti_cliente">
+            <input type="text" class="form-control" name="appunti_cliente">
         </div>
 
         <input type="submit" class="btn btn-primary">
