@@ -1,4 +1,4 @@
-{% extends "modello.html" %}
+{% extends "modello_visualizza.html" %}
 
 
 
@@ -16,6 +16,12 @@
        {%block h1%} {{nome_pagina}} {%endblock%}
        {%block h2%} {{nome_pagina}}{%endblock%}
     {% endif %}
+
+    {% block pulsanti %}
+    <a href="{% url 'aggiungi' argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
+    <a href="{% url 'modifica' argomento=nome_pagina%}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
+    <a href="{% url 'elimina' argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
+    {%endblock%}
 
     
 
@@ -146,12 +152,10 @@
     {% elif "servizzi" in nome_pagina %}
     <thead>
       <tr>
-        <th> nome dipendente</th>
-        <th> codice fiscale </th>
-        <th> iban </th>
-        <th> mail </th>
-        <th> stipendio </th>
-        <th> pagamento del mese </th>
+        <th> servizio </th>
+        <th> sovraprezzo servizio </th>
+        <th> numero di usi </th>
+        <th> cliente che ne ha usufruito </th>
       </tr>
     </thead>
     <tbody>
@@ -159,8 +163,8 @@
     <thead>
       <tr>
         <th>{{valore.name}}</th>
-        <th>{{valore.codice_fiscale}} </th>
-        <th>{{valore.iban}}</th>
+        <th>{{valore.prize}} </th>
+        <th>{{valore.NumberOfUse}}</th>
         <th>{{valore.mail}}</th>
       </tr>
     </thead>

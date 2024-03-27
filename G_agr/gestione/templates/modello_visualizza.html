@@ -66,7 +66,7 @@
         <a href="{% url 'visualizza' argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
         <a href="{% url 'visualizza' argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
         <a href="{% url 'visualizza' argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
-        <a href="{% url 'visualizza' argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizzi   </a> 
+        <a href="{% url 'visualizza' argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizi   </a> 
         <a href="{% url 'visualizza' argomento='promozioni' scelta='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
       </div>
     </div>
@@ -92,9 +92,7 @@
 
 <div class="text-center">
   {% block pulsanti %}
-  <a href="{% url 'aggiungi' argomento='camere' %}" class="btn btn-primary" role="button">  aggiungi camera </a>
-  <a href="{% url 'modifica' argomento='camere'%}" class="btn btn-primary" role="button">  modifica camera </a>
-  <a href="{% url 'elimina' argomento='camere' %}" class="btn btn-primary" role="button">  elimina camera </a>
+  
   {% endblock %}
 </div>
 

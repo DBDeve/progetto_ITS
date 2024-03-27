@@ -75,8 +75,34 @@ def visualizza(request,argomento,scelta):
 #la funzione aggiungi deve ricedere i dati dal form della pagina html quindi il 
 def aggiungi(request,argomento):
    context={}
-   template=loader.get_template('camere.html')
-   return HttpResponse(template.render(context=context))
+   context['argomento']=argomento
+
+   if request.POST:
+      number=request.POST['number']
+      prize=request.POST['prize']
+      clienti_ospitabili=request.POST['clienti_ospitabili']
+      appunto_gestore=request.POST['appunti_gestore']
+      appunti_cliente=request.POST['appunti_cliente']
+
+      nuova_camera=Room(
+         number=number,
+         prize=prize,
+         clienti_ospitabili=clienti_ospitabili,
+         appunto_gestore=appunto_gestore,
+         appunti_cliente=appunti_cliente
+         )
+      
+      print(nuova_camera)
+      
+      nuova_camera.save()
+
+      
+   template=loader.get_template('aggiungi.html')
+   return HttpResponse(template.render(context,request))      
+
+
+
+   
 
 
 def elimina(request,argomento):
