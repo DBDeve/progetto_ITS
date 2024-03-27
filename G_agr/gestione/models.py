@@ -19,8 +19,8 @@ class Room(models.Model):
     appunto_gestore = models.CharField(max_length=200,default="") 
     appunti_cliente= models.CharField(max_length=200,default="") 
     #collegamenti
-    client = models.ForeignKey(Clients, on_delete = models.CASCADE)
-       
+    client = models.OneToOneField(Clients, on_delete = models.CASCADE,null=True,blank=True)
+    
 
 class services(models.Model):
     name=models.CharField(max_length=200,default="")
