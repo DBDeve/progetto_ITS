@@ -97,7 +97,7 @@ def aggiungi(request,argomento):
       nuova_camera.save()
 
       
-   template=loader.get_template('aggiungi.html')
+   template=loader.get_template('form_aggiungi.html')
    return HttpResponse(template.render(context,request))      
 
 
