@@ -8,9 +8,10 @@ urlpatterns = [
 
     path("aggiungi/<str:argomento>", views.aggiungi, name="aggiungi"),
     path("elimina/<str:argomento>", views.elimina, name="elimina"),
-
-    path("modifica/<str:argomento>", views.modifica, name="modifica"),
-    path("modifica/<str:argomento>/<str:oggetto>", views.modifica, name="modifica"),
+    
+    #path per la funzione modifica
+    #path("modifica/<str:argomento>", views.modifica, name="modifica"),
+    path("modifica/<str:argomento>/<str:valore_oggetto>", views.modifica, name="modifica"),
 
     
 

@@ -1,0 +1,22 @@
+{% extends "modello_form.html" %}
+
+
+
+    {%block form%}
+    <div class=float-center >
+        <div class="titolo">
+           <h1> modifica {{argomento}}</h1> 
+        </div>
+    
+
+        <form action="{% url 'modifica' argomento=argomento valore_oggetto=valore_oggetto %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="numero_camera"> inserisci il numero della camera che vuoi modificare</label> <br>
+                <input type="text" class="form-control" name="number" id="numero_camera" min="000" max="999"> 
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    </div>
+    {%endblock%}

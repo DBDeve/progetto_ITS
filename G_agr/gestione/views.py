@@ -5,6 +5,7 @@ from django.template import loader
 #importa il modello question
 from .models import Room,Clients,services,promotions,employee
 
+
 # Create your views here.
 
 
@@ -101,18 +102,29 @@ def aggiungi(request,argomento):
    return HttpResponse(template.render(context,request))      
 
 
+def modifica(request,argomento,valore_oggetto):
+   context={}
 
+   context ['argomento']=argomento
+
+   context['valore_oggetto']=request.POST['number']
+   
+   #se il valore inserito è vuoto fa tornare alla pagina iniziale di inserimento
+   if context['valore_oggetto']=='':
+      context['valore_oggetto']='scegli'
+   
+
+   template=loader.get_template('form_modifica.html')
+   return HttpResponse(template.render(context,request))
    
 
 
 def elimina(request,argomento):
+
    context={}
-   template=loader.get_template('camere.html')
-   return HttpResponse(template.render(context=context))
+   template=loader.get_template('form_elimina.html')
+   return HttpResponse(template.render(context,request))
 
 
-def modifica(request,argomento):
-   context={}
-   template=loader.get_template('camere.html')
-   return HttpResponse(template.render(context=context))
+
    
