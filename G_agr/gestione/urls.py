@@ -11,7 +11,7 @@ urlpatterns = [
     
     #path per la funzione modifica
     #path("modifica/<str:argomento>", views.modifica, name="modifica"),
-    path("modifica/<str:argomento>/<str:valore_oggetto>", views.modifica, name="modifica"),
+    path("modifica/<str:argomento>", views.modifica, name="modifica"),
 
     
 

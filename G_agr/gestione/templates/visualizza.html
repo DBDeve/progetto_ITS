@@ -19,7 +19,7 @@
 
     {% block pulsanti %}
     <a href="{% url 'aggiungi' argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
-    <a href="{% url 'modifica' argomento=nome_pagina valore_oggetto='scegli' %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
+    <a href="{% url 'modifica' argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
     <a href="{% url 'elimina' argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
     {%endblock%}
 

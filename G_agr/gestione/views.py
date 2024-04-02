@@ -102,26 +102,32 @@ def aggiungi(request,argomento):
    return HttpResponse(template.render(context,request))      
 
 
-def modifica(request,argomento,valore_oggetto):
+def modifica(request,argomento):
    context={}
 
    context ['argomento']=argomento
 
-   context['valore_oggetto']=request.POST['number']
-   
-   #se il valore inserito è vuoto fa tornare alla pagina iniziale di inserimento
-   if context['valore_oggetto']=='':
-      context['valore_oggetto']='scegli'
-   
+   if request.POST:
+     number=request.POST["number"]
 
+   nuova_camera=Room(
+         
+         )
    template=loader.get_template('form_modifica.html')
    return HttpResponse(template.render(context,request))
    
 
 
 def elimina(request,argomento):
-
    context={}
+   context ['argomento']=argomento
+   
+   if request.POST:
+     number=request.POST['number']
+     camera_da_rimuovere=Room.objects.get(number=number)
+     camera_da_rimuovere.delete()
+
+   
    template=loader.get_template('form_elimina.html')
    return HttpResponse(template.render(context,request))
 

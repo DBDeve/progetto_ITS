@@ -9,11 +9,11 @@
         </div>
     
 
-        <form action="{% url 'modifica' argomento=argomento valore_oggetto=valore_oggetto %}" method="POST">
+        <form action="{% url 'modifica' argomento=argomento %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="numero_camera"> inserisci il numero della camera che vuoi modificare</label> <br>
-                <input type="text" class="form-control" name="number" id="numero_camera" min="000" max="999"> 
+                <label for="number"> inserisci il numero della camera che vuoi modificare</label> <br>
+                <input type="text" class="form-control" name="number" id="number" min="000" max="999"> 
             </div>
 
             <input type="submit" class="btn btn-primary">
