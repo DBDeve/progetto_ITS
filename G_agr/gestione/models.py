@@ -1,20 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 from applicazione.models import Clients
 
 
 # Create your models here.
 
-class gestore_user(models.Model):
-  username=models.CharField(max_length=15)
-  password=models.CharField(max_length=15)
-  email=models.EmailField()
-  oggetti_gestore=models.OneToOneField(oggetti_gestore,on_delete = models.CASCADE)
 
-class oggetti_gestore(models.Model):
-  Room=models.CharField(Room, on_delete = models.CASCADE)
-  services=models.CharField(services, on_delete = models.CASCADE)
-  promotions=models.CharField(promotions, on_delete = models.CASCADE)
-  employee=models.CharField(employee, on_delete = models.CASCADE)
+
+
    
 
 
@@ -74,3 +67,10 @@ class stipendio(models.Model):
 #aggiungere classe promozioni con attributui: nome, sconto, validità,
   
 #aggiungere classe entrate e uscite 
+
+class ProfileGestore(models.Model):
+  gestore=models.OneToOneField(User, on_delete=models.CASCADE)
+  Room=models.ForeignKey(Room, on_delete = models.CASCADE)
+  services=models.ForeignKey(services, on_delete = models.CASCADE)
+  promotions=models.ForeignKey(promotions, on_delete = models.CASCADE)
+  employee=models.ForeignKey(employee, on_delete = models.CASCADE)
