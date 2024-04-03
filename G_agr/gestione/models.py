@@ -4,6 +4,21 @@ from applicazione.models import Clients
 
 # Create your models here.
 
+class gestore_user(models.Model):
+  username=models.CharField(max_length=15)
+  password=models.CharField(max_length=15)
+  email=models.EmailField()
+  oggetti_gestore=models.OneToOneField(oggetti_gestore,on_delete = models.CASCADE)
+
+class oggetti_gestore(models.Model):
+  Room=models.CharField(Room, on_delete = models.CASCADE)
+  services=models.CharField(services, on_delete = models.CASCADE)
+  promotions=models.CharField(promotions, on_delete = models.CASCADE)
+  employee=models.CharField(employee, on_delete = models.CASCADE)
+   
+
+
+
 class Room(models.Model):
     #dati obbligatori
     stati_camera={
