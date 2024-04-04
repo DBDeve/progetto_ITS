@@ -12,7 +12,8 @@ urlpatterns = [
     #path per la funzione modifica
     #path("modifica/<str:argomento>", views.modifica, name="modifica"),
     path("modifica/<str:argomento>", views.modifica, name="modifica"),
-
+    path("registrati", views.registrati,name="registrati"),
+    path("accedi",views.accedi, name="accedi")
     
 
     # path("nome_template",views.nome_template, name="nome_nome_template")

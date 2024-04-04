@@ -2,6 +2,11 @@ from django.shortcuts import HttpResponse
 
 from django.template import loader
 
+#serve alla creazione dei profili
+from django.contrib.auth.models import User
+#serve per autenticare gli utenti
+from django.contrib.auth import authenticate,login
+
 #importa il modello question
 from .models import Room,Clients,services,promotions,employee
 
@@ -144,6 +149,35 @@ def elimina(request,argomento):
    template=loader.get_template('form_elimina.html')
    return HttpResponse(template.render(context,request))
 
+#fa registrare un nuovo utente
+def registrati(request):
+   context={}
 
+   if request.POST:
 
+      user = User.objects.create_user(
+         username=request.POST['username'],
+         email=request.POST['email'],
+         password=request.POST['password'],
+         first_name=request.POST['first_name'],
+         last_name=request.POST['last_name'],
+         )
+      user.save()
+
+   template=loader.get_template('form_registrati.html')
+   return HttpResponse(template.render(context,request))
+
+def accedi(request):
+   context={}
+   if request.POST:
+      username = request.POST["username"],
+      password = request.POST["password"],
+      user = authenticate(request, username=username, password=password)
+      #if user is not None:
+         #login(request, user)
+         # Redirect to a success page.
+         
+      #else:
    
+   template=loader.get_template('form_accedi.html')
+   return HttpResponse(template.render(context,request))

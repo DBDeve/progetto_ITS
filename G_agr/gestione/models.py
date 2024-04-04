@@ -68,6 +68,10 @@ class stipendio(models.Model):
   
 #aggiungere classe entrate e uscite 
 
+
+
+#mettere in nuova applicazione profile
+# le foreing key vanno messe ai vari oggetti. non nell'oggetto profileGestore
 class ProfileGestore(models.Model):
   gestore=models.OneToOneField(User, on_delete=models.CASCADE)
   Room=models.ForeignKey(Room, on_delete = models.CASCADE)
