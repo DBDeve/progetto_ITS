@@ -4,7 +4,9 @@ from . import views
 
 #quando creo una pagina in view devo metterla qui 
 urlpatterns = [
+    #path("<str:username>/visualizza/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
     path("visualizza/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
+    
 
     path("aggiungi/<str:argomento>", views.aggiungi, name="aggiungi"),
     path("elimina/<str:argomento>", views.elimina, name="elimina"),

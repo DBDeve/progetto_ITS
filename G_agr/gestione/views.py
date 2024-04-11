@@ -1,4 +1,5 @@
 from django.shortcuts import HttpResponse
+from django.shortcuts import render, redirect
 
 from django.template import loader
 
@@ -6,6 +7,7 @@ from django.template import loader
 from django.contrib.auth.models import User
 #serve per autenticare gli utenti
 from django.contrib.auth import authenticate,login
+from django.contrib import messages
 
 #importa il modello question
 from .models import Room,Clients,services,promotions,employee
@@ -149,6 +151,10 @@ def elimina(request,argomento):
    template=loader.get_template('form_elimina.html')
    return HttpResponse(template.render(context,request))
 
+
+
+
+
 #fa registrare un nuovo utente
 def registrati(request):
    context={}
@@ -167,17 +173,20 @@ def registrati(request):
    template=loader.get_template('form_registrati.html')
    return HttpResponse(template.render(context,request))
 
+#fa accedere un utente già registrato
 def accedi(request):
-   context={}
-   if request.POST:
+
+   if request.method=="POST":
       username = request.POST["username"],
       password = request.POST["password"],
-      user = authenticate(request, username=username, password=password)
-      #if user is not None:
-         #login(request, user)
-         # Redirect to a success page.
-         
-      #else:
-   
-   template=loader.get_template('form_accedi.html')
-   return HttpResponse(template.render(context,request))
+      user = authenticate(request, username=username, password=str(password))
+      if request.user.is_authenticated:
+         login(request, user)
+         messages.success(request, f"accesso avvenuto con successo")
+         return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
+      else:
+         messages.error(request, f"si è verificato un problema. riprova")
+         #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
+         return render(request, "form_accedi.html")
+   else:
+      return render(request, "form_accedi.html", {})
