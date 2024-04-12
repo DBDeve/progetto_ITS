@@ -13,18 +13,18 @@
     <!--aggiungono una stringa specifica in punti specifici della pagina-->
     {% if nome_pagina %}
        {% block title %} {{nome_pagina}} {% endblock %}
-       {%block h1%} {{nome_pagina}} {%endblock%}
+       {%block h1%} {{nome_pagina}} Benvenuto, {{ username }}! {%endblock%}
        {%block h2%} {{nome_pagina}}{%endblock%}
     {% endif %}
 
     {% block pulsanti %}
-    <a href="{% url 'aggiungi' argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
-    <a href="{% url 'modifica' argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
-    <a href="{% url 'elimina' argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
+    <a href="{% url 'aggiungi' username=username argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
+    <a href="{% url 'modifica' username=username argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
+    <a href="{% url 'elimina' username=username argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
     {%endblock%}
 
     
-
+    
 
     {% block data%}
     <!--visualizza i dati di tutte le camere-->

@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from django.template import loader
 
@@ -15,12 +16,13 @@ from .models import Room,Clients,services,promotions,employee
 
 # Create your views here.
 
-
-def visualizza(request,argomento,scelta):
+@login_required(login_url='login')
+def visualizza(request,argomento,scelta,username):
    context={}
    #farne una per ogni argomento (camere,servizzi, ecc...)
    context['scelta']=scelta
    context['nome_pagina']=argomento
+   context['username']=username
 
    if argomento=="camere":
       classi=[Clients,Room] 
@@ -78,7 +80,7 @@ def visualizza(request,argomento,scelta):
    #}
 
    template=loader.get_template('visualizza.html')
-   return HttpResponse(template.render(context=context))
+   return HttpResponse(template.render(context,request))
 
 #la funzione aggiungi deve ricedere i dati dal form della pagina html quindi il 
 def aggiungi(request,argomento):
@@ -177,16 +179,20 @@ def registrati(request):
 def accedi(request):
 
    if request.method=="POST":
-      username = request.POST["username"],
-      password = request.POST["password"],
-      user = authenticate(request, username=username, password=str(password))
-      if request.user.is_authenticated:
+      username = request.POST["username"]
+      password = request.POST["password"]
+      user = authenticate(request, username=username, password=password)
+      #verifica che l'user sia stato autenticato
+      if  user is not None:
          login(request, user)
-         messages.success(request, f"accesso avvenuto con successo")
-         return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
+         messages.success(request, f"benvenuto{username}")
+         url=f"visualizza/{username}/camere/tutte"
+         return redirect(url)
       else:
          messages.error(request, f"si è verificato un problema. riprova")
          #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
-         return render(request, "form_accedi.html")
+         return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
    else:
-      return render(request, "form_accedi.html", {})
+      return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
+
+
