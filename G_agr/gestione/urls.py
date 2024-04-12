@@ -18,6 +18,7 @@ urlpatterns = [
     #path("accounts/", include("django.contrib.auth.urls")),  # Include le viste di autenticazione
     path("registrati", views.registrati,name="registrati"),
     path("login",views.accedi, name="login"),
+    path("logout", views.log_out, name="logout")
 
     # path("nome_template",views.nome_template, name="nome_nome_template")
     #scaricare bootstrap

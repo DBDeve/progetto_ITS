@@ -29,11 +29,17 @@
         .titolo{
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
+            margin: 7px;
+            padding: 15px;
         }
-
+        img{
+            height:100px;
+            margin: 10px;
+        }
         form {
             padding-right: 15px;
             padding-left: 15px;
+            margin: 7px;
         }
     </style>
 
@@ -46,6 +52,8 @@
             <div class="col-md-4">
             </div>
             <div class="col-md-4 border">
+                {% load static %}
+                <img src="{% static 'logo.png' %}" alt="My image">
                 {%block form%}
                 {%endblock%}
             </div>

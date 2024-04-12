@@ -7,7 +7,7 @@ from django.template import loader
 #serve alla creazione dei profili
 from django.contrib.auth.models import User
 #serve per autenticare gli utenti
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
@@ -83,6 +83,7 @@ def visualizza(request,argomento,scelta,username):
    return HttpResponse(template.render(context,request))
 
 #la funzione aggiungi deve ricedere i dati dal form della pagina html quindi il 
+@login_required(login_url='login')
 def aggiungi(request,argomento):
    context={}
    context['argomento']=argomento
@@ -111,7 +112,7 @@ def aggiungi(request,argomento):
    return HttpResponse(template.render(context,request))      
 
 
-
+@login_required(login_url='login')
 def modifica(request,argomento):
    context={}
 
@@ -136,7 +137,7 @@ def modifica(request,argomento):
    return HttpResponse(template.render(context,request))
    
 
-
+@login_required(login_url='login')
 def elimina(request,argomento):
    #fare in modo che possa funzionare con qualsiasi oggetto
    #definire il comportamento nel caso venga inserita una camera che non esiste
@@ -185,8 +186,8 @@ def accedi(request):
       #verifica che l'user sia stato autenticato
       if  user is not None:
          login(request, user)
-         messages.success(request, f"benvenuto{username}")
-         url=f"visualizza/{username}/camere/tutte"
+         messages.success(request, f"benvenuto {user.username}")
+         url=f"visualizza/{user.username}/camere/tutte"
          return redirect(url)
       else:
          messages.error(request, f"si è verificato un problema. riprova")
@@ -195,4 +196,23 @@ def accedi(request):
    else:
       return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
 
+#fa fare il logout e permette di fare un nuovo accesso sulla stessa pagina 
+def log_out(request):
+   logout(request)
+   if request.method=="POST":
+      username = request.POST["username"]
+      password = request.POST["password"]
+      user = authenticate(request, username=username, password=password)
+      #verifica che l'user sia stato autenticato
+      if  user is not None:
+         login(request, user)
+         messages.success(request, f"benvenuto {user.username}")
+         url=f"visualizza/{user.username}/camere/tutte"
+         return redirect(url)
+      else:
+         messages.error(request, f"si è verificato un problema. riprova")
+         #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
+         return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
+   else:
+      return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
 

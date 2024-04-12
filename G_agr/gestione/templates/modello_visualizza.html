@@ -33,6 +33,7 @@
     /* stile pulsanti boostrap*/
     .btn { 
       border-radius: 20px;
+      margin: 7px;
       } 
     #menu .btn{
       width: 75%;
@@ -45,14 +46,15 @@
 </head>
 <body>
 <div class="text-center">
-<br>
-<h1> gestione {%block h1%} {%endblock%}</h1>
-      <div class="text-center">
-         <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
-         <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
-      </div>
-<br>
-<br>
+  <div class="text-right">
+    <p> benvenuto {{user.username}} </p>
+    <a href="{% url 'logout' %}"> logout</a>
+  </div>
+  <h1> gestione {%block h1%} {%endblock%}</h1>
+        <div class="text-center">
+          <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
+          <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
+        </div>
 
 </div>
 
