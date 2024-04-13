@@ -42,13 +42,13 @@ def visualizza(request,argomento,scelta,username):
 
 
 
-#la funzione aggiungi deve ricedere i dati dal form della pagina html quindi il 
+#la funzione aggiungi crea nuovo oggetti in base all'argomento e l'username che gli viene passato
 @login_required(login_url='login')
 def aggiungi(request,argomento,username):
    context={}
    context['argomento']=argomento
    context['username']=username
-
+   
    if request.POST:
       #crea un nuovo oggetto Rooms
       if argomento=="camere": 
@@ -134,9 +134,29 @@ def elimina(request,argomento,username):
 
    
    if request.POST:
-     number=request.POST['number']
-     camera_da_rimuovere=Room.objects.get(number=number)
-     camera_da_rimuovere.delete()
+      if argomento=="camere":
+         number=request.POST['number']
+         camera_da_rimuovere=Room.objects.get(number=number)
+         camera_da_rimuovere.delete()
+      elif argomento=="clienti":
+         name=request.POST['name']
+         mail=request.POST['mail']
+         number_cell=request.POST['number_cell']
+         cliente_da_rimuovere=Clients.objects.get(name=name, mail=mail, number_cell=number_cell)
+         cliente_da_rimuovere.delete()
+      elif argomento=="lavoratori":
+         codice_fiscale=request.POST['codice_fiscale']
+         lavoratore_da_rimuovere=employee.objects.get(codice_fiscale=codice_fiscale)
+         lavoratore_da_rimuovere.delete()
+      elif argomento=="servizzi":
+         name=request.POST['name']
+         servizio_da_rimuovere=services.objects.get(name=name)
+         servizio_da_rimuovere.delete()
+      elif argomento=="promozioni":
+         name=request.POST['name']
+         promozione_da_rimuovere=promotions.objects.get(name=name)
+         promozione_da_rimuovere.delete()
+
 
    
    template=loader.get_template('form_elimina.html')
