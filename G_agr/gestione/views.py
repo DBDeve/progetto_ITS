@@ -24,88 +24,52 @@ def visualizza(request,argomento,scelta,username):
    context['nome_pagina']=argomento
    context['username']=username
 
-   if argomento=="camere":
-      classi=[Clients,Room] 
-   elif argomento=="clienti":
-      classi=[Clients]
-   elif argomento=="dipendenti":
-      classi=[employee]
-   elif argomento=="servizzi":
-      classi=[services]
-   elif argomento=="promozioni":
-      classi=[promotions]
+   classi=[Clients,Room,employee,services,promotions] 
 
    for classe in classi:
       if scelta=="tutte":
          #valori_camere/servizzi/dipendenti/servizzi/promozioni in base all'argomento passato e lo mette in context
          context[f'valori_{classe.__name__}']=classe.objects.all().values()
-      else: 
+      elif scelta=="occupate": 
          context[f'valori_{classe.__name__}']=classe.objects.all().values()
-         if classe==Room:
-            context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
-   
-   #print(context['Room_libera'])
-
-   
-   
-   
-   
-   
-   
-
-   #if scelta!="tutte":
-   #context[f'{argomento}_{scelta}']=classe.objects.filter(stato=scelta)
-
-
-   #camere_libere = classe.objects.filter(stato="libera")
-   #camere_occupate = classe.objects.filter(stato="occupata")
-   #camere_prenotate = classe.objects.filter(stato="prenotata")
-   #camere_chiavi = [c.name for c in Room._meta.get_fields() if c.name not in ['id','da','to','appunti_cliente','client']]
-   
-   
-
-   #prende il valore client dalle camere occupate ossia l'id che camere e clienti anno in comune 
-   #clienti=Clients.objects.all().values()
-
-   #id_clienti_camera = Clients.objects.filter(id=id_camere_occupate).values("to")
-   
-   #context={
-      #'valore_camere': camere_valore,
-      #'indici_camere': camere_chiavi,
-      #'nome_pagina':nome_pagina,
-      #'camere_libere':camere_libere,
-      #'camere_occupate':camere_occupate,
-      #'scelta':scelta,
-      #'clienti':clienti,
-   #}
+         context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
+      elif scelta=="libere": 
+         context[f'valori_{classe.__name__}']=classe.objects.all().values()
+         context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
 
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
 
+
+
 #la funzione aggiungi deve ricedere i dati dal form della pagina html quindi il 
 @login_required(login_url='login')
-def aggiungi(request,argomento):
+def aggiungi(request,argomento,username):
    context={}
    context['argomento']=argomento
+   context['username']=username
+
 
    if request.POST:
-      number=request.POST['number']
-      prize=request.POST['prize']
-      clienti_ospitabili=request.POST['clienti_ospitabili']
-      appunto_gestore=request.POST['appunti_gestore']
-      appunti_cliente=request.POST['appunti_cliente']
+      #crea un nuovo oggetto Rooms
+      if argomento=="camere": 
+         nuova_camera=Room(
+            number=request.POST['number'],
+            prize=request.POST['prize'],
+            clienti_ospitabili=request.POST['clienti_ospitabili'],
+            appunto_gestore=request.POST['appunti_gestore'],
+            appunti_cliente=request.POST['appunti_cliente'],
+            )
+         nuova_camera.save()
+      #crea nuovo aggetto Clients
+      elif argomento=="clienti":
+         nuovo_cliente=Clients(
+            name=request.POST['name'],
+            mail=request.POST['mail'],
+            number_cell=request.POST['number_cell']
+            )
+         nuovo_cliente.save()
 
-      nuova_camera=Room(
-         number=number,
-         prize=prize,
-         clienti_ospitabili=clienti_ospitabili,
-         appunto_gestore=appunto_gestore,
-         appunti_cliente=appunti_cliente
-         )
-      
-      print(nuova_camera)
-      
-      nuova_camera.save()
 
       
    template=loader.get_template('form_aggiungi.html')
@@ -113,10 +77,12 @@ def aggiungi(request,argomento):
 
 
 @login_required(login_url='login')
-def modifica(request,argomento):
+def modifica(request,argomento,username):
    context={}
 
    context ['argomento']=argomento
+   context['username']=username
+
 
    if request.POST:
      
@@ -138,12 +104,14 @@ def modifica(request,argomento):
    
 
 @login_required(login_url='login')
-def elimina(request,argomento):
+def elimina(request,argomento,username):
    #fare in modo che possa funzionare con qualsiasi oggetto
    #definire il comportamento nel caso venga inserita una camera che non esiste
    #definire comportamento nel caso non venga inserito niente
    context={}
    context ['argomento']=argomento
+   context['username']=username
+
    
    if request.POST:
      number=request.POST['number']
@@ -176,9 +144,10 @@ def registrati(request):
    template=loader.get_template('form_registrati.html')
    return HttpResponse(template.render(context,request))
 
+
+
 #fa accedere un utente già registrato
 def accedi(request):
-
    if request.method=="POST":
       username = request.POST["username"]
       password = request.POST["password"]
@@ -195,6 +164,8 @@ def accedi(request):
          return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
    else:
       return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
+
+
 
 #fa fare il logout e permette di fare un nuovo accesso sulla stessa pagina 
 def log_out(request):

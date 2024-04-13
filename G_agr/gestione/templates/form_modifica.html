@@ -9,7 +9,7 @@
         </div>
     
 
-        <form action="{% url 'modifica' argomento=argomento %}" method="POST">
+        <form action="{% url 'modifica' username=username argomento=argomento %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="number"> inserisci il numero della camera che vuoi modificare</label> <br>
