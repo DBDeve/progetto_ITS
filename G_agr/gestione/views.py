@@ -49,7 +49,6 @@ def aggiungi(request,argomento,username):
    context['argomento']=argomento
    context['username']=username
 
-
    if request.POST:
       #crea un nuovo oggetto Rooms
       if argomento=="camere": 
@@ -69,11 +68,32 @@ def aggiungi(request,argomento,username):
             number_cell=request.POST['number_cell']
             )
          nuovo_cliente.save()
-
-
+      # crea nuovo oggetto employee
+      elif argomento=="lavoratori":
+         nuovo_lavoratore=employee(
+            name=request.POST['name'],
+            codice_fiscale=request.POST['codice_fiscale'],
+            iban=request.POST['iban'],
+            mail=request.POST['mail'],
+         )
+         nuovo_lavoratore.save()
+      # crea nuovo oggetto services
+      elif argomento=="servizzi":
+         nuovo_servizio=services(
+            name=request.POST['name'],
+            prize=request.POST['prize']
+         )
+         nuovo_servizio.save()
+      # crea nuovo oggetto promotions
+      elif argomento=="promozioni":
+         nuova_promozione=promotions(
+            name=request.POST['name']
+         )
       
    template=loader.get_template('form_aggiungi.html')
    return HttpResponse(template.render(context,request))      
+
+
 
 
 @login_required(login_url='login')
