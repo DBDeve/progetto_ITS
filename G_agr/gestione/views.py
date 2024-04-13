@@ -26,16 +26,19 @@ def visualizza(request,argomento,scelta,username):
 
    classi=[Clients,Room,employee,services,promotions] 
 
-   for classe in classi:
-      if scelta=="tutte":
-         #valori_camere/servizzi/dipendenti/servizzi/promozioni in base all'argomento passato e lo mette in context
-         context[f'valori_{classe.__name__}']=classe.objects.all().values()
-      elif scelta=="occupate": 
-         context[f'valori_{classe.__name__}']=classe.objects.all().values()
-         context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
-      elif scelta=="libere": 
-         context[f'valori_{classe.__name__}']=classe.objects.all().values()
-         context[f'{classe.__name__}_{scelta}']=classe.objects.filter(stato=scelta)
+   
+   if scelta=="tutte":
+         for classe in classi:
+         #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
+           context[f'valori_{classe.__name__}']=classe.objects.all().values()
+   else:
+      if scelta=="occupata": 
+            context[f'valori_Room']=Room.objects.all().values()
+            context[f'valori_Clients']=Clients.objects.all().values()
+            context[f'Room_{scelta}']=Room.objects.filter(stato=scelta)
+      elif scelta=="libera": 
+            context[f'valori_Room']=Room.objects.all().values()
+            context[f'Room_{scelta}']=Room.objects.filter(stato=scelta)
 
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
@@ -97,35 +100,49 @@ def aggiungi(request,argomento,username):
 
 
 @login_required(login_url='login')
-def modifica(request,argomento,username):
+def modifica(request,argomento,username,valore):
    context={}
-
+   context['valore']=valore
    context ['argomento']=argomento
    context['username']=username
 
 
    if request.POST:
-     
-     #selezione della camera da modificare.
-     number=request.POST['number']
-     camera_da_modificare=Room.objects.get(number=number)
-
+     if argomento=="camere":
+         number=valore
+         #selezione dell'oggetto da modificare 
+         camera_da_modificare=Room.objects.get(number=number)
+         #controlla se i dati inviato abbiano un valore. se ce l'hanno quel valore viene sostituito a quello dell'oggetto
+         if request.POST['prize']!="":
+           nuovo_prezzo=request.POST['prize']
+           camera_da_modificare.prize=nuovo_prezzo
+         if request.POST['number']!="":
+           nuovo_numero=request.POST['number']
+           camera_da_modificare.number=nuovo_numero
+         if request.POST['stato']!="":
+           nuovo_stato=request.POST['stato']
+           camera_da_modificare.stato=nuovo_stato
+         #salvataggio dell'oggetto con i dati modificati
+         camera_da_modificare.save()
+         #ridirezionamento alla fine della modifica
+         url=f"/gestione/visualizza/{username}/camere/tutte"
+         return redirect(url)
      #selezione dei dati da modificare
-     nuovo_numero=request.POST['number']
-     nuovo_prezzo=request.POST['prize']
+     
+     
      #nuova_capienza=request.POST['']
 
      
-     camera_da_modificare.prize=nuovo_prezzo
-     camera_da_modificare.save()
-
+     
+     #return render(request, "visualizza.html", {username, 'camere'})
+   
+   #finché non viene inserito alcun dato la magina rimane su form_modifica.html
    template=loader.get_template('form_modifica.html')
    return HttpResponse(template.render(context,request))
    
 
 @login_required(login_url='login')
 def elimina(request,argomento,username):
-   #fare in modo che possa funzionare con qualsiasi oggetto
    #definire il comportamento nel caso venga inserita una camera che non esiste
    #definire comportamento nel caso non venga inserito niente
    context={}

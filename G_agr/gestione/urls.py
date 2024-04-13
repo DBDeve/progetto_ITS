@@ -15,6 +15,7 @@ urlpatterns = [
     #path per la funzione modifica
     #path("modifica/<str:argomento>", views.modifica, name="modifica"),
     path("modifica/<str:username>/<str:argomento>", views.modifica, name="modifica"),
+    path("modifica/<str:username>/<str:argomento>/<str:valore>", views.modifica, name="modifica"),
     #path("accounts/", include("django.contrib.auth.urls")),  # Include le viste di autenticazione
     path("registrati", views.registrati,name="registrati"),
     path("login",views.accedi, name="login"),

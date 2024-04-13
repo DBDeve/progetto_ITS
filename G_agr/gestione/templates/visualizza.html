@@ -42,7 +42,7 @@
     {% for valore in valori_Room %}
     <thead>
       <tr>
-        <th>{{valore.number}}</th>
+        <th><a href="{% url 'modifica' username=username argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
         <th>{{valore.prize}} </th>
         <th>{{valore.stato}}</th>
         <th>{{valore.appunto_gestore}}</th>
