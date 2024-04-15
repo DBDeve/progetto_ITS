@@ -38,6 +38,12 @@ INFORMAZIONI PER LE MODIFICHE
 
 Nel caso sia necessario operare una ristrutturazione dei modelli e necessario cancellare prima le migrazioni nella cartella migrations
 
+INFORMAZIONI DI SISTEMA
+
+versione di python installata sul virtual env 3.10
+
+Django version 5.0.3
+
 
 <br>
 
@@ -65,7 +71,7 @@ la funzione visualizza() è funzionante e stampa soltanto i dati collegato a uno
 
 le funzione modifica(), aggiungi() e elimina() prendono ancora tutti gli oggetti senza filtrare per l'account. 
 N.B: a causa di un recente cambio alla struttura dei modelli avvenuta in data 14/04/2024 queste tre funzioni protrebbero non funzionare a dovere. risolverò il più in fretta possibile. 
-Per verificare il loro funzionamento prima del cambio scaricare il commit: 014feecf0ad99343295703326638392ecf677790.
-per inserire dati usare django admin
+fino a quel momento per inserire dati si raccomanda di usare django admin
+
 
 il codice della grafica richiede una ristrutturazione. necessario inserimento footer e cambio grafica header
