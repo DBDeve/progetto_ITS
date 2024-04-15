@@ -15,8 +15,7 @@ Solution: Un programma che riesce a tenere traccia delle entrate e le uscite di 
 
 Unique value proposition: Dal momento che un agriturismo può essere composto da varie attività e alcune possono non esserci il programma chiederà ai nuovi utenti delle domande e in base a quelle permetterà di inserire dati in un modello o meno. Ad esempio se un nuovo gestore dice che il suo agriturismo non possiede un ristorante il programma non gli permetterà di inserire alcun dato all'interno della tabella restaurants
 
-
-
+<br>
 
 INFORMAZIONI UTILIZZO DELLA REPO: 
 
@@ -40,21 +39,33 @@ INFORMAZIONI PER LE MODIFICHE
 Nel caso sia necessario operare una ristrutturazione dei modelli e necessario cancellare prima le migrazioni nella cartella migrations
 
 
-
+<br>
 
 FUNZIONALITA' DA SVILUPPARE IN FUTURO:
-•	implementare una schermata per la modifica delle impostazione dell'utente (sia clienti che gestore).
-• implementare una schermata per il cambio password
-• creare un'applicazione clienti in cui gli utenti possano sia registrarsi, sia prenotare in eventuali alberghi e ristoranti degli agriturismi.
-•	creare una funzione che prende i dati dalla tabella stipendi e lavoratori e da quelli crei un nuovo oggetto Spese con i dati del lavoratore e del relativo stipendio.
-•	Creare una funzione che cambia lo stato delle camere in base a se ha assegnato un cliente o no. Quando il cliente viene associato lo stato viene impostato su occupato, quando il cliente viene dissociato lo stato viene impostato su libera.
 
+implementare una schermata per la modifica delle impostazione dell'utente (sia clienti che gestore).
 
+implementare una schermata per il cambio password
+
+creare un'applicazione clienti in cui gli utenti possano sia registrarsi, sia prenotare in eventuali alberghi e ristoranti degli agriturismi.
+
+creare una funzione che prende i dati dalla tabella stipendi e lavoratori e da quelli crei un nuovo oggetto Spese con i dati del lavoratore e del relativo stipendio.
+
+Creare una funzione che cambia lo stato delle camere in base a se ha assegnato un cliente o no. Quando il cliente viene associato lo stato viene impostato su occupato, quando il cliente viene dissociato lo stato viene impostato su libera.
+
+<br> 
 
 CODICE FUNZIONANTE:
-•Il programma è in grado di registrare gli utenti e permette loro di effettuare sia il login che il logout. 
-•Se qualcuno cerca di accedere ai dati di un'utente passando un url con il suo username senza aver effetuato l'accesso il programma lo ritrasporta alla pagina di login.
-•la funzione visualizza() è funzionante e stampa soltanto i dati collegato a uno specifico account (quello che ha effettuato il login).
-•le funzione modifica(), aggiungi() e elimina() prendono ancora tutti gli oggetti senza filtrare per l'account. 
-•il codice della grafica richiede una ristrutturazione. necessario inserimeto footer e cambio grafica header
 
+Il programma è in grado di registrare gli utenti e permette loro di effettuare sia il login che il logout. 
+
+Se qualcuno cerca di accedere ai dati di un'utente passando un url con il suo username senza aver effetuato l'accesso il programma lo ritrasporta alla pagina di login.
+
+la funzione visualizza() è funzionante e stampa soltanto i dati collegato a uno specifico account (quello che ha effettuato il login).
+
+le funzione modifica(), aggiungi() e elimina() prendono ancora tutti gli oggetti senza filtrare per l'account. 
+N.B: a causa di un recente cambio alla struttura dei modelli avvenuta in data 14/04/2024 queste tre funzioni protrebbero non funzionare a dovere. risolverò il più in fretta possibile. 
+Per verificare il loro funzionamento prima del cambio scaricare il commit: 014feecf0ad99343295703326638392ecf677790.
+per inserire dati usare django admin
+
+il codice della grafica richiede una ristrutturazione. necessario inserimento footer e cambio grafica header
