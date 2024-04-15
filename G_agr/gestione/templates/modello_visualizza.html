@@ -46,9 +46,8 @@
 </head>
 <body>
 <div class="text-center">
-  <div class="text-right">
-    <p> benvenuto {{user.username}} </p>
-    <a href="{% url 'logout' %}"> logout</a>
+  <div class="text-right" style="margin: 20px">
+    <p style="display: inline; padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
   </div>
   <h1> gestione {%block h1%} {%endblock%}</h1>
         <div class="text-center">
@@ -68,8 +67,8 @@
         <a href="{% url 'visualizza' username=username argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
         <a href="{% url 'visualizza' username=username argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
         <a href="{% url 'visualizza' username=username argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
-        <a href="{% url 'visualizza' username=username argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizi   </a> 
-        <a href="{% url 'visualizza' username=username argomento='promozioni' scelta='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
+        <a href="{% url 'visualizza' username=username argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
+        <a href="{% url 'visualizza' username=username argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
       </div>
     </div>
     <div class="col-md-10">

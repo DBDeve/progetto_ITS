@@ -13,8 +13,8 @@
     <!--aggiungono una stringa specifica in punti specifici della pagina-->
     {% if nome_pagina %}
        {% block title %} {{nome_pagina}} {% endblock %}
-       {%block h1%} {{nome_pagina}} Benvenuto, {{ username }}! {%endblock%}
-       {%block h2%} {{nome_pagina}}{%endblock%}
+       {%block h1%} {{nome_pagina}} {%endblock%}
+       {%block h2%} {{nome_pagina}} {%endblock%}
     {% endif %}
 
     {% block pulsanti %}
@@ -137,7 +137,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_employee %}
+    {% for valore in valori_Employee %}
     <thead>
       <tr>
         <th>{{valore.name}}</th>
@@ -149,47 +149,37 @@
     <tbody>
     {% endfor %}
 
-    {% elif "servizzi" in nome_pagina %}
+    {% elif "uscite" in nome_pagina %}
     <thead>
       <tr>
-        <th> servizio </th>
-        <th> sovraprezzo servizio </th>
-        <th> numero di usi </th>
-        <th> cliente che ne ha usufruito </th>
+        <th> data uscita </th>
+        <th> soldi spesi </th>
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_services %}
+    {% for valore in valori_Expense %}
     <thead>
       <tr>
-        <th>{{valore.name}}</th>
-        <th>{{valore.prize}} </th>
-        <th>{{valore.NumberOfUse}}</th>
-        <th>{{valore.mail}}</th>
+        <th>{{valore.Date}}</th>
+        <th>{{valore.Quantity}} </th>
       </tr>
     </thead>
     <tbody>
     {% endfor %}
 
-    {% elif "promozioni" in nome_pagina %}
+    {% elif "entrate" in nome_pagina %}
     <thead>
       <tr>
-        <th> nome promozione</th>
-        <th> sconto della promozione </th>
-        <th> iban </th>
-        <th> mail </th>
-        <th> stipendio </th>
-        <th> pagamento del mese </th>
+        <th> data entrata</th>
+        <th> soldi quadagnati </th>
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_promotions %}
+    {% for valore in valori_Earnings %}
     <thead>
       <tr>
-        <th>{{valore.name}}</th>
-        <th>{{valore.codice_fiscale}} </th>
-        <th>{{valore.iban}}</th>
-        <th>{{valore.mail}}</th>
+        <th>{{valore.Date}}</th>
+        <th>{{valore.Quantity}} </th>
       </tr>
     </thead>
     <tbody>

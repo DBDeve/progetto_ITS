@@ -44,7 +44,7 @@ class Rooms(models.Model):
         "prenotata":"prenotata",
         "occupata": "occupata",
         "non disponibile":"non disponibile",}
-    number = models.DecimalField(default=0, max_digits=3, decimal_places=2)
+    number = models.DecimalField(default=0, max_digits=3, decimal_places=0)
     prize = models.IntegerField( default=0)
     stato = models.CharField(max_length=15, choices=stati_camera, default="non disponibile")
     clienti_ospitabili=  models.IntegerField(default=0)
@@ -77,7 +77,7 @@ class Promotions(models.Model):
 
 
 #uscite
-class GoOut(models.Model):
+class Expense(models.Model):
   GoOutAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   Date=models.DateField("data spesa", auto_now_add=True,null=True, blank=True)
   Quantity=models.DecimalField(default=0, max_digits=3, decimal_places=2)
@@ -99,7 +99,7 @@ class Employee(models.Model):
 class Salary(models.Model):
   #collegamenti superiori
   SalaryEmployee=models.ForeignKey(Employee, on_delete=models.CASCADE)
-  SalaryGoOut=models.ForeignKey(GoOut, on_delete=models.CASCADE)
+  SalaryGoOut=models.ForeignKey(Expense, on_delete=models.CASCADE)
   #dati tabella
   stipendio_ore=models.IntegerField(default=0)
   giorni_lavorati=models.IntegerField(default=0)
@@ -114,7 +114,7 @@ class Clients(models.Model):
   ClientManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   ClientFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
-  ClientServices = models.ManyToManyField(Services)
+  ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,default=0)
   #dati tabella
   name=models.CharField(default="",max_length=255,help_text = "*")
   mail=models.EmailField(default="", help_text = "*")

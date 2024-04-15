@@ -10,6 +10,7 @@ urlpatterns = [
     
 
     path("aggiungi/<str:username>/<str:argomento>", views.aggiungi, name="aggiungi"),
+    path("aggiungi/<str:username>/agriturismo", views.crea_agriturismo, name="crea_agriturismo"),
     path("elimina/<str:username>/<str:argomento>", views.elimina, name="elimina"),
     
     #path per la funzione modifica

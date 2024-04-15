@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,GoOut,Salary,Clients,Promotions
+from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions
 
 
 # Create your views here.
@@ -24,12 +24,12 @@ def visualizza(request,argomento,scelta,username):
    context['nome_pagina']=argomento
    context['username']=username
 
-   classi=[Clients,Rooms,Employee,Services,Promotions]  
+   classi=[Clients,Rooms,Employee,Expense,Earnings]  
    #utenti
    users=User.objects.all().values()
    #use=User.objects.get('id')
    #profili
-   accounts=AccountManagers.objects.all().values()
+   #accounts=AccountManagers.objects.all().values()
    
 
    #itera tutti gli utenti
@@ -42,7 +42,7 @@ def visualizza(request,argomento,scelta,username):
          accounts_id=AccountManagers.objects.all().values_list('gestore_id', flat=True)
          
          if user_id in accounts_id:
-            accounts_id=accounts['id']
+            #accounts_id=user_id
             if scelta=="tutte":
                   for classe in classi:
                   #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
@@ -67,6 +67,8 @@ def aggiungi(request,argomento,username):
    context={}
    context['argomento']=argomento
    context['username']=username
+
+
    
    if request.POST:
       #crea un nuovo oggetto Rooms
@@ -194,6 +196,37 @@ def elimina(request,argomento,username):
    
    template=loader.get_template('form_elimina.html')
    return HttpResponse(template.render(context,request))
+
+
+@login_required(login_url='login')
+def crea_agriturismo(request,username):
+   context={}
+   context['username']=username
+   
+   users=User.objects.all().values()
+   
+
+   #itera tutti gli utenti
+   for user in users:
+      #verifica se l'username passato dalla funzione corrisponde a quello dell'user
+      if user['username']==username:
+         #crea un variabile con l'id dell'user
+         user_id=user['id']
+         #crea una lista con i valori id di gestore dalla tabella AccountManager
+         accounts_gestore_id=AccountManagers.objects.all().values_list('gestore_id', flat=True) 
+
+         if user_id in accounts_gestore_id and request.POST:
+            #prende il l'account con un valore gestore_id uquale a quello dell'user
+            accounts=AccountManagers.objects.get(gestore_id=user_id)
+            nuovo_agriturismo=FarmHouses(
+               name=request.POST['name'],
+               address=request.POST['address'],
+               FarmHousesAccountManagers=accounts['id']         
+            )
+            nuovo_agriturismo.save()
+         template=loader.get_template('form_crea_agriturismo.html')
+         return HttpResponse(template.render(context,request))
+
 
 
 
