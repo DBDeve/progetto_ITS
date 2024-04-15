@@ -1,44 +1,71 @@
 from django.db import models
 from django.contrib.auth.models import User
-from applicazione.models import Clients
 
 
 # Create your models here.
 
 
+class AccountManagers(models.Model):
+  #user_id
+  gestore=models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-   
 
 
 
-class Room(models.Model):
+
+# entrate
+class Earnings(models.Model):
+  #collegamenti inferiori
+  EarningsAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  #dati tabella 
+  Date=models.DateField("data di entrata", auto_now_add=True,null=True, blank=True)
+  Quantity=models.DecimalField(default=0, max_digits=3, decimal_places=2)
+
+
+
+
+
+
+
+class FarmHouses(models.Model):
+  #collegamenti superiore
+  FarmHousesAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  #dati agriturismo obbligatori 
+  FarmHouseName=models.CharField(max_length=255)
+  address=models.CharField(max_length=255)
+
+class Rooms(models.Model):
+    #collegamenti superiori
+    RoomsFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
     #dati obbligatori
     stati_camera={
         "libera":"libera",
         "prenotata":"prenotata",
         "occupata": "occupata",
         "non disponibile":"non disponibile",}
-    number = models.IntegerField(default=0)
-    prize = models.IntegerField(default=0)
+    number = models.DecimalField(default=0, max_digits=3, decimal_places=2)
+    prize = models.IntegerField( default=0)
     stato = models.CharField(max_length=15, choices=stati_camera, default="non disponibile")
     clienti_ospitabili=  models.IntegerField(default=0)
     #dati non obbligatori 
     appunto_gestore = models.CharField(max_length=200,default="") 
     appunti_cliente= models.CharField(max_length=200,default="") 
     #collegamenti
-    client = models.OneToOneField(Clients, on_delete = models.CASCADE,null=True,blank=True)
-    
+    #client = models.OneToOneField(Clients, on_delete = models.CASCADE,null=True,blank=True)
 
-class services(models.Model):
+class Services(models.Model):
+    #collegamenti superiori
+    ServicesFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
+    #datri servizzi
     name=models.CharField(max_length=200,default="")
     prize=models.IntegerField(default=0)
     NumberOfUse=models.IntegerField(default=0)
-    client = models.ForeignKey(Clients, on_delete = models.CASCADE)
 
-class promotions(models.Model):
-   name=models.CharField(max_length=200,default="")
-   client = models.ForeignKey(Clients, on_delete = models.CASCADE)
+class Promotions(models.Model):
+  PromotionsFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
+  #dati promozioni
+  name=models.CharField(max_length=200,default="")
    #sconto
    #inizio
    #termine
@@ -47,16 +74,57 @@ class promotions(models.Model):
 
 
 
-class employee(models.Model):
+
+
+#uscite
+class GoOut(models.Model):
+  GoOutAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  Date=models.DateField("data spesa", auto_now_add=True,null=True, blank=True)
+  Quantity=models.DecimalField(default=0, max_digits=3, decimal_places=2)
+
+
+
+
+
+class Employee(models.Model):
+  #collegamenti superiori
+  EmployeeAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  EmployeeFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  #dati tabella 
   name=models.CharField(max_length=200,default="")
   codice_fiscale=models.CharField(max_length=200, default="")
   iban=models.IntegerField(default=0)
   mail=models.CharField(max_length=200,default="")
 
-class stipendio(models.Model):
+class Salary(models.Model):
+  #collegamenti superiori
+  SalaryEmployee=models.ForeignKey(Employee, on_delete=models.CASCADE)
+  SalaryGoOut=models.ForeignKey(GoOut, on_delete=models.CASCADE)
+  #dati tabella
   stipendio_ore=models.IntegerField(default=0)
   giorni_lavorati=models.IntegerField(default=0)
   ore_lavorate=models.IntegerField(default=0)
+
+
+
+
+
+class Clients(models.Model):
+  #collegamenti superiori
+  ClientManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  ClientFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
+  ClientServices = models.ManyToManyField(Services)
+  #dati tabella
+  name=models.CharField(default="",max_length=255,help_text = "*")
+  mail=models.EmailField(default="", help_text = "*")
+  number_cell=models.BigIntegerField(null=True, blank=True,help_text = "inserisci numero di telefono. puoi non metterlo ")
+  frOm_data = models.DateField("data di arrivo", auto_now_add=True,null=True, blank=True)
+  frOm_time = models.TimeField(null=True, blank=True)
+  to = models.DateField(null=True, blank=True,help_text="data di partenza")
+  to_time = models.TimeField()
+  visit_numbers=models.IntegerField(default=0)
+  expense=models.IntegerField(default=0)
 
 
 
@@ -72,9 +140,3 @@ class stipendio(models.Model):
 
 #mettere in nuova applicazione profile
 # le foreing key vanno messe ai vari oggetti. non nell'oggetto profileGestore
-class ProfileGestore(models.Model):
-  gestore=models.OneToOneField(User, on_delete=models.CASCADE)
-  Room=models.ForeignKey(Room, on_delete = models.CASCADE)
-  services=models.ForeignKey(services, on_delete = models.CASCADE)
-  promotions=models.ForeignKey(promotions, on_delete = models.CASCADE)
-  employee=models.ForeignKey(employee, on_delete = models.CASCADE)

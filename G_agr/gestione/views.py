@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Room,Clients,services,promotions,employee
+from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,GoOut,Salary,Clients,Promotions
 
 
 # Create your views here.
@@ -24,21 +24,37 @@ def visualizza(request,argomento,scelta,username):
    context['nome_pagina']=argomento
    context['username']=username
 
-   classi=[Clients,Room,employee,services,promotions] 
-
+   classi=[Clients,Rooms,Employee,Services,Promotions]  
+   #utenti
+   users=User.objects.all().values()
+   #use=User.objects.get('id')
+   #profili
+   accounts=AccountManagers.objects.all().values()
    
-   if scelta=="tutte":
-         for classe in classi:
-         #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
-           context[f'valori_{classe.__name__}']=classe.objects.all().values()
-   else:
-      if scelta=="occupata": 
-            context[f'valori_Room']=Room.objects.all().values()
-            context[f'valori_Clients']=Clients.objects.all().values()
-            context[f'Room_{scelta}']=Room.objects.filter(stato=scelta)
-      elif scelta=="libera": 
-            context[f'valori_Room']=Room.objects.all().values()
-            context[f'Room_{scelta}']=Room.objects.filter(stato=scelta)
+
+   #itera tutti gli utenti
+   for user in users:
+      #verifica se l'username passato dalla funzione corrisponde a quello dell'user
+      if user['username']==username:
+         #crea un variabile con l'id dell'user
+         user_id=user['id']
+         #crea una lista con i valori id di gestore dalla tabella AccountManager
+         accounts_id=AccountManagers.objects.all().values_list('gestore_id', flat=True)
+         
+         if user_id in accounts_id:
+            accounts_id=accounts['id']
+            if scelta=="tutte":
+                  for classe in classi:
+                  #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
+                     context[f'valori_{classe.__name__}']=classe.objects.all().values()
+            else:
+               if scelta=="occupata": 
+                     context[f'valori_Room']=Rooms.objects.all().values()
+                     context[f'valori_Clients']=Clients.objects.all().values()
+                     context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+               elif scelta=="libera": 
+                     context[f'valori_Room']=Rooms.objects.all().values()
+                     context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
 
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
@@ -55,7 +71,7 @@ def aggiungi(request,argomento,username):
    if request.POST:
       #crea un nuovo oggetto Rooms
       if argomento=="camere": 
-         nuova_camera=Room(
+         nuova_camera=Rooms(
             number=request.POST['number'],
             prize=request.POST['prize'],
             clienti_ospitabili=request.POST['clienti_ospitabili'],
@@ -73,7 +89,7 @@ def aggiungi(request,argomento,username):
          nuovo_cliente.save()
       # crea nuovo oggetto employee
       elif argomento=="lavoratori":
-         nuovo_lavoratore=employee(
+         nuovo_lavoratore=Employee(
             name=request.POST['name'],
             codice_fiscale=request.POST['codice_fiscale'],
             iban=request.POST['iban'],
@@ -82,14 +98,14 @@ def aggiungi(request,argomento,username):
          nuovo_lavoratore.save()
       # crea nuovo oggetto services
       elif argomento=="servizzi":
-         nuovo_servizio=services(
+         nuovo_servizio=Services(
             name=request.POST['name'],
             prize=request.POST['prize']
          )
          nuovo_servizio.save()
       # crea nuovo oggetto promotions
       elif argomento=="promozioni":
-         nuova_promozione=promotions(
+         nuova_promozione=Promotions(
             name=request.POST['name']
          )
       
@@ -111,7 +127,7 @@ def modifica(request,argomento,username,valore):
      if argomento=="camere":
          number=valore
          #selezione dell'oggetto da modificare 
-         camera_da_modificare=Room.objects.get(number=number)
+         camera_da_modificare=Rooms.objects.get(number=number)
          #controlla se i dati inviato abbiano un valore. se ce l'hanno quel valore viene sostituito a quello dell'oggetto
          if request.POST['prize']!="":
            nuovo_prezzo=request.POST['prize']
@@ -153,7 +169,7 @@ def elimina(request,argomento,username):
    if request.POST:
       if argomento=="camere":
          number=request.POST['number']
-         camera_da_rimuovere=Room.objects.get(number=number)
+         camera_da_rimuovere=Rooms.objects.get(number=number)
          camera_da_rimuovere.delete()
       elif argomento=="clienti":
          name=request.POST['name']
@@ -163,15 +179,15 @@ def elimina(request,argomento,username):
          cliente_da_rimuovere.delete()
       elif argomento=="lavoratori":
          codice_fiscale=request.POST['codice_fiscale']
-         lavoratore_da_rimuovere=employee.objects.get(codice_fiscale=codice_fiscale)
+         lavoratore_da_rimuovere=Employee.objects.get(codice_fiscale=codice_fiscale)
          lavoratore_da_rimuovere.delete()
       elif argomento=="servizzi":
          name=request.POST['name']
-         servizio_da_rimuovere=services.objects.get(name=name)
+         servizio_da_rimuovere=Services.objects.get(name=name)
          servizio_da_rimuovere.delete()
       elif argomento=="promozioni":
          name=request.POST['name']
-         promozione_da_rimuovere=promotions.objects.get(name=name)
+         promozione_da_rimuovere=Promotions.objects.get(name=name)
          promozione_da_rimuovere.delete()
 
 
