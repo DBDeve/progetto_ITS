@@ -70,8 +70,71 @@
     </form>
     </div>
       
-    {% else %}
-      in lavorazione
+    {%elif 'dipendenti' in argomento%}
+    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name"> inserisci il nome del del dipendete </label> <br>
+            <input type="text" class="form-control" name="name" id="name"> 
+        </div>
+
+        <div class="form-group">
+            <label for="mail"> inserisci la mail del cliente  </label>
+            <input type="mail" class="form-control" name="mail" id="mail">
+        </div>
+
+        <div class="form-group">
+            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
+            <input type="number" class="form-control" name="number_cell">
+        </div>
+
+        <input type="submit" class="btn btn-primary">
+    </form>
+    </div>
+
+    {%elif 'entrate' in argomento%}
+    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name"> inserisci il nome del del dipendete </label> <br>
+            <input type="text" class="form-control" name="name" id="name"> 
+        </div>
+
+        <div class="form-group">
+            <label for="mail"> inserisci la mail del cliente  </label>
+            <input type="mail" class="form-control" name="mail" id="mail">
+        </div>
+
+        <div class="form-group">
+            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
+            <input type="number" class="form-control" name="number_cell">
+        </div>
+
+        <input type="submit" class="btn btn-primary">
+    </form>
+    </div>
+
+    {%elif 'uscite' in argomento%}
+    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name"> inserisci il nome del del dipendete </label> <br>
+            <input type="text" class="form-control" name="name" id="name"> 
+        </div>
+
+        <div class="form-group">
+            <label for="mail"> inserisci la mail del cliente  </label>
+            <input type="mail" class="form-control" name="mail" id="mail">
+        </div>
+
+        <div class="form-group">
+            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
+            <input type="number" class="form-control" name="number_cell">
+        </div>
+
+        <input type="submit" class="btn btn-primary">
+    </form>
+    </div>
     {%endif%}
     {%endblock%}
     

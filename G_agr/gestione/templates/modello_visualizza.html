@@ -57,12 +57,12 @@
       <div class="text-center float-center" id="menu">
         <!-- come scrivere gli url -->
         <div class="text-center" style="margin: 20px">
-          <img src="{% static 'immagine utente.webp' %}" alt="immagine utente">
+          <a href=""> <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
         <br>
         <br>
-        <a href="{% url 'visualizza' username=username argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' username=username argomento='agriturismi' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> agriturismi </i> </a> 
         <a href="{% url 'visualizza' username=username argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
         <a href="{% url 'visualizza' username=username argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
         <a href="{% url 'visualizza' username=username argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
@@ -71,7 +71,7 @@
     </div>
     <div class="col-md-10">
       <div class="text-center">
-        <h1> gestione </h1>
+        <h1> gestione {{nome_pagina}}</h1>
               <div class="text-center">
                 <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
                 <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
@@ -80,7 +80,7 @@
       <div class="container" >
         <!-- blocco per l'inserimento dell'h1-->
       <!-- blocco per inserimento dell'h2-->
-      <h2> lista {%block h2%}{%endblock%} </h2>   
+      <h2> {%block h2%}{%endblock%} </h2>   
       
       <div class="table-responsive">          
       <table class="table">

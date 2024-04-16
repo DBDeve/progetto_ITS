@@ -28,24 +28,19 @@
 
     {% block data%}
     <!--visualizza i dati di tutte le camere-->
-    {% if "camere" in nome_pagina and "tutte" in scelta%}
+    {% if "agriturismi" in nome_pagina and "tutte" in scelta%}
     <thead>
       <tr>
-        <th> numero camera</th>
-        <th> prezzo </th>
-        <th> stato </th>
-        <th> persone ospitabili </th>
-        <th> appunti</th>
+        <th> nome agriturismo</th>
+        <th> indirizzo agriturismo </th>
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_Rooms %}
+    {% for valore in valori_FarmHouses %}
     <thead>
       <tr>
-        <th><a href="{% url 'modifica' username=username argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
-        <th>{{valore.prize}} </th>
-        <th>{{valore.stato}}</th>
-        <th>{{valore.appunto_gestore}}</th>
+        <th>{{valore.FarmHouseName}}</a></th>
+        <th>{{valore.address}} </th>
       </tr>
     </thead>
     <tbody>
@@ -196,6 +191,27 @@
 
 
 <!--
+
+  <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    <thead>
+      <tr>
+        <th><a href="{% url 'modifica' username=username argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
+        <th>{{valore.prize}} </th>
+        <th>{{valore.stato}}</th>
+        <th>{{valore.appunto_gestore}}</th>
+      </tr>
+    </thead>
+    <tbody>
     {% if "tutte" in scelta %}
      <thead>
       <tr>

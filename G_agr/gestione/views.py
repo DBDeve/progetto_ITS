@@ -24,7 +24,7 @@ def visualizza(request,argomento,scelta,username):
    context['nome_pagina']=argomento
    context['username']=username
 
-   classi=[Clients,Rooms,Employee,Expense,Earnings]  
+   classi=[Clients,Rooms,Employee,Expense,Earnings,FarmHouses]  
    #utenti
    users=User.objects.all().values()
    #use=User.objects.get('id')
@@ -198,11 +198,13 @@ def elimina(request,argomento,username):
    return HttpResponse(template.render(context,request))
 
 
+
+#crea gli oggetti che vengono associati alla tabella AccountManager
 @login_required(login_url='login')
-def crea_agriturismo(request,username):
+def aggiungi_oggetto_account(request,argomento,username):
    context={}
    context['username']=username
-   
+   context['argomento']=argomento
    users=User.objects.all().values()
    
 
@@ -218,14 +220,19 @@ def crea_agriturismo(request,username):
          if user_id in accounts_gestore_id and request.POST:
             #prende il l'account con un valore gestore_id uquale a quello dell'user
             accounts=AccountManagers.objects.get(gestore_id=user_id)
-            nuovo_agriturismo=FarmHouses(
-               name=request.POST['name'],
-               address=request.POST['address'],
-               FarmHousesAccountManagers=accounts['id']         
-            )
-            nuovo_agriturismo.save()
+            if argomento=="agriturismo":
+               nuovo_agriturismo=FarmHouses(
+                  name=request.POST['name'],
+                  address=request.POST['address'],
+                  FarmHousesAccountManagers=accounts['id']         
+               )
+               nuovo_agriturismo.save()
+            #if argomento==""
          template=loader.get_template('form_crea_agriturismo.html')
          return HttpResponse(template.render(context,request))
+      
+      template=loader.get_template('form_crea_agriturismo.html')
+      return HttpResponse(template.render(context,request))
 
 
 
