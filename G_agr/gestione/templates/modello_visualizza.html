@@ -45,23 +45,15 @@
     {%endblock%}
 </head>
 <body>
-<div class="text-center">
-  <div class="text-right" style="margin: 20px">
-    <p style="display: inline; padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
-  </div>
-  <h1> gestione {%block h1%} {%endblock%}</h1>
-        <div class="text-center">
-          <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
-          <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
-        </div>
-
-</div>
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
       <div class="text-center float-center" id="menu">
         <!-- come scrivere gli url -->
+        <div class="text-center" style="margin: 20px">
+          <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
+        </div>
         <br>
         <br>
         <a href="{% url 'visualizza' username=username argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
@@ -72,10 +64,18 @@
       </div>
     </div>
     <div class="col-md-10">
+      <div class="text-center">
+        <h1> gestione </h1>
+              <div class="text-center">
+                <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
+                <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
+              </div>
+      </div>
       <div class="container" >
         <!-- blocco per l'inserimento dell'h1-->
       <!-- blocco per inserimento dell'h2-->
       <h2> lista {%block h2%}{%endblock%} </h2>   
+      
       <div class="table-responsive">          
       <table class="table">
           <!--blocco per inserimento indice della tabella-->
