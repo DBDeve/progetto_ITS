@@ -25,36 +25,25 @@ def visualizza(request,argomento,scelta,username):
    context['username']=username
 
    classi=[Clients,Rooms,Employee,Expense,Earnings,FarmHouses]  
-   #utenti
-   users=User.objects.all().values()
-   #use=User.objects.get('id')
-   #profili
-   #accounts=AccountManagers.objects.all().values()
    
+   user=User.objects.get(username=username)
+   user_id=user.id
+   accounts=AccountManagers.objects.get(gestore_id=user_id)
 
-   #itera tutti gli utenti
-   for user in users:
-      #verifica se l'username passato dalla funzione corrisponde a quello dell'user
-      if user['username']==username:
-         #crea un variabile con l'id dell'user
-         user_id=user['id']
-         #crea una lista con i valori id di gestore dalla tabella AccountManager
-         accounts_id=AccountManagers.objects.all().values_list('gestore_id', flat=True)
-         
-         if user_id in accounts_id:
-            #accounts_id=user_id
-            if scelta=="tutte":
-                  for classe in classi:
-                  #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
-                     context[f'valori_{classe.__name__}']=classe.objects.all().values()
-            else:
-               if scelta=="occupata": 
-                     context[f'valori_Room']=Rooms.objects.all().values()
-                     context[f'valori_Clients']=Clients.objects.all().values()
-                     context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
-               elif scelta=="libera": 
-                     context[f'valori_Room']=Rooms.objects.all().values()
-                     context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+   if user_id==accounts.gestore_id:
+      #accounts_id=user_id
+      if scelta=="tutte":
+            for classe in classi:
+            #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
+               context[f'valori_{classe.__name__}']=classe.objects.all().values()
+      else:
+         if scelta=="occupata": 
+               context[f'valori_Room']=Rooms.objects.all().values()
+               context[f'valori_Clients']=Clients.objects.all().values()
+               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+         elif scelta=="libera": 
+               context[f'valori_Room']=Rooms.objects.all().values()
+               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
 
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
@@ -205,34 +194,22 @@ def aggiungi_oggetto_account(request,argomento,username):
    context={}
    context['username']=username
    context['argomento']=argomento
-   users=User.objects.all().values()
-   
 
-   #itera tutti gli utenti
-   for user in users:
-      #verifica se l'username passato dalla funzione corrisponde a quello dell'user
-      if user['username']==username:
-         #crea un variabile con l'id dell'user
-         user_id=user['id']
-         #crea una lista con i valori id di gestore dalla tabella AccountManager
-         accounts_gestore_id=AccountManagers.objects.all().values_list('gestore_id', flat=True) 
+   user=User.objects.get(username=username)
+   user_id=user.id
+   accounts=AccountManagers.objects.get(gestore_id=user_id)
 
-         if user_id in accounts_gestore_id and request.POST:
-            #prende il l'account con un valore gestore_id uquale a quello dell'user
-            accounts=AccountManagers.objects.get(gestore_id=user_id)
-            if argomento=="agriturismo":
-               nuovo_agriturismo=FarmHouses(
-                  name=request.POST['name'],
-                  address=request.POST['address'],
-                  FarmHousesAccountManagers=accounts['id']         
-               )
-               nuovo_agriturismo.save()
-            #if argomento==""
-         template=loader.get_template('form_crea_agriturismo.html')
-         return HttpResponse(template.render(context,request))
-      
-      template=loader.get_template('form_crea_agriturismo.html')
-      return HttpResponse(template.render(context,request))
+   if request.POST:
+      if argomento=="agriturismi":
+         nuovo_agriturismo=FarmHouses(
+            FarmHouseName=request.POST['name'],
+            address=request.POST['address'],
+            FarmHousesAccountManagers=accounts
+         )
+         nuovo_agriturismo.save() 
+         
+   template=loader.get_template('form_crea_agriturismo.html')
+   return HttpResponse(template.render(context,request))
 
 
 

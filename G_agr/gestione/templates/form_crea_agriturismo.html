@@ -9,7 +9,7 @@
         </div>
     
 
-        <form action="" method="POST">
+        <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome dell'agriturismo </label> <br>
