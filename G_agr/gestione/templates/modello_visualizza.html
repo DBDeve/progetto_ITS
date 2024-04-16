@@ -39,6 +39,11 @@
       width: 75%;
       margin-top:3px;
     }
+    img{
+      width: 100px;
+      border-radius: 100%;
+      margin-top: 2em;
+    }
     </style>
 
 
@@ -52,6 +57,7 @@
       <div class="text-center float-center" id="menu">
         <!-- come scrivere gli url -->
         <div class="text-center" style="margin: 20px">
+          <img src="{% static 'immagine utente.webp' %}" alt="immagine utente">
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
         <br>
