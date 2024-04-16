@@ -3,18 +3,39 @@
 
 
     {%block form%}
+    {%if 'agriturismi' in argomento%}
     <div class=float-center >
         <div class="titolo">
            <h1> elimina {{argomento}}</h1> 
         </div>
-    
-
         <form action="{% url 'elimina' username=username argomento=argomento%}" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="numero_camera"> inserisci il numero della camera </label> <br>
-                <input type="number" class="form-control" name="number" id="numero_camera" min="000" max="999"> 
+                <label for="name"> inserisci il nome dell'agriturismo </label> <br>
+                <input type="text" class="form-control" name="name" id="name"> 
             </div>
         </form>
     </div>
-    {%endblock%}
+    {%elif 'clienti' in argomento%}
+    <div class=float-center >
+        <div class="titolo">
+           <h1> elimina {{argomento}}</h1> 
+        </div>
+        <form action="{% url 'elimina' username=username argomento=argomento%}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name"> inserisci il nome dell'agriturismo </label> <br>
+                <input type="text" class="form-control" name="name" id="name"> 
+            </div>
+            <div class="form-group">
+                <label for="mail"> inserisci il nome dell'agriturismo </label> <br>
+                <input type="mail" class="form-control" name="mail" id="mail"> 
+            </div>
+            <div class="form-group">
+                <label for="number_cell"> inserisci il nome dell'agriturismo </label> <br>
+                <input type="number" class="form-control" name="number_cell" id="number_cell"> 
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    {% endblock %}

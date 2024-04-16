@@ -29,6 +29,8 @@ def visualizza(request,argomento,scelta,username):
    user=User.objects.get(username=username)
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
+   accounts_id=accounts.id
+   agriturismo=FarmHouses.objects.filter(FarmHousesAccountManagers=accounts_id)
 
    if user_id==accounts.gestore_id:
       #accounts_id=user_id
@@ -156,30 +158,34 @@ def elimina(request,argomento,username):
    context ['argomento']=argomento
    context['username']=username
 
-   
-   if request.POST:
-      if argomento=="camere":
-         number=request.POST['number']
-         camera_da_rimuovere=Rooms.objects.get(number=number)
-         camera_da_rimuovere.delete()
-      elif argomento=="clienti":
-         name=request.POST['name']
-         mail=request.POST['mail']
-         number_cell=request.POST['number_cell']
-         cliente_da_rimuovere=Clients.objects.get(name=name, mail=mail, number_cell=number_cell)
-         cliente_da_rimuovere.delete()
-      elif argomento=="lavoratori":
-         codice_fiscale=request.POST['codice_fiscale']
-         lavoratore_da_rimuovere=Employee.objects.get(codice_fiscale=codice_fiscale)
-         lavoratore_da_rimuovere.delete()
-      elif argomento=="servizzi":
-         name=request.POST['name']
-         servizio_da_rimuovere=Services.objects.get(name=name)
-         servizio_da_rimuovere.delete()
-      elif argomento=="promozioni":
-         name=request.POST['name']
-         promozione_da_rimuovere=Promotions.objects.get(name=name)
-         promozione_da_rimuovere.delete()
+   user=User.objects.get(username=username)
+   user_id=user.id
+   accounts=AccountManagers.objects.get(gestore_id=user_id)
+
+   if user_id==accounts.gestore_id:
+      if request.POST:
+         if argomento=="agriturismi":
+            FarmHouseName=request.POST['name']
+            camera_da_rimuovere=FarmHouses.objects.get(FarmHouseName=FarmHouseName)
+            camera_da_rimuovere.delete()
+         elif argomento=="clienti":
+            name=request.POST['name']
+            mail=request.POST['mail']
+            number_cell=request.POST['number_cell']
+            cliente_da_rimuovere=Clients.objects.get(name=name, mail=mail, number_cell=number_cell)
+            cliente_da_rimuovere.delete()
+         elif argomento=="lavoratori":
+            codice_fiscale=request.POST['codice_fiscale']
+            lavoratore_da_rimuovere=Employee.objects.get(codice_fiscale=codice_fiscale)
+            lavoratore_da_rimuovere.delete()
+         elif argomento=="servizzi":
+            name=request.POST['name']
+            servizio_da_rimuovere=Services.objects.get(name=name)
+            servizio_da_rimuovere.delete()
+         elif argomento=="promozioni":
+            name=request.POST['name']
+            promozione_da_rimuovere=Promotions.objects.get(name=name)
+            promozione_da_rimuovere.delete()
 
 
    
