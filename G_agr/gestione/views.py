@@ -84,52 +84,44 @@ def aggiungi(request,username,agriturismo,argomento,):
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
    accounts_id=accounts.id
-   agriturismo=FarmHouses.objects.filter(IdAccountManagers=accounts_id)
-   #agriturismo_id=agriturismo.id
+   agriturismo=FarmHouses.objects.get(FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
 
 
    
    if request.POST:
-      #crea un nuovo oggetto Rooms
-      
-      #crea nuovo aggetto Clients
-      if argomento=="clienti":
-         nuovo_cliente=Clients(
-            name=request.POST['name'],
-            mail=request.POST['mail'],
-            number_cell=request.POST['number_cell']
-            )
-         nuovo_cliente.save()
-      # crea nuovo oggetto employee
-      elif argomento=="lavoratori":
-         nuovo_lavoratore=Employee(
-            name=request.POST['name'],
-            codice_fiscale=request.POST['codice_fiscale'],
-            iban=request.POST['iban'],
-            mail=request.POST['mail'],
-         )
-         nuovo_lavoratore.save()
-      elif argomento=="camere": 
+      #crea un nuovo oggetto Rooms (funziona)
+      if argomento=="camere": 
          nuova_camera=Rooms(
             number=request.POST['number'],
             prize=request.POST['prize'],
             clienti_ospitabili=request.POST['clienti_ospitabili'],
             appunto_gestore=request.POST['appunti_gestore'],
             appunti_cliente=request.POST['appunti_cliente'],
+            IdFarmHouses_id=agriturismo_id
             )
          nuova_camera.save()
-      # crea nuovo oggetto services
-      elif argomento=="servizzi":
-         nuovo_servizio=Services(
+      #crea nuovo aggetto Clients (non funziona "integrity error" quardare modello)
+      if argomento=="clienti":
+         nuovo_cliente=Clients(
             name=request.POST['name'],
-            prize=request.POST['prize']
+            mail=request.POST['mail'],
+            number_cell=request.POST['number_cell'],
+            IdAccountManagers_id=accounts_id,
+            IdFarmHouses_id=agriturismo_id
+            )
+         nuovo_cliente.save()
+      # crea nuovo oggetto employee (funziona)
+      elif argomento=="dipendenti":
+         nuovo_lavoratore=Employee(
+            name=request.POST['name'],
+            codice_fiscale=request.POST['codice_fiscale'],
+            iban=request.POST['iban'],
+            mail=request.POST['mail'],
+            IdAccountManagers_id=accounts_id,
+            IdFarmHouses_id=agriturismo_id
          )
-         nuovo_servizio.save()
-      # crea nuovo oggetto promotions
-      elif argomento=="promozioni":
-         nuova_promozione=Promotions(
-            name=request.POST['name']
-         )
+         nuovo_lavoratore.save()
       
    template=loader.get_template('form_aggiungi.html')
    return HttpResponse(template.render(context,request))      

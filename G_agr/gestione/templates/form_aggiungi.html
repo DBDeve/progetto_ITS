@@ -18,7 +18,7 @@
     
 
     {%if 'camere' in argomento%}
-    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="numero_camera"> inserisci il numero della camera </label> <br>
@@ -49,7 +49,7 @@
     </form>
     </div>
     {%elif 'clienti' in argomento%}
-    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del cliente </label> <br>
@@ -71,7 +71,7 @@
     </div>
       
     {%elif 'dipendenti' in argomento%}
-    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del del dipendete </label> <br>
@@ -79,13 +79,18 @@
         </div>
 
         <div class="form-group">
-            <label for="mail"> inserisci la mail del cliente  </label>
+            <label for="codice_fiscale"> inserisci il codice fiscale del cliente  </label>
+            <input type="text" class="form-control" name="codice_fiscale" id="codice_fiscale">
+        </div>
+
+        <div class="form-group">
+            <label for="mail"> inserisci la mail del dipendente  </label>
             <input type="mail" class="form-control" name="mail" id="mail">
         </div>
 
         <div class="form-group">
-            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
-            <input type="number" class="form-control" name="number_cell">
+            <label for="iban"> inserisci l'iban del dipendente  </label>
+            <input type="number" class="form-control" name="iban">
         </div>
 
         <input type="submit" class="btn btn-primary">
