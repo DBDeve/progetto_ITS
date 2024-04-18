@@ -17,35 +17,55 @@ from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,
 # Create your views here.
 
 @login_required(login_url='login')
-def visualizza(request,argomento,scelta,username):
+def visualizza(request,username,agriturismo,argomento,scelta):
    context={}
    #farne una per ogni argomento (camere,servizzi, ecc...)
-   context['scelta']=scelta
-   context['nome_pagina']=argomento
    context['username']=username
-
-   classi=[Clients,Rooms,Employee,Expense,Earnings,FarmHouses]  
+   context['agriturismo']=agriturismo
+   context['nome_pagina']=argomento
+   context['scelta']=scelta
    
+   classi_accounts=[Earnings,FarmHouses,Expense,Employee,Clients]
+   classi_agriturismi=[Rooms,Services,Promotions,Employee,Clients] 
+   context[f'valori_FarmHouses']=FarmHouses.objects.all().values()
+   
+
+   #filtra gli utenti per l'username che gli passo (solo 1)
    user=User.objects.get(username=username)
    user_id=user.id
+   #filtra gli account per l'id dell'user precentemente selezionato (solo 1)
    accounts=AccountManagers.objects.get(gestore_id=user_id)
    accounts_id=accounts.id
-   agriturismo=FarmHouses.objects.filter(FarmHousesAccountManagers=accounts_id)
+   #filtra gli agriturismi per l'id il nome dell'agriturismo nel
+   agriturismo=FarmHouses.objects.get(FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
 
    if user_id==accounts.gestore_id:
-      #accounts_id=user_id
-      if scelta=="tutte":
-            for classe in classi:
-            #valori_camere/servizzi/dipendenti/servizzi/promozioni in base al valore della variabile scelta passato e lo mette in context
-               context[f'valori_{classe.__name__}']=classe.objects.all().values()
-      else:
-         if scelta=="occupata": 
-               context[f'valori_Room']=Rooms.objects.all().values()
+      #visualizza i dati in tutti gli agriturismi
+      if agriturismo=="tutti":
+         if scelta=="tutte":
+            for classe in classi_accounts:
+               context[f'valori_{classe.__name__}']=classe.objects.filter(IdAccountManagers=accounts_id)
+         elif scelta=="occupata": 
+               context[f'valori_Rooms']=Rooms.objects.all().values()
                context[f'valori_Clients']=Clients.objects.all().values()
                context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
          elif scelta=="libera": 
                context[f'valori_Room']=Rooms.objects.all().values()
                context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+      #visualizza i singoli dati dei singoli agriturismi
+      else:
+         if scelta=="tutte":
+            for classe in classi_agriturismi:
+               context[f'valori_{classe.__name__}']=classe.objects.filter(IdFarmHouses=agriturismo_id)
+         elif scelta=="occupata": 
+               context[f'valori_Rooms']=Rooms.objects.all().values()
+               context[f'valori_Clients']=Clients.objects.all().values()
+               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+         elif scelta=="libera": 
+               context[f'valori_Room']=Rooms.objects.all().values()
+               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+         
 
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
@@ -54,26 +74,26 @@ def visualizza(request,argomento,scelta,username):
 
 #la funzione aggiungi crea nuovo oggetti in base all'argomento e l'username che gli viene passato
 @login_required(login_url='login')
-def aggiungi(request,argomento,username):
+def aggiungi(request,username,agriturismo,argomento,):
    context={}
    context['argomento']=argomento
    context['username']=username
+   context['agriturismo']=agriturismo
+
+   user=User.objects.get(username=username)
+   user_id=user.id
+   accounts=AccountManagers.objects.get(gestore_id=user_id)
+   accounts_id=accounts.id
+   agriturismo=FarmHouses.objects.filter(IdAccountManagers=accounts_id)
+   #agriturismo_id=agriturismo.id
 
 
    
    if request.POST:
       #crea un nuovo oggetto Rooms
-      if argomento=="camere": 
-         nuova_camera=Rooms(
-            number=request.POST['number'],
-            prize=request.POST['prize'],
-            clienti_ospitabili=request.POST['clienti_ospitabili'],
-            appunto_gestore=request.POST['appunti_gestore'],
-            appunti_cliente=request.POST['appunti_cliente'],
-            )
-         nuova_camera.save()
+      
       #crea nuovo aggetto Clients
-      elif argomento=="clienti":
+      if argomento=="clienti":
          nuovo_cliente=Clients(
             name=request.POST['name'],
             mail=request.POST['mail'],
@@ -89,6 +109,15 @@ def aggiungi(request,argomento,username):
             mail=request.POST['mail'],
          )
          nuovo_lavoratore.save()
+      elif argomento=="camere": 
+         nuova_camera=Rooms(
+            number=request.POST['number'],
+            prize=request.POST['prize'],
+            clienti_ospitabili=request.POST['clienti_ospitabili'],
+            appunto_gestore=request.POST['appunti_gestore'],
+            appunti_cliente=request.POST['appunti_cliente'],
+            )
+         nuova_camera.save()
       # crea nuovo oggetto services
       elif argomento=="servizzi":
          nuovo_servizio=Services(
@@ -216,6 +245,8 @@ def aggiungi_oggetto_account(request,argomento,username):
          
    template=loader.get_template('form_crea_agriturismo.html')
    return HttpResponse(template.render(context,request))
+
+
 
 
 

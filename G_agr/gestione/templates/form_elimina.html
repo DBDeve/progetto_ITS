@@ -24,15 +24,15 @@
         <form action="{% url 'elimina' username=username argomento=argomento%}" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="name"> inserisci il nome dell'agriturismo </label> <br>
+                <label for="name"> inserisci il nome del cliente </label> <br>
                 <input type="text" class="form-control" name="name" id="name"> 
             </div>
             <div class="form-group">
-                <label for="mail"> inserisci il nome dell'agriturismo </label> <br>
+                <label for="mail"> inserisci la mail del cliente </label> <br>
                 <input type="mail" class="form-control" name="mail" id="mail"> 
             </div>
             <div class="form-group">
-                <label for="number_cell"> inserisci il nome dell'agriturismo </label> <br>
+                <label for="number_cell"> inserisci il numero di telefono del cliente </label> <br>
                 <input type="number" class="form-control" name="number_cell" id="number_cell"> 
             </div>
         </form>

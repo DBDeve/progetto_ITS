@@ -6,17 +6,17 @@ from . import views
 #quando creo una pagina in view devo metterla qui 
 urlpatterns = [
     #path("<str:username>/visualizza/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
-    path("visualizza/<str:username>/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
+    path("visualizza/<str:username>/<str:agriturismo>/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
     
 
-    path("aggiungi/<str:username>/<str:argomento>", views.aggiungi_oggetto_account, name="aggiungi"),
+    path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.aggiungi, name="aggiungi"),
     #path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.crea_oggetto-agriturismo, name="crea_agriturismo"),
     path("elimina/<str:username>/<str:argomento>", views.elimina, name="elimina"),
     
     #path per la funzione modifica
     #path("modifica/<str:argomento>", views.modifica, name="modifica"),
     path("modifica/<str:username>/<str:argomento>", views.modifica, name="modifica"),
-    path("modifica/<str:username>/<str:argomento>/<str:valore>", views.modifica, name="modifica"),
+    path("modifica/<str:username>/<str:agriturismo>/<str:argomento>/<str:valore>", views.modifica, name="modifica"),
     #path("accounts/", include("django.contrib.auth.urls")),  # Include le viste di autenticazione
     path("registrati", views.registrati,name="registrati"),
     path("login",views.accedi, name="login"),
