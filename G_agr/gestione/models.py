@@ -112,9 +112,9 @@ class Salary(models.Model):
 class Clients(models.Model):
   #collegamenti superiori
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE,null=True, blank=True)
-  ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE,null=True, blank=True)
-  ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,default=0,null=True, blank=True)
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE,default=0)
+  ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,default=0)
   #dati tabella
   name=models.CharField(default="",max_length=255,help_text = "*")
   mail=models.EmailField(default="", help_text = "*")
@@ -122,7 +122,7 @@ class Clients(models.Model):
   frOm_data = models.DateField("data di arrivo", auto_now_add=True,null=True, blank=True)
   frOm_time = models.TimeField(null=True, blank=True)
   to = models.DateField(null=True, blank=True,help_text="data di partenza")
-  to_time = models.TimeField()
+  to_time = models.TimeField(null=True, blank=True)
   visit_numbers=models.IntegerField(default=0)
   expense=models.IntegerField(default=0)
 
