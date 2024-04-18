@@ -12,9 +12,9 @@
 
     <!--aggiungono una stringa specifica in punti specifici della pagina-->
     {% if nome_pagina %}
-       {% block title %} {{nome_pagina}} {% endblock %}
-       {%block h1%} {{nome_pagina}} {%endblock%}
-       {%block h2%} {{nome_pagina}} {%endblock%}
+       {% block title %} {{agriturismo}} {% endblock %}
+       {%block h1%} {{agriturismo}} {%endblock%}
+       {%block h2%} {{nome_pagina}} {{scelta}} {%endblock%}
     {% endif %}
 
     {% block pulsanti %}
@@ -23,28 +23,43 @@
     <a href="{% url 'elimina' username=username argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
     {%endblock%}
 
+    {%block seleziona_agriturismo%}
+      {%for valore in valori_FarmHouses%}
+       <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento=nome_pagina scelta='tutte' %}" class="btn btn-primary" role="button">  {{valore.FarmHouseName}} </a>
+      {%endfor%}
+    {%endblock%}
+
+    {%block filtri%}
+      
+    {%endblock%}
+
     
     
 
     {% block data%}
     <!--visualizza i dati di tutte le camere-->
-    {% if "agriturismi" in nome_pagina and "tutte" in scelta%}
+    {% if "camere" in nome_pagina and "tutte" in scelta%}
     <thead>
       <tr>
-        <th> nome agriturismo</th>
-        <th> indirizzo agriturismo </th>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
       </tr>
     </thead>
     <tbody>
-    {% for valore in valori_FarmHouses %}
+    {%for valore in valori_Rooms%}
     <thead>
       <tr>
-        <th>{{valore.FarmHouseName}}</a></th>
-        <th>{{valore.address}} </th>
+        <th><a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
+        <th>{{valore.prize}}</th>
+        <th>{{valore.stato}}</th>
+        <th>{{valore.appunto_gestore}}</th>
       </tr>
     </thead>
     <tbody>
-    {% endfor%}
+    {%endfor%}
     <!--visualizza i dati della camere occupate -->
     {%elif "camere" in nome_pagina and "occupata" in scelta%}
     <thead>

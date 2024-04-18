@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> gestione {% block title %}  {% endblock %}</title>
+  <title> {% block title %}  {% endblock %}</title>
   {%block CSS%}
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,20 +62,30 @@
         </div>
         <br>
         <br>
-        <a href="{% url 'visualizza' username=username argomento='agriturismi' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> agriturismi </i> </a> 
-        <a href="{% url 'visualizza' username=username argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
-        <a href="{% url 'visualizza' username=username argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
-        <a href="{% url 'visualizza' username=username argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
-        <a href="{% url 'visualizza' username=username argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
       </div>
     </div>
     <div class="col-md-10">
       <div class="text-center">
-        <h1> gestione {{nome_pagina}}</h1>
+        <h1> {{agriturismo}}</h1>
               <div class="text-center">
-                <a href="{% url 'visualizza' username=username argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
-                <a href="{% url 'visualizza' username=username argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
+                <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
+                <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
               </div>
+      </div>
+      <div class="text-align">
+        <h3> seleziona agriturismo</h3>
+        {%block seleziona_agriturismo%}
+        {%endblock%}
+      </div>
+      <div class="text-align">
+        <h3> filtra</h3>
+        {%block filtri%}
+        {%endblock%}
       </div>
       <div class="container" >
         <!-- blocco per l'inserimento dell'h1-->

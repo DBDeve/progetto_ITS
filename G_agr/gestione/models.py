@@ -17,7 +17,7 @@ class AccountManagers(models.Model):
 # entrate
 class Earnings(models.Model):
   #collegamenti inferiori
-  EarningsAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   #dati tabella 
   Date=models.DateField("data di entrata", auto_now_add=True,null=True, blank=True)
   Quantity=models.DecimalField(default=0, max_digits=3, decimal_places=2)
@@ -30,14 +30,14 @@ class Earnings(models.Model):
 
 class FarmHouses(models.Model):
   #collegamenti superiore
-  FarmHousesAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   #dati agriturismo obbligatori 
   FarmHouseName=models.CharField(max_length=255)
   address=models.CharField(max_length=255)
 
 class Rooms(models.Model):
     #collegamenti superiori
-    RoomsFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+    IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
     #dati obbligatori
     stati_camera={
         "libera":"libera",
@@ -56,14 +56,14 @@ class Rooms(models.Model):
 
 class Services(models.Model):
     #collegamenti superiori
-    ServicesFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
+    IdFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
     #datri servizzi
     name=models.CharField(max_length=200,default="")
     prize=models.IntegerField(default=0)
     NumberOfUse=models.IntegerField(default=0)
 
 class Promotions(models.Model):
-  PromotionsFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete = models.CASCADE)
   #dati promozioni
   name=models.CharField(max_length=200,default="")
    #sconto
@@ -78,7 +78,7 @@ class Promotions(models.Model):
 
 #uscite
 class Expense(models.Model):
-  GoOutAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   Date=models.DateField("data spesa", auto_now_add=True,null=True, blank=True)
   Quantity=models.DecimalField(default=0, max_digits=3, decimal_places=2)
 
@@ -88,8 +88,8 @@ class Expense(models.Model):
 
 class Employee(models.Model):
   #collegamenti superiori
-  EmployeeAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  EmployeeFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   #dati tabella 
   name=models.CharField(max_length=200,default="")
   codice_fiscale=models.CharField(max_length=200, default="")
@@ -111,8 +111,8 @@ class Salary(models.Model):
 
 class Clients(models.Model):
   #collegamenti superiori
-  ClientManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  ClientFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
   ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,default=0)
   #dati tabella
