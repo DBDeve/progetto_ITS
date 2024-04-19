@@ -250,7 +250,7 @@ def registrati(request):
    context={}
 
    if request.POST:
-
+      #crea un nuovo user
       user = User.objects.create_user(
          username=request.POST['username'],
          email=request.POST['email'],
@@ -259,6 +259,17 @@ def registrati(request):
          last_name=request.POST['last_name'],
          )
       user.save()
+      
+      #crea un nuovo account collegato allo user appena creato
+      IdUser=user.id
+      nuovo_account=AccountManagers(
+         gestore_id=IdUser
+      )
+      nuovo_account.save()
+
+
+      url=f"login"
+      return redirect(url)
 
    template=loader.get_template('form_registrati.html')
    return HttpResponse(template.render(context,request))
