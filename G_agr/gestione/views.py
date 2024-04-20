@@ -241,8 +241,27 @@ def aggiungi_oggetto_account(request,argomento,username):
 
 
 
+def cambia_password(request):
+   context={}
 
-
+   if request.POST:
+      user=User.objects.get(username=request.POST['username'])
+      nuova_password=request.POST['nuova_password']
+      username = request.POST.get('username')
+      try:
+         user = User.objects.get(username=username)
+         # Imposta la nuova password con hashing
+         user.set_password(nuova_password)
+         user.save()
+         messages.success(request, 'Password aggiornata con successo.')
+         return redirect('login')
+      except User.DoesNotExist:
+         messages.error(request, 'Utente non trovato.')
+         return redirect('cambia_password')
+   
+   template=loader.get_template('form_cambia_password.html')
+   return HttpResponse(template.render(context,request))
+   
 
 
 #fa registrare un nuovo utente
@@ -267,7 +286,7 @@ def registrati(request):
       )
       nuovo_account.save()
 
-
+      #rendirizza alla pagina di login
       url=f"login"
       return redirect(url)
 
