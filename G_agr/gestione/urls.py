@@ -18,6 +18,7 @@ urlpatterns = [
     path("modifica/<str:username>/<str:agriturismo>/<str:argomento>", views.modifica, name="modifica"),
     path("modifica/<str:username>/<str:agriturismo>/<str:argomento>/<str:valore>", views.modifica, name="modifica"),
     #path("accounts/", include("django.contrib.auth.urls")),  # Include le viste di autenticazione
+    path("aggiungi/<str:username>/agriturismo", views.verifica_aggiungi_agtriturismo,name="aggiungi agriturismo"),
     path("cambia_password",views.cambia_password,name="cambia_password"),
     path("registrati", views.registrati,name="registrati"),
     path("login",views.accedi, name="login"),

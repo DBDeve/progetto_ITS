@@ -1,6 +1,8 @@
 from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+
 
 from django.template import loader
 
@@ -215,29 +217,36 @@ def elimina(request,argomento,username):
 
 
 
-#crea gli oggetti che vengono associati alla tabella AccountManager
+#crea verifica se l'accounta ha un agriturismo e se non ce l'ha lo fa aggiungere
 @login_required(login_url='login')
-def aggiungi_oggetto_account(request,argomento,username):
+def verifica_aggiungi_agtriturismo(request,username):
+
    context={}
    context['username']=username
-   context['argomento']=argomento
 
    user=User.objects.get(username=username)
    user_id=user.id
-   accounts=AccountManagers.objects.get(gestore_id=user_id)
+   account=AccountManagers.objects.get(gestore_id=user_id)
+   account_id=account.id
 
-   if request.POST:
-      if argomento=="agriturismi":
+   agriturismi=FarmHouses.objects.filter(IdAccountManagers_id=account_id)
+   context[f'valori_FarmHouses']=agriturismi
+
+   if agriturismi.exists():
+      context['frase']="scegli agriturismo"
+      context['esiste']="True"
+      return render(request, "form_verifica_aggiungi_agriturismo.html", context)
+   else:
+      context['esiste']="False"
+      context['frase']="crea agriturismo"
+      if request.POST:
          nuovo_agriturismo=FarmHouses(
             FarmHouseName=request.POST['name'],
             address=request.POST['address'],
-            FarmHousesAccountManagers=accounts
+            IdAccountManagers_id=account_id
          )
          nuovo_agriturismo.save() 
-         
-   template=loader.get_template('form_crea_agriturismo.html')
-   return HttpResponse(template.render(context,request))
-
+      return render(request, "form_verifica_aggiungi_agriturismo.html", context)
 
 
 
@@ -305,7 +314,7 @@ def accedi(request):
       if  user is not None:
          login(request, user)
          messages.success(request, f"benvenuto {user.username}")
-         url=f"visualizza/{user.username}/camere/tutte"
+         url=f"aggiungi/{user.username}/agriturismo"
          return redirect(url)
       else:
          messages.error(request, f"si è verificato un problema. riprova")
