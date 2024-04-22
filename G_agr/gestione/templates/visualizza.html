@@ -14,24 +14,57 @@
     {% if nome_pagina %}
        {% block title %} {{agriturismo}} {% endblock %}
        {%block h1%} {{agriturismo}} {%endblock%}
-       {%block h2%} {{nome_pagina}} {{scelta}} {%endblock%}
+       {%block h2%} {{nome_pagina}} {{agriturismo}} {%endblock%}
     {% endif %}
 
     {% block pulsanti %}
-    <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
-    <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
-    <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
+      <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
+      <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
+      <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
     {%endblock%}
 
     {%block seleziona_agriturismo%}
-      {%for valore in valori_FarmHouses%}
-       <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento=nome_pagina scelta='tutte' %}" class="btn btn-primary" role="button">  {{valore.FarmHouseName}} </a>
-      {%endfor%}
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          agriturismo
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {%for valore in valori_FarmHouses%}
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento=nome_pagina scelta=scelta %}">  {{valore.FarmHouseName}} </a>
+          {%endfor%}
+        </div>
+      </div>
     {%endblock%}
 
-    {%block filtri%}
-      
-    {%endblock%}
+
+    <!-- visualizazione blocco filtri-->
+    {% block filtri%}
+      {%if "camere" in nome_pagina%}
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            stato
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='occupata' %}"> occupata </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='libera' %}"> libera </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='prenotata' %}"> prenotata </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='non disponibile' %}"> non disponibile </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='tutte' %}"> tutte </a>
+          </div>
+        </div>
+      {%elif "clienti" in nome_pagina%} 
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            stato
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='tutti' %}"> tutti </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='cliente attuale' %}"> clienti attuali </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='cliente non attuale' %}"> clienti passati </a>
+          </div>
+        </div>
+      {%endif%}
+    {%endblock%} 
 
     
     

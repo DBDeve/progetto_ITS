@@ -344,4 +344,4 @@ def log_out(request):
          return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
    else:
       return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
-
+   

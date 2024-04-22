@@ -57,52 +57,42 @@
       <div class="text-center float-center" id="menu">
         <!-- come scrivere gli url -->
         <div class="text-center" style="margin: 20px">
-          <a href=""> <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
+          <a > <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
-        <br>
-        <br>
+        <!-- sono per forza filtrate per agriturismo -->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <br>
+        <br>
+        <!-- non sono per forza filtrate per agriturismo-->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
+
       </div>
     </div>
     <div class="col-md-10">
-      <div class="text-center">
-        <h1> {{agriturismo}}</h1>
-              <div class="text-center">
-                <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='libera' %}" class="btn btn-primary" role="button">  stanze  libere </a>
-                <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='occupata' %}" class="btn btn-danger" role="button">  stanze  occupate </a> 
-              </div>
-      </div>
-      <div class="text-align">
-        <h3> seleziona agriturismo</h3>
-        {%block seleziona_agriturismo%}
-        {%endblock%}
-      </div>
-      <div class="text-align">
-        <h3> filtra</h3>
-        {%block filtri%}
-        {%endblock%}
-      </div>
       <div class="container" >
-        <!-- blocco per l'inserimento dell'h1-->
-      <!-- blocco per inserimento dell'h2-->
-      <h2> {%block h2%}{%endblock%} </h2>   
-      
-      <div class="table-responsive">          
-      <table class="table">
-          <!--blocco per inserimento indice della tabella-->
-          {% block ind%}
-          {%endblock%}
-          <!-- blocco per inserimento dei dati delle tabelle-->
-          {% block data%}
-          {%endblock%}
-      </table>
+    
+        <h2 class="btn-group"> 
+          {%block h2%}{%endblock%}
+          {%block seleziona_agriturismo%} {%endblock%} 
+          {%block filtri%} {%endblock%}  
+        </h2>  
+
+        <div class="table-responsive">          
+          <table class="table">
+            <!--blocco per inserimento indice della tabella-->
+            {% block ind%}
+            {%endblock%}
+            <!-- blocco per inserimento dei dati delle tabelle-->
+            {% block data%}
+            {%endblock%}
+          </table>
+        </div>
       </div>
-    </div>
+    
 
 
 
