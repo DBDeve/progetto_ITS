@@ -20,7 +20,6 @@
     {% block pulsanti %}
       <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
       <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
-      <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  elimina {{nome_pagina}} </a>
     {%endblock%}
 
     {%block seleziona_agriturismo%}
@@ -79,6 +78,7 @@
         <th> stato </th>
         <th> persone ospitabili </th>
         <th> appunti</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -89,6 +89,8 @@
         <th>{{valore.prize}}</th>
         <th>{{valore.stato}}</th>
         <th>{{valore.appunto_gestore}}</th>
+        <th></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>

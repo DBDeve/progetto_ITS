@@ -174,23 +174,33 @@ def modifica(request,argomento,username,valore):
    
 
 @login_required(login_url='login')
-def elimina(request,argomento,username):
+def elimina(request,username,agriturismo,argomento,valore):
    #definire il comportamento nel caso venga inserita una camera che non esiste
    #definire comportamento nel caso non venga inserito niente
    context={}
    context ['argomento']=argomento
+   context['nome_pagina']=argomento
    context['username']=username
+   context['agriturismo']=agriturismo
+   context['valore']=valore
 
    user=User.objects.get(username=username)
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
 
    if user_id==accounts.gestore_id:
-      if request.POST:
          if argomento=="agriturismi":
             FarmHouseName=request.POST['name']
             camera_da_rimuovere=FarmHouses.objects.get(FarmHouseName=FarmHouseName)
             camera_da_rimuovere.delete()
+         #la cancellazione funziona, ma il rendirizamento no
+         elif argomento=="camere":
+            number=valore
+            camera_da_rimuovere=Rooms.objects.get(number=number)
+            camera_da_rimuovere.delete()
+            context['valore']="tutte"
+            template=loader.get_template('visualizza.html')
+            return HttpResponse(template.render(context,request))
          elif argomento=="clienti":
             name=request.POST['name']
             mail=request.POST['mail']

@@ -37,5 +37,19 @@
             </div>
         </form>
     </div>
+    {%elif 'camere' in argomento%}
+    <div class=float-center >
+        <div class="titolo">
+           <h1> elimina {{argomento}}</h1> 
+        </div>
+        <form action="{% url 'elimina' username=username agriturismo=agriturismo argomento=argomento valore=valore%}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="number"> numero della camera </label> <br>
+                <input type="text" class="form-control" name="number" id="number" value={{valore}}> 
+            </div>
+        </form>
+    </div>
+
     {% endif %}
     {% endblock %}

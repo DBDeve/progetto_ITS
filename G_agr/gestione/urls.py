@@ -11,7 +11,7 @@ urlpatterns = [
 
     path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.aggiungi, name="aggiungi"),
     #path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.crea_oggetto-agriturismo, name="crea_agriturismo"),
-    path("elimina/<str:username>/<str:agriturismo>/<str:argomento>", views.elimina, name="elimina"),
+    path("elimina/<str:username>/<str:agriturismo>/<str:argomento>/<str:valore>", views.elimina, name="elimina"),
     
     #path per la funzione modifica
     #path("modifica/<str:argomento>", views.modifica, name="modifica"),
