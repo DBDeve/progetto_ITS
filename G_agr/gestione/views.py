@@ -132,11 +132,12 @@ def aggiungi(request,username,agriturismo,argomento,):
 
 
 @login_required(login_url='login')
-def modifica(request,argomento,username,valore):
+def modifica(request,argomento,username,agriturismo,valore):
    context={}
    context['valore']=valore
    context ['argomento']=argomento
    context['username']=username
+   context['agriturismo']=agriturismo
 
 
    if request.POST:
@@ -187,20 +188,20 @@ def elimina(request,username,agriturismo,argomento,valore):
    user=User.objects.get(username=username)
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
+   agriturismo_s=FarmHouses.objects.get(FarmHouseName=agriturismo)
 
    if user_id==accounts.gestore_id:
          if argomento=="agriturismi":
             FarmHouseName=request.POST['name']
             camera_da_rimuovere=FarmHouses.objects.get(FarmHouseName=FarmHouseName)
             camera_da_rimuovere.delete()
-         #la cancellazione funziona, ma il rendirizamento no
+         #la cancellazione funziona e anche il rendirizamento. applicare a tutti gli altri
          elif argomento=="camere":
             number=valore
             camera_da_rimuovere=Rooms.objects.get(number=number)
             camera_da_rimuovere.delete()
-            context['valore']="tutte"
-            template=loader.get_template('visualizza.html')
-            return HttpResponse(template.render(context,request))
+            url=f"http://127.0.0.1:8000/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
+            return redirect(url)
          elif argomento=="clienti":
             name=request.POST['name']
             mail=request.POST['mail']

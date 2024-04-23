@@ -9,7 +9,7 @@
         </div>
     
 
-        <form action="{% url 'modifica' username=username argomento=argomento valore=valore%}" method="POST">
+        <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="number"> inserisci il nuovo numero della camera</label> <br>

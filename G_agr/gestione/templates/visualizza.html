@@ -19,7 +19,6 @@
 
     {% block pulsanti %}
       <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
-      <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  modifica {{nome_pagina}} </a>
     {%endblock%}
 
     {%block seleziona_agriturismo%}
@@ -62,6 +61,27 @@
             <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='cliente non attuale' %}"> clienti passati </a>
           </div>
         </div>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            tipo
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='singolo' %}"> singolo </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='coppia' %}"> coppia</a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='famiglia' %}"> famiglia </a>
+          </div>
+        </div>
+      {%elif "dipendenti" in nome_pagina%}
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            tipo
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='dirigenti' %}"> dirigenti </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='addetto' %}"> addetti </a>
+            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo argomento=nome_pagina scelta='in prova' %}"> in prova </a>
+          </div>
+        </div>
       {%endif%}
     {%endblock%} 
 
@@ -79,6 +99,7 @@
         <th> persone ospitabili </th>
         <th> appunti</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -90,6 +111,7 @@
         <th>{{valore.stato}}</th>
         <th>{{valore.appunto_gestore}}</th>
         <th></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
         <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
       </tr>
     </thead>
