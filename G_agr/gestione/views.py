@@ -29,7 +29,6 @@ def visualizza(request,username,agriturismo,argomento,scelta):
    
    classi_accounts=[Earnings,FarmHouses,Expense,Employee,Clients]
    classi_agriturismi=[Rooms,Services,Promotions,Employee,Clients] 
-   context[f'valori_FarmHouses']=FarmHouses.objects.all().values()
    
 
    #filtra gli utenti per l'username che gli passo (solo 1)
@@ -38,37 +37,36 @@ def visualizza(request,username,agriturismo,argomento,scelta):
    #filtra gli account per l'id dell'user precentemente selezionato (solo 1)
    accounts=AccountManagers.objects.get(gestore_id=user_id)
    accounts_id=accounts.id
-   #filtra gli agriturismi per l'id il nome dell'agriturismo nel
-   agriturismo=FarmHouses.objects.get(FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo.id
+   # crea la lista degli agriturismi legati all'account
+   context[f'valori_FarmHouses']=FarmHouses.objects.filter(IdAccountManagers_id=accounts_id)
 
    if user_id==accounts.gestore_id:
+
       #visualizza i dati in tutti gli agriturismi
       if agriturismo=="tutti":
          if scelta=="tutte":
             for classe in classi_accounts:
                context[f'valori_{classe.__name__}']=classe.objects.filter(IdAccountManagers=accounts_id)
-         elif scelta=="occupata": 
-               context[f'valori_Rooms']=Rooms.objects.all().values()
-               context[f'valori_Clients']=Clients.objects.all().values()
-               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
-         elif scelta=="libera": 
-               context[f'valori_Room']=Rooms.objects.all().values()
-               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
-      #visualizza i singoli dati dei singoli agriturismi
+
+      #visualizza i dati dei singoli agriturismi
       else:
+         #filtra gli agriturismi per l'id dell'account e il nome dell'agriturismo
+         agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
+         agriturismo_id=agriturismo.id
          if scelta=="tutte":
             for classe in classi_agriturismi:
                context[f'valori_{classe.__name__}']=classe.objects.filter(IdFarmHouses=agriturismo_id)
          elif scelta=="occupata": 
-               context[f'valori_Rooms']=Rooms.objects.all().values()
-               context[f'valori_Clients']=Clients.objects.all().values()
-               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+            context[f'valori_Clients']=Clients.objects.all().values()
+            context[f'Rooms_occupata']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
+         elif scelta=="prenotata":
+            context[f'valori_Clients']=Clients.objects.all().values()
+            context[f'Rooms_prenotata']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
          elif scelta=="libera": 
-               context[f'valori_Room']=Rooms.objects.all().values()
-               context[f'Room_{scelta}']=Rooms.objects.filter(stato=scelta)
+            context[f'Rooms_libera']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
+         elif scelta=="non disponibile":
+            context[f'Rooms_non_disponbile']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
          
-
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
 
@@ -86,7 +84,7 @@ def aggiungi(request,username,agriturismo,argomento,):
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
    accounts_id=accounts.id
-   agriturismo=FarmHouses.objects.get(FarmHouseName=agriturismo)
+   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
    agriturismo_id=agriturismo.id
 
 
@@ -188,7 +186,9 @@ def elimina(request,username,agriturismo,argomento,valore):
    user=User.objects.get(username=username)
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
-   agriturismo_s=FarmHouses.objects.get(FarmHouseName=agriturismo)
+   accounts_id=accounts.id
+   agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id,FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo_s.id
 
    if user_id==accounts.gestore_id:
          if argomento=="agriturismi":
@@ -198,7 +198,7 @@ def elimina(request,username,agriturismo,argomento,valore):
          #la cancellazione funziona e anche il rendirizamento. applicare a tutti gli altri
          elif argomento=="camere":
             number=valore
-            camera_da_rimuovere=Rooms.objects.get(number=number)
+            camera_da_rimuovere=Rooms.objects.get(number=number,IdFarmHouses=agriturismo_id)
             camera_da_rimuovere.delete()
             url=f"http://127.0.0.1:8000/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
             return redirect(url)

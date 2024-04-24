@@ -7,6 +7,9 @@ from . import views
 urlpatterns = [
     #path("<str:username>/visualizza/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
     path("visualizza/<str:username>/<str:agriturismo>/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
+    path("visualizza/<str:username>/tutti/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
+
+
     
 
     path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.aggiungi, name="aggiungi"),

@@ -1,4 +1,4 @@
-{% extends "modello_visualizza.html" %}
+{% extends "visualizza/modello_visualizza.html" %}
 
 
 
@@ -27,6 +27,7 @@
           agriturismo
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo='tutti' argomento=nome_pagina scelta=scelta %}"> tutti </a>
           {%for valore in valori_FarmHouses%}
             <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento=nome_pagina scelta=scelta %}">  {{valore.FarmHouseName}} </a>
           {%endfor%}
@@ -84,6 +85,7 @@
         </div>
       {%endif%}
     {%endblock%} 
+    
 
     
     
@@ -106,9 +108,10 @@
     {%for valore in valori_Rooms%}
     <thead>
       <tr>
-        <th><a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
+        <th>{{valore.number}}</th>
         <th>{{valore.prize}}</th>
         <th>{{valore.stato}}</th>
+        <th> {{valore.clienti_ospitabili}}</th>
         <th>{{valore.appunto_gestore}}</th>
         <th></th>
         <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
@@ -129,7 +132,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for Room in Room_occupata %}
+    {% for Room in Rooms_occupata %}
     <thead>
       <tr>
         <th>{{Room.number}}</th>
@@ -151,11 +154,68 @@
       <tr>
         <th> numero camera</th>
         <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for valore in Rooms_libera%}
+    <thead>
+      <tr>
+        <th>{{valore.number}}</th>
+        <th>{{valore.prize}}</th>
+        <th>{{valore.stato}}</th>
+        <th>{{valore.clienti_ospitabili}}</th>
+        <th>{{valore.appunto_gestore}}</th>
+        <th></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%endfor%}
+    {% elif "camere" in nome_pagina and "non disponibile" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> prezzo </th>
+        <th> stato </th>
+        <th> persone ospitabili </th>
+        <th> appunti</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for valore in Rooms_non_disponbile%}
+    <thead>
+      <tr>
+        <th>{{valore.number}}</th>
+        <th>{{valore.prize}}</th>
+        <th>{{valore.stato}}</th>
+        <th> {{valore.clienti_ospitabili}}</th>
+        <th>{{valore.appunto_gestore}}</th>
+        <th></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%endfor%}
+    {% elif "camere" in nome_pagina and "prenotata" in scelta%}
+    <thead>
+      <tr>
+        <th> numero camera</th>
+        <th> cliente che ha prenotato</th>
+        <th> arrivo cliente</th>
         <th> appunti</th>
       </tr>
     </thead>
     <tbody>
-    {% for camera in Room_libera %}
+    {% for camera in Rooms_prenotata %}
     <thead>
       <tr>
         <th>{{camera.number}}</th>
@@ -165,6 +225,8 @@
     </thead>
     <tbody>
     {% endfor%}
+
+
 
 
     <!-- visualizza i dati dei clienti-->

@@ -62,13 +62,17 @@
         </div>
         <!-- sono per forza filtrate per agriturismo -->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
         <br>
         <br>
         <!-- non sono per forza filtrate per agriturismo-->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='promozioni' scelta='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizzi </a> 
+
+        
 
       </div>
     </div>
@@ -83,9 +87,6 @@
 
         <div class="table-responsive">          
           <table class="table">
-            <!--blocco per inserimento indice della tabella-->
-            {% block ind%}
-            {%endblock%}
             <!-- blocco per inserimento dei dati delle tabelle-->
             {% block data%}
             {%endblock%}
