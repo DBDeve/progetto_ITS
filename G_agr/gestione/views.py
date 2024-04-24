@@ -336,23 +336,9 @@ def accedi(request):
 
 
 
-#fa fare il logout e permette di fare un nuovo accesso sulla stessa pagina 
+#fa fare il logout e rendirizza alla pagina di login
 def log_out(request):
    logout(request)
-   if request.method=="POST":
-      username = request.POST["username"]
-      password = request.POST["password"]
-      user = authenticate(request, username=username, password=password)
-      #verifica che l'user sia stato autenticato
-      if  user is not None:
-         login(request, user)
-         messages.success(request, f"benvenuto {user.username}")
-         url=f"visualizza/{user.username}/camere/tutte"
-         return redirect(url)
-      else:
-         messages.error(request, f"si è verificato un problema. riprova")
-         #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
-         return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
-   else:
-      return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
+   return redirect('login')
+
    
