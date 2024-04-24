@@ -313,6 +313,40 @@
     </thead>
     <tbody>
     {% endfor %}
+
+    {% elif "promozioni" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_Promotions %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+    </thead>
+    <tbody>
+    {% endfor %}
+
+    {% elif "servizzi" in nome_pagina %}
+    <thead>
+      <tr>
+        <th> nome</th>
+        <th> prezzo </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for valore in valori_Services %}
+    <thead>
+      <tr>
+        <th>{{valore.name}}</th>
+        <th>{{valore.prize}} </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endfor %}
+
     {% endif %}
     {%endblock%}
 

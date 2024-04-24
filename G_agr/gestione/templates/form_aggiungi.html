@@ -20,15 +20,14 @@
     {%if 'camere' in argomento%}
     <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="numero_camera"> inserisci il numero della camera </label> <br>
-            <input type="number" class="form-control" name="number" id="numero_camera" min="000" max="999"> 
-        </div>
-
-        <div class="form-group">
-            <label for="prezzo"> inserisci il prezzo </label>
-            <input type="number" class="form-control" name="prize" id="prezzo">
-        </div>
+        <div class="form-row">
+            <div class="col">
+              <input type="number" class="form-control" name="number" placeholder="numero stanza" min="000" max="999">
+            </div>
+            <div class="col">
+              <input type="number" class="form-control" name="prize" placeholder="prezzo stanza">
+            </div>
+          </div>
 
         <div class="form-group">
             <label for="clienti_ospitabili"> inserisci il numero di clienti ospitabili  </label>
@@ -98,21 +97,16 @@
     </div>
 
     {%elif 'entrate' in argomento%}
-    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
-            <label for="name"> inserisci il nome del del dipendete </label> <br>
-            <input type="text" class="form-control" name="name" id="name"> 
+            <label for="date"> inserisci data </label> <br>
+            <input type="date" class="form-control" name="date" id="date"> 
         </div>
 
         <div class="form-group">
-            <label for="mail"> inserisci la mail del cliente  </label>
-            <input type="mail" class="form-control" name="mail" id="mail">
-        </div>
-
-        <div class="form-group">
-            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
-            <input type="number" class="form-control" name="number_cell">
+            <label for="quantity"> inserisci quantità  </label>
+            <input type="number" class="form-control" name="quantity" id="quantity">
         </div>
 
         <input type="submit" class="btn btn-primary">
@@ -120,26 +114,62 @@
     </div>
 
     {%elif 'uscite' in argomento%}
-    <form action="{% url 'aggiungi' username=username argomento=argomento%}" method="POST">
+    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
         {% csrf_token %}
         <div class="form-group">
-            <label for="name"> inserisci il nome del del dipendete </label> <br>
-            <input type="text" class="form-control" name="name" id="name"> 
+            <label for="date"> inserisci data </label> <br>
+            <input type="date" class="form-control" name="date" id="date"> 
         </div>
 
         <div class="form-group">
-            <label for="mail"> inserisci la mail del cliente  </label>
-            <input type="mail" class="form-control" name="mail" id="mail">
+            <label for="quantity"> inserisci quantità  </label>
+            <input type="number" class="form-control" name="quantity" id="quantity">
         </div>
 
-        <div class="form-group">
-            <label for="number_cell"> inserisci il numero di telefono del cliente  </label>
-            <input type="number" class="form-control" name="number_cell">
-        </div>
 
         <input type="submit" class="btn btn-primary">
     </form>
     </div>
+    {%elif 'servizzi' in argomento%}
+        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name"> inserisci il nome del servizio </label> <br>
+                <input type="text" class="form-control" name="name" id="name"> 
+            </div>
+
+            <div class="form-group">
+                <label for="prize"> inserisci il prezzo del servizio  </label>
+                <input type="number" class="form-control" name="prize" id="prize">
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    {%elif 'promozioni' in argomento%}
+        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name"> inserisci il nome della promozione </label> <br>
+                <input type="text" class="form-control" name="name" id="name"> 
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    {% elif 'agriturismo' in argomento%}
+        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo%}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name"> inserisci il nome della promozione </label> <br>
+                <input type="text" class="form-control" name="name" id="name"> 
+            </div>
+
+            <div class="form-group">
+                <label for="address"> inserisci il nome della promozione </label> <br>
+                <input type="text" class="form-control" name="address" id="address"> 
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
     {%endif%}
     {%endblock%}
     
