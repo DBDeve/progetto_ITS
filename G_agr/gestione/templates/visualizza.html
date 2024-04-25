@@ -114,8 +114,8 @@
         <th> {{valore.clienti_ospitabili}}</th>
         <th>{{valore.appunto_gestore}}</th>
         <th></th>
-        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
-        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > modifica </a></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -171,8 +171,8 @@
         <th>{{valore.clienti_ospitabili}}</th>
         <th>{{valore.appunto_gestore}}</th>
         <th></th>
-        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
-        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > modifica </a></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -199,8 +199,8 @@
         <th> {{valore.clienti_ospitabili}}</th>
         <th>{{valore.appunto_gestore}}</th>
         <th></th>
-        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > modifica </a></th>
-        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.number %}" role="button" > elimina</a></th>
+        <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > modifica </a></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento='camere' valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -248,6 +248,7 @@
         <th>{{valore.mail}} </th>
         <th>{{valore.number_cell}}</th>
         <th>{{valore.visit_numbers}}</th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -273,6 +274,9 @@
         <th>{{valore.codice_fiscale}} </th>
         <th>{{valore.iban}}</th>
         <th>{{valore.mail}}</th>
+        <th></th>
+        <th></th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -291,6 +295,7 @@
       <tr>
         <th>{{valore.Date}}</th>
         <th>{{valore.Quantity}} </th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -309,6 +314,7 @@
       <tr>
         <th>{{valore.Date}}</th>
         <th>{{valore.Quantity}} </th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>
@@ -318,6 +324,7 @@
     <thead>
       <tr>
         <th> nome </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -325,6 +332,7 @@
     <thead>
       <tr>
         <th>{{valore.name}}</th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
     </thead>
     <tbody>
     {% endfor %}
@@ -334,6 +342,7 @@
       <tr>
         <th> nome</th>
         <th> prezzo </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -342,6 +351,7 @@
       <tr>
         <th>{{valore.name}}</th>
         <th>{{valore.prize}} </th>
+        <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>
     </thead>
     <tbody>

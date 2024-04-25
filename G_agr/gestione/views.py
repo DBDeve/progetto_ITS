@@ -234,48 +234,35 @@ def elimina(request,username,agriturismo,argomento,valore):
    context['agriturismo']=agriturismo
    context['valore']=valore
 
-   user=User.objects.get(username=username)
-   user_id=user.id
-   accounts=AccountManagers.objects.get(gestore_id=user_id)
-   accounts_id=accounts.id
-   agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id,FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo_s.id
 
-   if user_id==accounts.gestore_id:
-         if argomento=="agriturismi":
-            FarmHouseName=request.POST['name']
-            camera_da_rimuovere=FarmHouses.objects.get(FarmHouseName=FarmHouseName)
-            camera_da_rimuovere.delete()
-         #la cancellazione funziona e anche il rendirizamento. applicare a tutti gli altri
-         elif argomento=="camere":
-            number=valore
-            camera_da_rimuovere=Rooms.objects.get(number=number,IdFarmHouses=agriturismo_id)
-            camera_da_rimuovere.delete()
-            url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
-            return redirect(url)
-         elif argomento=="clienti":
-            name=request.POST['name']
-            mail=request.POST['mail']
-            number_cell=request.POST['number_cell']
-            cliente_da_rimuovere=Clients.objects.get(name=name, mail=mail, number_cell=number_cell)
-            cliente_da_rimuovere.delete()
-         elif argomento=="lavoratori":
-            codice_fiscale=request.POST['codice_fiscale']
-            lavoratore_da_rimuovere=Employee.objects.get(codice_fiscale=codice_fiscale)
-            lavoratore_da_rimuovere.delete()
-         elif argomento=="servizzi":
-            name=request.POST['name']
-            servizio_da_rimuovere=Services.objects.get(name=name)
-            servizio_da_rimuovere.delete()
-         elif argomento=="promozioni":
-            name=request.POST['name']
-            promozione_da_rimuovere=Promotions.objects.get(name=name)
-            promozione_da_rimuovere.delete()
-
+   if argomento=="agriturismi":
+      camera_da_rimuovere=FarmHouses.objects.get(id=valore)
+      camera_da_rimuovere.delete()
+   elif argomento=="camere":
+      camera_da_rimuovere=Rooms.objects.get(id=valore)
+      camera_da_rimuovere.delete()
+   elif argomento=="clienti":
+      cliente_da_rimuovere=Clients.objects.get(id=valore)
+      cliente_da_rimuovere.delete()
+   elif argomento=="dipendenti":
+      lavoratore_da_rimuovere=Employee.objects.get(id=valore)
+      lavoratore_da_rimuovere.delete()
+   elif argomento=="servizzi":
+      servizio_da_rimuovere=Services.objects.get(id=valore)
+      servizio_da_rimuovere.delete()
+   elif argomento=="promozioni":
+      promozione_da_rimuovere=Promotions.objects.get(id=valore)
+      promozione_da_rimuovere.delete()
+   elif argomento=="entrate":
+      entrata_da_rimuovere=Earnings(id=valore)
+      entrata_da_rimuovere.delete()
+   elif argomento=="uscite":
+      uscite_da_rimuovere=Expense(id=valore)
+      uscite_da_rimuovere.delete()
 
    
-   template=loader.get_template('form_elimina.html')
-   return HttpResponse(template.render(context,request))
+   url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
+   return redirect(url)
 
 
 
