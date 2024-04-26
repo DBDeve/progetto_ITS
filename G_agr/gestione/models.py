@@ -113,8 +113,8 @@ class Clients(models.Model):
   #collegamenti superiori
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
-  ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE,default=0)
-  ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,default=0)
+  ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE,null=True, blank=True)
+  ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,null=True, blank=True)
   #dati tabella
   name=models.CharField(default="",max_length=255,help_text = "*")
   mail=models.EmailField(default="", help_text = "*")
