@@ -87,7 +87,6 @@ def aggiungi(request,username,agriturismo,argomento):
    agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
    agriturismo_id=agriturismo_s.id
 
-
    if request.POST:
       #crea un nuovo oggetto Rooms (funziona)
       if argomento=="camere": 
@@ -184,39 +183,30 @@ def aggiungi(request,username,agriturismo,argomento):
 def modifica(request,argomento,username,agriturismo,valore):
    context={}
    context['valore']=valore
-   context ['argomento']=argomento
+   context['argomento']=argomento
    context['username']=username
    context['agriturismo']=agriturismo
-
-
-   if request.POST:
-     if argomento=="camere":
-         number=valore
-         #selezione dell'oggetto da modificare 
-         camera_da_modificare=Rooms.objects.get(number=number)
-         #controlla se i dati inviato abbiano un valore. se ce l'hanno quel valore viene sostituito a quello dell'oggetto
+   
+   if argomento=="camere":
+      #seleziona l'oggetto dall'id
+      camera_da_modificare=Rooms.objects.get(id=valore)
+      #crea un indice con i dati dell'oggetto selezionato 
+      context['oggetto_selezionato']=camera_da_modificare
+      if request.POST:
          if request.POST['prize']!="":
-           nuovo_prezzo=request.POST['prize']
-           camera_da_modificare.prize=nuovo_prezzo
+            nuovo_prezzo=request.POST['prize']
+            camera_da_modificare.prize=nuovo_prezzo
          if request.POST['number']!="":
-           nuovo_numero=request.POST['number']
-           camera_da_modificare.number=nuovo_numero
+            nuovo_numero=request.POST['number']
+            camera_da_modificare.number=nuovo_numero
          if request.POST['stato']!="":
-           nuovo_stato=request.POST['stato']
-           camera_da_modificare.stato=nuovo_stato
+            nuovo_stato=request.POST['stato']
+            camera_da_modificare.stato=nuovo_stato
          #salvataggio dell'oggetto con i dati modificati
          camera_da_modificare.save()
          #ridirezionamento alla fine della modifica
-         url=f"/gestione/visualizza/{username}/{agriturismo}/camere/tutte"
+         url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
          return redirect(url)
-     #selezione dei dati da modificare
-     
-     
-     #nuova_capienza=request.POST['']
-
-     
-     
-     #return render(request, "visualizza.html", {username, 'camere'})
    
    #finché non viene inserito alcun dato la magina rimane su form_modifica.html
    template=loader.get_template('form_modifica.html')
@@ -225,8 +215,7 @@ def modifica(request,argomento,username,agriturismo,valore):
 
 @login_required(login_url='login')
 def elimina(request,username,agriturismo,argomento,valore):
-   #definire il comportamento nel caso venga inserita una camera che non esiste
-   #definire comportamento nel caso non venga inserito niente
+   
    context={}
    context ['argomento']=argomento
    context['nome_pagina']=argomento
@@ -234,7 +223,7 @@ def elimina(request,username,agriturismo,argomento,valore):
    context['agriturismo']=agriturismo
    context['valore']=valore
 
-
+   # l'oggetto viene cercarto per il suo stesso id e poi eliminato. l'id viene passato attraverso la variabile "valore"
    if argomento=="agriturismi":
       camera_da_rimuovere=FarmHouses.objects.get(id=valore)
       camera_da_rimuovere.delete()

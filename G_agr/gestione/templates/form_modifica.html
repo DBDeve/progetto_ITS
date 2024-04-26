@@ -3,35 +3,86 @@
 
 
     {%block form%}
-    <div class=float-center >
-        <div class="titolo">
-           <h1> modifica {{argomento}} {{valore}}</h1> 
-        </div>
-    
+        {%if 'camere' in argomento%}
+            <div class=float-center >
+                <div class="titolo">
+                <h1> modifica {{argomento}}</h1> 
+                </div>
+            
 
-        <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="number"> inserisci il nuovo numero della camera</label> <br>
-                <input type="text" class="form-control" name="number" id="number"> 
-            </div>
-            <div class="form-group">
-                <label for="prize"> inserisci il nuovo prezzo della camera</label> <br>
-                <input type="text" class="form-control" name="prize" id="prize" min="000" max="999"> 
-            </div>
-            <div class="form-group">
-                <label for="stato"> inserisci il nuovo stato della funzione</label> <br>
-                <input type="checkbox" name="stato" id="stato" value="libera"> 
-                <label for="stato"> libera</label> <br>
-                <input type="checkbox" name="stato" id="stato" value="occupata"> 
-                <label for="stato"> occupata</label> <br>
-                <input type="checkbox" name="stato" id="stato" value="prenotata"> 
-                <label for="stato"> prenotata</label> <br>
-                <input type="checkbox" name="stato" id="stato" value="non disponibile"> 
-                <label for="stato"> non disponibile</label> <br>
-            </div>
+                <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="number"> numero attuale:{{oggetto_selezionato.number}}</label> <br>
+                        <input type="text" class="form-control" name="number" id="number" placeholder="cambia numero"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="prize"> prezzo attuale: {{oggetto_selezionato.prize}}</label> <br>
+                        <input type="text" class="form-control" name="prize" id="prize" placeholder="cambia prezzo" min="000" max="999"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="stato">stato attuale: {{oggetto_selezionato.stato}}</label>
+                        <select class="form-control" id="stato" name="stato">
+                        <option>libera</option>
+                        <option>occupata</option>
+                        <option>prenotata</option>
+                        <option>non disponibile</option>
+                        </select>
+                    </div>
 
-            <input type="submit" class="btn btn-primary">
-        </form>
-    </div>
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        {%if 'clienti' in argomento%}
+            <div class=float-center >
+                <div class="titolo">
+                   <h1> modifica {{argomento}}</h1> 
+                </div>
+            
+
+                <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="number"> numero attuale:{{oggetto_selezionato.name}}</label> <br>
+                        <input type="text" class="form-control" name="number" id="number" placeholder="cambia nome"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="prize"> prezzo attuale: {{oggetto_selezionato.prize}}</label> <br>
+                        <input type="text" class="form-control" name="prize" id="prize" placeholder="cambia prezzo" min="000" max="999"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="stato">stato attuale: {{oggetto_selezionato.stato}}</label>
+                        <select class="form-control" id="stato" name="stato">
+                        <option>libera</option>
+                        <option>occupata</option>
+                        <option>prenotata</option>
+                        <option>non disponibile</option>
+                        </select>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        {%if 'dipendenti' in argomento%}
+            <div class=float-center >
+                <div class="titolo">
+                <h1> modifica {{argomento}}</h1> 
+                </div>
+            
+
+                <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="number"> numero attuale:{{oggetto_selezionato.name}}</label> <br>
+                        <input type="text" class="form-control" name="number" id="number" placeholder="cambia nome"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="prize"> prezzo attuale: {{oggetto_selezionato.prize}}</label> <br>
+                        <input type="text" class="form-control" name="prize" id="prize" placeholder="cambia prezzo" min="000" max="999"> 
+                    </div>
+
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        {%endif%}
     {%endblock%}
