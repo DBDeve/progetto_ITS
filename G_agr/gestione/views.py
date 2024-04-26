@@ -118,7 +118,7 @@ def aggiungi(request,username,agriturismo,argomento):
          nuovo_servizio.save()
          url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
          return redirect(url) 
-      #crea nuovo aggetto Clients (non funziona "integrity error" quardare modello)
+      #crea nuovo aggetto Clients
       if argomento=="clienti":
          nuovo_cliente=Clients(
             name=request.POST['name'],
@@ -207,6 +207,40 @@ def modifica(request,argomento,username,agriturismo,valore):
          #ridirezionamento alla fine della modifica
          url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
          return redirect(url)
+   if argomento=="clienti":
+      cliente_da_modificare=Clients.objects.get(id=valore)
+      context['oggetto_selezionato']=cliente_da_modificare
+      if request.POST:
+         if request.POST['mail']!="":
+            nuova_mail=request.POST['mail']
+            cliente_da_modificare.mail=nuova_mail
+         if request.POST['number_cell']!="":
+            nuovo_numero=request.POST['number_cell']
+            cliente_da_modificare.number_cell=nuovo_numero
+         cliente_da_modificare.save()
+         url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
+         return redirect(url)
+   if argomento=="dipendenti":
+      dipendente_da_modificare=Employee.objects.get(id=valore)
+      context['oggetto_selezionato']=dipendente_da_modificare
+      if request.POST:
+         if request.POST['name']!="":
+            nuovo_nome=request.POST['name']
+            dipendente_da_modificare.name=nuovo_nome
+         if request.POST['codice_fiscale']!="":
+            nuovo_codice=request.POST['codice_fiscale']
+            dipendente_da_modificare.codice_fiscale=nuovo_codice
+         if request.POST['iban']!="":
+            nuovo_iban=request.POST['iban']
+            dipendente_da_modificare.iban=nuovo_iban
+         if request.POST['mail']!="":
+            nuova_mail=request.POST['mail']
+            dipendente_da_modificare.mail=nuova_mail
+         camera_da_modificare.save()
+         url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
+         return redirect(url)
+
+      
    
    #finché non viene inserito alcun dato la magina rimane su form_modifica.html
    template=loader.get_template('form_modifica.html')

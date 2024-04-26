@@ -110,9 +110,10 @@ class Salary(models.Model):
 
 
 class Clients(models.Model):
-  #collegamenti superiori
+  #collegamenti permanenti
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  #collegamenti temporanei
   ClientRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE,null=True, blank=True)
   ClientServices = models.ForeignKey(Services, on_delete=models.CASCADE,null=True, blank=True)
   #dati tabella

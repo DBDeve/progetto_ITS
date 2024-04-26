@@ -33,7 +33,7 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
-        {%if 'clienti' in argomento%}
+        {%elif 'clienti' in argomento%}
             <div class=float-center >
                 <div class="titolo">
                    <h1> modifica {{argomento}}</h1> 
@@ -63,7 +63,7 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
-        {%if 'dipendenti' in argomento%}
+        {%elif 'dipendenti' in argomento%}
             <div class=float-center >
                 <div class="titolo">
                 <h1> modifica {{argomento}}</h1> 
@@ -84,5 +84,29 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
+        {% elif 'servizzi' in argomento%}
+            <div class=float-center >
+                <div class="titolo">
+                <h1> modifica {{argomento}}</h1> 
+                </div>
+            
+
+                <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="number"> numero attuale:{{oggetto_selezionato.name}}</label> <br>
+                        <input type="text" class="form-control" name="number" id="number" placeholder="cambia nome"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="prize"> prezzo attuale: {{oggetto_selezionato.prize}}</label> <br>
+                        <input type="text" class="form-control" name="prize" id="prize" placeholder="cambia prezzo" min="000" max="999"> 
+                    </div>
+
+                    <input type="submit" class="btn btn-primary">
+                </form>
+            </div>
+        {% elif 'promozioni' in argomento%}
+        {% elif 'entrate' in argomento%}
+        {% elif 'uscite' in argomento%}
         {%endif%}
     {%endblock%}
