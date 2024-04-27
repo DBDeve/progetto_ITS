@@ -87,6 +87,9 @@ def aggiungi(request,username,agriturismo,argomento):
    agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
    agriturismo_id=agriturismo_s.id
 
+   context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
+   context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
+
    if request.POST:
       #crea un nuovo oggetto Rooms (funziona)
       if argomento=="camere": 
@@ -172,9 +175,23 @@ def aggiungi(request,username,agriturismo,argomento):
          nuovo_agriturismo.save() 
          url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
          return redirect(url) 
-      
+      if argomento=="prenotazioni":
+
+         camera_id=request.POST['camera_id']
+         camera=Rooms.objects.get(id=camera_id)
+         camera.stato="prenotata"
+         camera.save()
+
+         cliente_id=request.POST['cliente_id']
+         cliente=Clients.objects.get(id=cliente_id)
+         cliente.ClientRoom=camera
+         cliente.save()
+         
+         url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
+         return redirect(url)
+
    template=loader.get_template('form_aggiungi.html')
-   return HttpResponse(template.render(context,request))      
+   return HttpResponse(template.render(context,request))    
 
 
 
@@ -286,6 +303,8 @@ def elimina(request,username,agriturismo,argomento,valore):
    
    url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
    return redirect(url)
+
+
 
 
 

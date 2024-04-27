@@ -60,6 +60,7 @@
           <a > <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
+        <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento='prenotazioni'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
         <!-- sono per forza filtrate per agriturismo -->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 

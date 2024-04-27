@@ -9,9 +9,6 @@ urlpatterns = [
     path("visualizza/<str:username>/<str:agriturismo>/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
     path("visualizza/<str:username>/tutti/<str:argomento>/<str:scelta>", views.visualizza, name="visualizza"),
 
-
-    
-
     path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.aggiungi, name="aggiungi"),
     #path("aggiungi/<str:username>/<str:agriturismo>/<str:argomento>", views.crea_oggetto-agriturismo, name="crea_agriturismo"),
     path("elimina/<str:username>/<str:agriturismo>/<str:argomento>/<str:valore>", views.elimina, name="elimina"),
