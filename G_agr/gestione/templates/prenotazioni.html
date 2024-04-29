@@ -1,0 +1,70 @@
+{% extends templates %}
+
+{%if 'visualizza' in funzione %}
+
+    {%block h2%} 
+        prenotazioni {{agriturismo}} 
+    {%endblock%}
+
+    {% block pulsanti %}
+      <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/aggiungi" class="btn btn-primary" role="button">  aggiungi prenotazioni </a>
+    {%endblock%}
+
+    {% block data%}
+        <thead>
+            <tr>
+                <th> numero camera</th>
+                <th> cliente camera </th>
+                <th> data di arrivo </th>
+                <th> data di partenza </th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+        {% for camera in camere_prenotate %}
+            <thead>
+            <tr>
+                <th>{{camera.number}}</th>
+                    {%for cliente in clienti%}
+                    {%if cliente.ClientRoom_id == camera.id%}
+                        <th>{{cliente.name}} </th>
+                        <th>{{cliente.frOm_data}}</th>
+                        <th>{{cliente.to}}</th>
+                    {%endif%}
+                    {%endfor%}
+                <th> <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/modifica" role="button" > modifica </a></th>
+                <th> <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/elimina" role="button" > elimina </a></th>
+            </tr>
+            </thead>
+            <tbody>
+        {% endfor %}
+    {%endblock%}
+
+{%elif 'aggiungi' in funzione%}
+    {%block form%}
+        <form action="/gestione/{{username}}/{{agriturismo}}/prenotazioni/aggiungi" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="stato">seleziona cliente</label>
+                <select class="form-control" id="stato" name="cliente_id" >
+                {%for  cliente in clienti%}
+                <option value="{{cliente.id}}"> {{cliente.name}}</option>
+                {%endfor%}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="stato">seleziona stanza</label>
+                <select class="form-control" id="stato" name="camera_id">
+                    {%for camera in camere%}
+                    <option value="{{camera.id}}"> {{camera.number}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    {%endblock%}
+{%endif%}

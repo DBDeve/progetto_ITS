@@ -18,7 +18,7 @@
     {% endif %}
 
     {% block pulsanti %}
-      <a href="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=nome_pagina %}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
+      <a href="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{nome_pagina}}" class="btn btn-primary" role="button">  aggiungi {{nome_pagina}} </a>
     {%endblock%}
 
     {%block seleziona_agriturismo%}
@@ -357,143 +357,11 @@
     <tbody>
     {% endfor %}
 
+
     {% endif %}
     {%endblock%}
 
 
-
-
-
-
-
-
-
-<!--
-
-  <thead>
-      <tr>
-        <th> numero camera</th>
-        <th> prezzo </th>
-        <th> stato </th>
-        <th> persone ospitabili </th>
-        <th> appunti</th>
-      </tr>
-    </thead>
-    <tbody>
-    
-    <thead>
-      <tr>
-        <th><a href="{% url 'modifica' username=username argomento='camere' valore=valore.number %}" >{{valore.number}}</a></th>
-        <th>{{valore.prize}} </th>
-        <th>{{valore.stato}}</th>
-        <th>{{valore.appunto_gestore}}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% if "tutte" in scelta %}
-     <thead>
-      <tr>
-        <th> numero camera</th>
-        <th> prezzo </th>
-        <th> stato </th>
-        <th> persone ospitabili </th>
-        <th> appunti</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for valore in valori_Room %}
-    <thead>
-      <tr>
-        <th>{{valore.number}}</th>
-        <th>{{valore.prize}} </th>
-        <th>{{valore.stato}}</th>
-        <th>{{valore.appunto_gestore}}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% endfor%}
-   
-
-    {%elif "occupate" in scelta%}
-    <thead>
-      <tr>
-        <th> numero camera</th>
-        <th> prezzo </th>
-        <th> cliente stanza </th>        
-        <th> fino a  </th>
-        <th> appunto </th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for Room_occupata in Room_occupate %}
-    <thead>
-      <tr>
-        <th>{{camera_occupata.number}}</th>
-        <th>{{camera_occupata.prize}} </th>
-        {%for cliente in clienti%}
-        {%if cliente.id == camera_occupata.client_id%}
-        <th>{{cliente.name}}</th>
-        non funziona. rivedere
-        <th>{{cliente.to}}</th>
-        {%endif%}
-        {%endfor%}
-        <th>{{camera_occupata.appunto}}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%endfor%}
-
-    {%elif "libere" in scelta%}
-    <thead>
-      <tr>
-        <th> numero camera</th>
-        <th> prezzo </th>
-        <th> appunti</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for Room in Room_libere %}
-    <thead>
-      <tr>
-        <th>{{camera.number}}</th>
-        <th>{{camera.prize}} </th>
-        <th>{{camera.appunto}}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% endfor%}
-
-
-    {%elif "aggiungi" in argomento%}
-    <form action="{% url 'aggiungi' argomento='camere' %}" method="post">
-      {{ csrf_input }}
-      <fieldset>
-              <label for=""> inserisci il numero della camera </label><br>
-              <input type="number" name="Room_number" id="" >
-              <label for=""> inserisci il prezzo </label><br>
-              <input type="number" name="Room_prize" id="" >
-              <label for=""> inserisci lo stato </label><br>
-              <input type="text" name="Room" id="" >
-              <label for=""> inserisci i clienti che può ospitare</label><br>
-              <input type="number" name="Room" id="" >
-              <label for=""> inserisci un appunto per te</label><br>
-              <input type="text" name="Room" id="" >
-              <label for=""></label> inserisci un appunto per i clienti <br>
-              <input type="text" name="Room" id="" >
-      </fieldset>
-      <input type="submit" value="inserisci camera">
-      </form>
-    {% endif %}
-
-        <!-- per scrivere solo parte di una data var_data|date:y-m-d o |time: H:m-->
-
-
-    
-
-      
-      
-      
-      
     
 </body>
 </html>

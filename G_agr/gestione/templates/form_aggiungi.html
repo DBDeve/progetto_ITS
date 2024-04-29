@@ -18,7 +18,7 @@
     
 
     {%if 'camere' in argomento%}
-    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
         {% csrf_token %}
         <div class="form-row">
             <div class="col">
@@ -48,7 +48,7 @@
     </form>
     </div>
     {%elif 'clienti' in argomento%}
-    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del cliente </label> <br>
@@ -70,7 +70,7 @@
     </div>
       
     {%elif 'dipendenti' in argomento%}
-    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del del dipendete </label> <br>
@@ -97,7 +97,7 @@
     </div>
 
     {%elif 'entrate' in argomento%}
-    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="date"> inserisci data </label> <br>
@@ -114,7 +114,7 @@
     </div>
 
     {%elif 'uscite' in argomento%}
-    <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="date"> inserisci data </label> <br>
@@ -131,7 +131,7 @@
     </form>
     </div>
     {%elif 'servizzi' in argomento%}
-        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+        <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome del servizio </label> <br>
@@ -146,7 +146,7 @@
             <input type="submit" class="btn btn-primary">
         </form>
     {%elif 'promozioni' in argomento%}
-        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento%}" method="POST">
+        <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome della promozione </label> <br>
@@ -178,7 +178,7 @@
                 <label for="stato">seleziona cliente</label>
                 <select class="form-control" id="stato" name="cliente_id" >
                 {%for  cliente in clienti%}
-                <option value="{{cliente.id}}"> {{cliente.name}}</option>
+                    <option value="{{cliente.id}}"> {{cliente.name}}</option>
                 {%endfor%}
                 </select>
             </div>
@@ -187,7 +187,7 @@
                 <label for="stato">seleziona stanza</label>
                 <select class="form-control" id="stato" name="camera_id">
                     {%for camera in camere%}
-                    <option value="{{camera.id}}"> {{camera.number}}</option>
+                        <option value="{{camera.id}}"> {{camera.number}}</option>
                     {%endfor%}
                 </select>
             </div>

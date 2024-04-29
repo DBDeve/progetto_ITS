@@ -87,9 +87,6 @@ def aggiungi(request,username,agriturismo,argomento):
    agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
    agriturismo_id=agriturismo_s.id
 
-   context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
-   context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
-
    if request.POST:
       #crea un nuovo oggetto Rooms (funziona)
       if argomento=="camere": 
@@ -175,20 +172,6 @@ def aggiungi(request,username,agriturismo,argomento):
          nuovo_agriturismo.save() 
          url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
          return redirect(url) 
-      if argomento=="prenotazioni":
-
-         camera_id=request.POST['camera_id']
-         camera=Rooms.objects.get(id=camera_id)
-         camera.stato="prenotata"
-         camera.save()
-
-         cliente_id=request.POST['cliente_id']
-         cliente=Clients.objects.get(id=cliente_id)
-         cliente.ClientRoom=camera
-         cliente.save()
-         
-         url=f"/gestione/visualizza/{username}/{agriturismo}/{argomento}/tutte"
-         return redirect(url)
 
    template=loader.get_template('form_aggiungi.html')
    return HttpResponse(template.render(context,request))    
@@ -307,6 +290,47 @@ def elimina(request,username,agriturismo,argomento,valore):
 
 
 
+@login_required(login_url='login')
+def prenotazioni(request,username, agriturismo, funzione):
+   context={}
+   context['username']=username
+   context['agriturismo']=agriturismo
+   context['funzione']=funzione
+ 
+   user=User.objects.get(username=username)
+   user_id=user.id
+   accounts=AccountManagers.objects.get(gestore_id=user_id)
+   accounts_id=accounts.id
+   agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
+   agriturismo_id=agriturismo_s.id
+
+   if funzione=="visualizza":
+      context['templates']="visualizza/modello_visualizza.html"
+      context['camere_prenotate']=Rooms.objects.filter(stato="prenotata", IdFarmHouses_id=agriturismo_id) 
+      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
+
+   elif funzione=="aggiungi":
+      context['templates']="modello_form.html"
+      context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
+      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
+      if request.POST:
+         camera_id=request.POST['camera_id']
+         camera=Rooms.objects.get(id=camera_id)
+         camera.stato="prenotata"
+         camera.save()
+
+         cliente_id=request.POST['cliente_id']
+         cliente=Clients.objects.get(id=cliente_id)
+         cliente.ClientRoom=camera
+         cliente.save()
+
+         url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza"
+         return redirect(url)
+      
+   template=loader.get_template('prenotazioni.html')
+   return HttpResponse(template.render(context,request))
+
+
 
 #crea verifica se l'accounta ha un agriturismo e se non ce l'ha lo fa aggiungere
 @login_required(login_url='login')
@@ -406,7 +430,7 @@ def accedi(request):
       if  user is not None:
          login(request, user)
          messages.success(request, f"benvenuto {user.username}")
-         url=f"aggiungi/{user.username}/agriturismo"
+         url=f"{user.username}/aggiungi/agriturismo"
          return redirect(url)
       else:
          messages.error(request, f"si è verificato un problema. riprova")
