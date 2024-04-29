@@ -291,12 +291,13 @@ def elimina(request,username,agriturismo,argomento,valore):
 
 
 @login_required(login_url='login')
-def prenotazioni(request,username, agriturismo, funzione):
+def prenotazioni(request,username, agriturismo, funzione, filtro):
    context={}
    context['username']=username
    context['agriturismo']=agriturismo
    context['funzione']=funzione
- 
+   context['filtro']=filtro
+   
    user=User.objects.get(username=username)
    user_id=user.id
    accounts=AccountManagers.objects.get(gestore_id=user_id)
@@ -322,10 +323,47 @@ def prenotazioni(request,username, agriturismo, funzione):
          cliente_id=request.POST['cliente_id']
          cliente=Clients.objects.get(id=cliente_id)
          cliente.ClientRoom=camera
+         cliente.frOm_data=request.POST['data_arrivo']
+         cliente.to=request.POST['data_partenza']
          cliente.save()
 
-         url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza"
+         url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza/nessuno"
          return redirect(url)
+   elif funzione=="elimina":
+      cliente=Clients.objects.get(id=filtro)
+      camera_da_liberare=Rooms.objects.get(id=cliente.ClientRoom_id)
+      
+      cliente.ClientRoom=None
+      cliente.save()
+
+      camera_da_liberare.stato="libera"
+      camera_da_liberare.save()
+
+      url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza/nessuno"
+      return redirect(url)
+
+   elif funzione=="modifica":
+      context['templates']="modello_form.html"
+      context['block']="form.html"
+      
+
+      context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
+      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
+
+      cliente_da_modificare=Clients.objects.get(id=filtro)
+      camera_da_modificare=Rooms.objects.get(id=cliente_da_modificare.ClientRoom_id)
+
+      if request.POST:
+         if request.POST['data_arrivo']!="":
+            cliente_da_modificare.frOm_data=request.POST['data_arrivo']
+         if request.POST['data_partenza']!="":
+            cliente_da_modificare.to=request.POST['data_partenza']
+         cliente_da_modificare.save()
+
+         url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza/nessuno"
+         return redirect(url)
+      
+
       
    template=loader.get_template('prenotazioni.html')
    return HttpResponse(template.render(context,request))

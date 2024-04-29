@@ -16,7 +16,7 @@ urlpatterns = [
     path("modifica/<str:username>/<str:agriturismo>/<str:argomento>", views.modifica, name="modifica"),
     path("modifica/<str:username>/<str:agriturismo>/<str:argomento>/<str:valore>", views.modifica, name="modifica"),
     
-    path("<str:username>/<str:agriturismo>/prenotazioni/<str:funzione>", views.prenotazioni, name="prenotazioni"),
+    path("<str:username>/<str:agriturismo>/prenotazioni/<str:funzione>/<str:filtro>", views.prenotazioni, name="prenotazioni"),
 
     path("<str:username>/aggiungi/agriturismo", views.verifica_aggiungi_agtriturismo,name="aggiungi agriturismo"),
     path("cambia_password",views.cambia_password,name="cambia_password"),

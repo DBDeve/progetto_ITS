@@ -61,7 +61,7 @@
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
         <a href="/gestione/marco/aggiungi/agriturismo" class="btn btn-primary" role="button">  cambia agriturismo  </a> 
-        <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/visualizza" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
+        <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/visualizza/nessuno" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
         <!-- sono per forza filtrate per agriturismo -->
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
         <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
