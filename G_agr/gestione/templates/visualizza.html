@@ -22,12 +22,13 @@
     {%endblock%}
 
     {%block seleziona_agriturismo%}
+      
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          agriturismo
+          {{agriturismo}}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo='tutti' argomento=nome_pagina scelta=scelta %}"> tutti </a>
+          <a class="dropdown-item" href="/gestione/visualizza/{{username}}/tutti/{{nome_pagina}}/{{scelta}}"> tutti </a>
           {%for valore in valori_FarmHouses%}
             <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento=nome_pagina scelta=scelta %}">  {{valore.FarmHouseName}} </a>
           {%endfor%}

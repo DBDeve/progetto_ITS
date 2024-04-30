@@ -4,29 +4,31 @@
     <div class=float-center >
         <div class="titolo">
            <h1> {{frase}}</h1> 
-        </div>
+        
     
-        {%if "False" in esiste%}
-            <form action="" method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="name"> inserisci il nome dell'agriturismo </label> <br>
-                    <input type="text" class="form-control" name="name" id="name"> 
-                </div>
-                <div class="form-group">
-                    <label for="address"> inserisci l'indirizzo dell'agriturismo </label> <br>
-                    <input type="text" class="form-control" name="address" id="address"> 
-                </div>
+            {%if "False" in esiste%}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name"> inserisci il nome dell'agriturismo </label> <br>
+                        <input type="text" class="form-control" name="name" id="name"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="address"> inserisci l'indirizzo dell'agriturismo </label> <br>
+                        <input type="text" class="form-control" name="address" id="address"> 
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+            {%elif "True" in esiste %}
                 <div>
-                    <input type="submit" class="btn btn-primary">
+                    {%for valore in valori_FarmHouses%}
+                    <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento='camere' scelta='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
+                    {%endfor%}
+                    
                 </div>
-            </form>
-        {%elif "True" in esiste %}
-        <div class="form-group">
-            {%for valore in valori_FarmHouses%}
-            <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento='camere' scelta='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
-            {%endfor%}
+            {%endif%}
         </div>
-        {%endif%}
     </div>
     {%endblock%}

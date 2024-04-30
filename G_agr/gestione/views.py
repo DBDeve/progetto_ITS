@@ -40,28 +40,19 @@ def visualizza(request,username,agriturismo,argomento,scelta):
    # crea la lista degli agriturismi legati all'account
    context[f'valori_FarmHouses']=FarmHouses.objects.filter(IdAccountManagers_id=accounts_id)
 
+
    if user_id==accounts.gestore_id:
-
-      #visualizza i dati in tutti gli agriturismi
+      #visualizza i dati degli oggetti legati a tutti gli agriturismi
       if agriturismo=="tutti":
-         if scelta=="tutte":
-            for classe in classi_accounts:
-               context[f'valori_{classe.__name__}']=classe.objects.filter(IdAccountManagers=accounts_id)
-
-      #visualizza i dati dei singoli agriturismi
+         for classe in classi_accounts:
+            context[f'valori_{classe.__name__}']=classe.objects.filter(IdAccountManagers=accounts_id)
+      #visualizza i dati degli oggetti legati a specifici agriturismi
       else:
-         #filtra gli agriturismi per l'id dell'account e il nome dell'agriturismo
          agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
          agriturismo_id=agriturismo.id
          if scelta=="tutte":
             for classe in classi_agriturismi:
                context[f'valori_{classe.__name__}']=classe.objects.filter(IdFarmHouses=agriturismo_id,)
-         elif scelta=="occupata": 
-            context[f'valori_Clients']=Clients.objects.all().values()
-            context[f'Rooms_occupata']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
-         elif scelta=="prenotata":
-            context[f'valori_Clients']=Clients.objects.all().values()
-            context[f'Rooms_prenotata']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
          elif scelta=="libera": 
             context[f'Rooms_libera']=Rooms.objects.filter(stato=scelta, IdFarmHouses_id=agriturismo_id)
          elif scelta=="non disponibile":
@@ -69,7 +60,7 @@ def visualizza(request,username,agriturismo,argomento,scelta):
          
    template=loader.get_template('visualizza.html')
    return HttpResponse(template.render(context,request))
-
+   
 
 
 #la funzione aggiungi crea nuovo oggetti in base all'argomento e l'username che gli viene passato
