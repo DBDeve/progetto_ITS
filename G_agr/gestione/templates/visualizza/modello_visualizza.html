@@ -60,19 +60,19 @@
           <a > <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
-        <a href="/gestione/marco/aggiungi/agriturismo" class="btn btn-primary" role="button">  cambia agriturismo  </a> 
-        <a href="/gestione/{{username}}/{{agriturismo}}/prenotazioni/visualizza/nessuno" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
+        <a href="/gestione/{{username}}/agriturismo/scelta/nessuno" class="btn btn-primary" role="button">  cambia agriturismo  </a> 
+        <a href="{%url 'prenotazioni' username=username agriturismo=agriturismo funzione='visualizza' attivita='camere' filtro='nessuno'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
         <!-- sono per forza filtrate per agriturismo -->
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='camere' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='entrate' scelta='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='uscite' scelta='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='camere' filtro='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='entrate' filtro='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='uscite' filtro='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
         <br>
         <br>
         <!-- non sono per forza filtrate per agriturismo-->
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='clienti' scelta='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='dipendenti' scelta='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='promozioni' scelta='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
-        <a href="{% url 'visualizza' username=username agriturismo=agriturismo argomento='servizzi' scelta='tutte'%}" class="btn btn-primary" role="button"> servizzi </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='clienti' filtro='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='dipendenti' filtro='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='promozioni' filtro='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='servizzi' filtro='tutte'%}" class="btn btn-primary" role="button"> servizzi </a> 
 
         
 

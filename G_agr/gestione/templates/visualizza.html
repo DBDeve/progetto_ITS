@@ -22,7 +22,6 @@
     {%endblock%}
 
     {%block seleziona_agriturismo%}
-      
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{agriturismo}}
@@ -350,7 +349,7 @@
     {% for valore in valori_Services %}
     <thead>
       <tr>
-        <th>{{valore.name}}</th>
+        <th>{{valore.name}} </th>
         <th>{{valore.prize}} </th>
         <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo argomento=nome_pagina valore=valore.id %}" role="button" > elimina</a></th>
       </tr>

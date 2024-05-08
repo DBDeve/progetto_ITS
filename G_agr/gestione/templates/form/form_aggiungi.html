@@ -1,4 +1,4 @@
-{% extends "modello_form.html" %}
+{% extends "form/modello_form.html" %}
 
 
 
@@ -17,8 +17,8 @@
         </div>
     
 
-    {%if 'camere' in argomento%}
-    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%if 'camere' in oggetto%}
+    <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
         {% csrf_token %}
         <div class="form-row">
             <div class="col">
@@ -27,7 +27,7 @@
             <div class="col">
               <input type="number" class="form-control" name="prize" placeholder="prezzo stanza">
             </div>
-          </div>
+        </div>
 
         <div class="form-group">
             <label for="clienti_ospitabili"> inserisci il numero di clienti ospitabili  </label>
@@ -35,20 +35,15 @@
         </div>
 
         <div class="form-group">
-            <label for="appunti_gestore"> inserisci appunti  </label>
-            <input type="text" class="form-control" name="appunti_gestore" maxlength="100">
-        </div>
-
-        <div class="form-group">
-            <label for="appunti_cliente"> inserisci appunti per il cliente </label>
-            <input type="text" class="form-control" name="appunti_cliente">
+            <label for="appunto"> inserisci appunti  </label>
+            <input type="text" class="form-control" name="appunto" maxlength="100">
         </div>
 
         <input type="submit" class="btn btn-primary">
     </form>
     </div>
-    {%elif 'clienti' in argomento%}
-    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'clienti' in oggetto%}
+    <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del cliente </label> <br>
@@ -69,8 +64,8 @@
     </form>
     </div>
       
-    {%elif 'dipendenti' in argomento%}
-    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'dipendenti' in oggetto%}
+    <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="name"> inserisci il nome del del dipendete </label> <br>
@@ -96,8 +91,8 @@
     </form>
     </div>
 
-    {%elif 'entrate' in argomento%}
-    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'entrate' in oggetto%}
+    <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="date"> inserisci data </label> <br>
@@ -113,8 +108,8 @@
     </form>
     </div>
 
-    {%elif 'uscite' in argomento%}
-    <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'uscite' in oggetto%}
+    <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <label for="date"> inserisci data </label> <br>
@@ -130,8 +125,8 @@
         <input type="submit" class="btn btn-primary">
     </form>
     </div>
-    {%elif 'servizzi' in argomento%}
-        <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'servizzi' in oggetto%}
+        <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome del servizio </label> <br>
@@ -145,8 +140,8 @@
 
             <input type="submit" class="btn btn-primary">
         </form>
-    {%elif 'promozioni' in argomento%}
-        <form action="/gestione/{{username}}/{{agriturismo}}/aggiungi/{{argomento}}" method="POST">
+    {%elif 'promozioni' in oggetto%}
+        <form action="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome della promozione </label> <br>
@@ -155,8 +150,8 @@
 
             <input type="submit" class="btn btn-primary">
         </form>
-    {% elif 'agriturismo' in argomento%}
-        <form action="{% url 'aggiungi' username=username agriturismo=agriturismo%}" method="POST">
+    {% elif 'agriturismo' in oggetto%}
+        <form action="/gestione/{{username}}/{{oggetto}}/aggiungi" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="name"> inserisci il nome della promozione </label> <br>
@@ -170,7 +165,7 @@
 
             <input type="submit" class="btn btn-primary">
         </form>
-    {%elif 'prenotazioni' in argomento%}
+    {%elif 'prenotazioni' in oggetto%}
         <form action="{% url 'aggiungi' username=username agriturismo=agriturismo argomento=argomento %}" method="POST">
             {% csrf_token %}
 

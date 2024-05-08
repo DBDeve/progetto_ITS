@@ -1,16 +1,16 @@
-{% extends "modello_form.html" %}
+{% extends "form/modello_form.html" %}
 
 
 
     {%block form%}
-        {%if 'camere' in argomento%}
+        {%if 'camere' in oggetto%}
             <div class=float-center >
                 <div class="titolo">
                 <h1> modifica {{argomento}}</h1> 
                 </div>
             
 
-                <form action="{% url 'modifica' username=username argomento=argomento agriturismo=agriturismo valore=valore%}" method="POST">
+                <form action="{% url 'modifica' username=username oggetto=oggetto agriturismo=agriturismo id_oggetto=oggetto_selezionato.id%}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="number"> numero attuale:{{oggetto_selezionato.number}}</label> <br>
@@ -33,7 +33,7 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
-        {%elif 'clienti' in argomento%}
+        {%elif 'clienti' in oggetto%}
             <div class=float-center >
                 <div class="titolo">
                    <h1> modifica {{argomento}}</h1> 
@@ -63,7 +63,7 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
-        {%elif 'dipendenti' in argomento%}
+        {%elif 'dipendenti' in oggetto%}
             <div class=float-center >
                 <div class="titolo">
                 <h1> modifica {{argomento}}</h1> 
@@ -84,10 +84,10 @@
                     <input type="submit" class="btn btn-primary">
                 </form>
             </div>
-        {% elif 'servizzi' in argomento%}
+        {% elif 'servizzi' in oggetto%}
             <div class=float-center >
                 <div class="titolo">
-                <h1> modifica {{argomento}}</h1> 
+                   <h1> modifica {{argomento}}</h1> 
                 </div>
             
 

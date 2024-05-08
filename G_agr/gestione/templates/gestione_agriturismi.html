@@ -1,12 +1,10 @@
-{% extends "modello_form.html" %}
+{% extends "form/modello_form.html" %}
 
 {%block form%}
     <div class=float-center >
         <div class="titolo">
            <h1> {{frase}}</h1> 
-        
-    
-            {%if "False" in esiste%}
+            {%if "False" in esiste or "aggiungi" in funzione%}
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
@@ -21,14 +19,15 @@
                         <input type="submit" class="btn btn-primary">
                     </div>
                 </form>
-            {%elif "True" in esiste %}
+            {%elif "True" in esiste or "scelta" in funzione%}
                 <div>
                     {%for valore in valori_FarmHouses%}
-                    <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName argomento='camere' scelta='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
+                        <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName oggetto='camere' filtro='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
+                        <a href="/gestione/{{username}}/agriturismo/elimina/{{valore.id}}" role="button" > elimina</a>
                     {%endfor%}
-                    
+                    <a href="/gestione/{{username}}/agriturismo/aggiungi/nessuno" role="button" > aggiungi</a>
                 </div>
             {%endif%}
         </div>
     </div>
-    {%endblock%}
+{%endblock%}

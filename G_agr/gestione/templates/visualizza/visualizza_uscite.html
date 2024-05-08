@@ -1,0 +1,28 @@
+<!--visualizza i dati delle uscite-->
+
+{% extends "visualizza/modello_visualizza.html" %}
+
+{% block data%}
+    {% if "uscite" in oggetto and "tutte" in filtro%}
+        <tr>
+            <th> data </th>
+            <th> quantità </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {%for uscita in uscite%}
+            <tr>
+                <th>{{uscita.Date}}</th>
+                <th>{{uscita.Quantity}}</th>
+                <th></th>
+                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=uscita.id %}" role="button" > modifica </a></th>
+                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=uscita.id %}" role="button" > elimina</a></th>
+            </tr>
+        {%endfor%}
+    {%endif%}
+{%endblock%}
+
+{% block pulsanti %}
+    <a href="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
+{%endblock%}
