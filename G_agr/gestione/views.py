@@ -78,6 +78,7 @@ def visualizza(request,username,agriturismo,attivita,oggetto,filtro):
             agriturismo_id=agriturismo.id
             if filtro=="tutte":
                context['dipendenti']=Employee.objects.filter(IdFarmHouses=agriturismo_id)
+               
          template=loader.get_template('visualizza/visualizza_dipendenti.html')
          return HttpResponse(template.render(context,request))
 
