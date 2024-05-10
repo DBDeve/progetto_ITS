@@ -19,7 +19,7 @@ from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,
 # Create your views here.
 
 @login_required(login_url='login')
-def visualizza(request,username,agriturismo,oggetto,filtro):
+def visualizza(request,username,agriturismo,attivita,oggetto,filtro):
    context={}
    #farne una per ogni argomento (camere,servizzi, ecc...)
    context['username']=username
@@ -33,22 +33,27 @@ def visualizza(request,username,agriturismo,oggetto,filtro):
    #filtra gli account per l'id dell'user precentemente selezionato (solo 1)
    accounts=AccountManagers.objects.get(gestore_id=user_id)
    accounts_id=accounts.id
+   #filtra per agriturismo
+   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
+
    # crea la lista degli agriturismi legati all'account
    context[f'valori_FarmHouses']=FarmHouses.objects.filter(IdAccountManagers_id=accounts_id)
 
    if user_id==accounts.gestore_id:
       # visualizza entrate
       if oggetto=="entrate":
-         if agriturismo=="tutti":
-            context['entrate']=Earnings.objects.filter(IdAccountManagers=accounts_id)  
-         #visualizza i clienti di un singolo agriturismo
-         else:
-            agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
-            agriturismo_id=agriturismo.id
-            if filtro=="tutte":
-               context['entrate']=Earnings.objects.filter(IdFarmHouses=agriturismo_id)
-         template=loader.get_template('visualizza/visualizza_entrate.html')
-         return HttpResponse(template.render(context,request))
+            #crea una query con le entrate di tutti gli agriturismi
+            context['entrate_account']=Earnings.objects.filter(IdAccountManagers=accounts_id)  
+            #crea una query con le entrate di un singolo agriturimo
+            context['entrate_agriturismo']=Earnings.objects.filter(IdFarmHouses=agriturismo_id)
+            #crea una query con le entrate di una singola attività
+            if attivita=="camere":
+               context['entrate_camere']=Earnings.objects.filter(IdFarmHouses=agriturismo_id, attivita_entrata="camere")
+            elif attivita=="eventi":
+               context['entrate_eventi']=Earnings.objects.filter(IdFarmHouses=agriturismo_id, attivita_entrata="eventi")
+            template=loader.get_template('visualizza/visualizza_entrate.html')
+            return HttpResponse(template.render(context,request))
       
       #visualizza uscite
       elif oggetto=="uscite":
@@ -206,6 +211,18 @@ def aggiungi(request,username,agriturismo,oggetto):
             IdAccountManagers_id=accounts_id
             )
          nuovo_agriturismo.save() 
+         url=f"/gestione/{username}/{agriturismo}/{oggetto}/visualizza/tutte"
+         return redirect(url) 
+      if oggetto=="prenotazioni":
+         nuova_prenotazione=Reservation(
+            IdFarmHouses_id=agriturismo_id,
+            IdAccountManagers_id=accounts_id,
+            IdRooms=request.POST['camera_id'],
+            IdClient=request.POST['cliente_id'],
+            Fr0mData=request.POST['data_arrivo'],
+            ToData=request.POST['data_partenza'] 
+         )
+         nuova_prenotazione.save()
          url=f"/gestione/{username}/{agriturismo}/{oggetto}/visualizza/tutte"
          return redirect(url) 
 
