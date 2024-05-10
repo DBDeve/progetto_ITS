@@ -9,12 +9,39 @@ class AccountManagers(models.Model):
   #user_id
   gestore=models.OneToOneField(User, on_delete=models.CASCADE)
 
+#accont è collegato agli agriturismi 
+
+class FarmHouses(models.Model):
+  #collegamenti superiore
+  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
+  #dati agriturismo obbligatori 
+  FarmHouseName=models.CharField(max_length=255)
+  address=models.CharField(max_length=255)
+
+#agriturismi sono collegati alle attività
+
+class Activity(models.Model):
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  Activity_type=models.CharField(max_length=255)
+  Activity_Name=models.CharField(max_length=255)
+
+#oggetti dell'attività sono collegate alle attività
+
+class Activity_objects(models.Model):
+  IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
+  objects_name=models.CharField(max_length=255)
+  object_number = models.IntegerField( default=0)
+  object_prize=models.DecimalField(default=0, max_digits=8, decimal_places=2)
+  stati_oggetto={
+      "libera":"libera",
+      "prenotata":"prenotata",
+      "occupata": "occupata",
+      "non disponibile":"non disponibile",}
+  stato = models.CharField(max_length=15, choices=stati_oggetto, default="non disponibile")
 
 
 
-
-#modelli legati all'account e all'agriturismo
-
+#modelli per i registri
 # entrate
 class Earnings(models.Model):
   #collegamenti 
@@ -34,6 +61,7 @@ class Expense(models.Model):
   Quantity=models.DecimalField(default=0, max_digits=8, decimal_places= 2)
 
 #lavoratori
+#collegare alle attivita
 class Employee(models.Model):
   #collegamenti 
   IdAccountManagers=models.ForeignKey('AccountManagers', on_delete=models.CASCADE)
@@ -47,13 +75,14 @@ class Employee(models.Model):
 #salari (collegato a lavoratori)
 class Salary(models.Model):
   #collegamenti superiori
-  SalaryEmployee=models.OneToOneField('Employee', on_delete=models.CASCADE)
+  SalaryEmployee=models.OneToOneField(Employee, on_delete=models.CASCADE)
   #dati tabella
   stipendio_ore=models.IntegerField(default=0)
   giorni_lavorati=models.IntegerField(default=0)
   ore_lavorate=models.IntegerField(default=0)
 
 class Clients(models.Model):
+  #collegare alle attività
   #collegamenti permanenti
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouses=models.ForeignKey('FarmHouses', on_delete=models.CASCADE)
@@ -62,53 +91,19 @@ class Clients(models.Model):
   mail=models.EmailField(default="", help_text = "*")
   number_cell=models.BigIntegerField(null=True, blank=True,help_text = "inserisci numero di telefono. puoi non metterlo ")
 
-class FarmHouses(models.Model):
-  #collegamenti superiore
-  IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  #dati agriturismo obbligatori 
-  FarmHouseName=models.CharField(max_length=255)
-  address=models.CharField(max_length=255)
-
-
-
-
-
-
-
-
-
-#modelli collegati solo all'agriturismo (possibili attività dell'agriturismo)
-#modello camere
-class Rooms(models.Model):
-    #collegamenti superiori
-    IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
-    #dati obbligatori
-    stati_camera={
-        "libera":"libera",
-        "prenotata":"prenotata",
-        "occupata": "occupata",
-        "non disponibile":"non disponibile",}
-    number = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-    prize = models.IntegerField( default=0)
-    stato = models.CharField(max_length=15, choices=stati_camera, default="non disponibile")
-    clienti_ospitabili=  models.IntegerField(default=0)
-    #dati non obbligatori 
-    appunto = models.CharField(max_length=200,default="") 
-#inserire modelli per tavoli, animali, bottiglie di vino
-
 
 
 
 #modelli assiciati alle varie possibili attività dell'agriturismo
 #servizzi
 class Services(models.Model):
-  #inserire collegamento alle attività
+  #inserire collegamento ai singoli elementi delle attività
   #dati servizio
   name=models.CharField(max_length=200,default="")
   prize=models.IntegerField(default=0)
 #promozioni
 class Promotions(models.Model):
-  #inserire collegamento alle attività
+  #inserire collegamento ai singoli elementi delle attività
   #dati promozioni
   name=models.CharField(max_length=200,default="")
   sconto=models.CharField(max_length=200,default="")
@@ -116,9 +111,12 @@ class Promotions(models.Model):
 
 
 
+
+
 #modelli per l'associazione dei dati
 #modello prenotazioni
 class Reservation(models.Model):
+  #inserire collegamento alle attività
   #collegamenti
   IdAccountManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
