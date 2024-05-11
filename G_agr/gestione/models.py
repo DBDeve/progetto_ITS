@@ -20,23 +20,28 @@ class FarmHouses(models.Model):
 
 #agriturismi sono collegati alle attività
 
-class Activity(models.Model):
+class Activity(models.Model): #esempio: ristorante
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
-  Activity_type=models.CharField(max_length=255)
-  Activity_Name=models.CharField(max_length=255)
+  ActivityType=models.CharField(max_length=255)
+  ActivityName=models.CharField(max_length=255)
 
-#oggetti dell'attività sono collegate alle attività
+#le attività sono collegate ad un gruppo di oggetti
 
-class Activity_objects(models.Model):
+class GroupObjects(models.Model):
   IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
-  objects_name=models.CharField(max_length=255)
-  object_number = models.IntegerField( default=0)
-  object_prize=models.DecimalField(default=0, max_digits=8, decimal_places=2)
+  GroupName=models.CharField(max_length=255)
+
+#il gruppo di oggetti si collega ai vari oggetti del gruppo
+
+class ActivityObject(models.Model): 
+  IdGroupObjects=models.ForeignKey(GroupObjects, on_delete=models.CASCADE)
+  ObjectNumber = models.IntegerField( default=0)
+  ObjectPrize=models.DecimalField(default=0, max_digits=8, decimal_places=2)
   stati_oggetto={
-      "libera":"libera",
-      "prenotata":"prenotata",
-      "occupata": "occupata",
-      "non disponibile":"non disponibile",}
+    "libera":"libera",
+    "prenotata":"prenotata",
+    "occupata": "occupata",
+    "non disponibile":"non disponibile",}
   stato = models.CharField(max_length=15, choices=stati_oggetto, default="non disponibile")
 
 
