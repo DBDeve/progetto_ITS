@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
+from .models import Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
 
 
 # Create your views here.
@@ -76,35 +76,6 @@ def visualizza(request,username,agriturismo,oggetto,filtro):
          template=loader.get_template('visualizza/visualizza_dipendenti.html')
          return HttpResponse(template.render(context,request))
 
-      #visualizza le camere 
-      elif oggetto=="camere":
-         agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
-         agriturismo_id=agriturismo.id
-         if filtro=="tutte":
-            context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
-         elif filtro=="libera": 
-            context[f'camere_libere']=Rooms.objects.filter(stato=filtro, IdFarmHouses_id=agriturismo_id)
-         elif filtro=="non disponibile":
-            context[f'camere_non_disponibili']=Rooms.objects.filter(stato=filtro, IdFarmHouses_id=agriturismo_id)
-               
-         template=loader.get_template('visualizza/visualizza_camere.html')
-         return HttpResponse(template.render(context,request))
-      
-      #visualizza i clienti
-      elif oggetto=="clienti":
-         #visualizza i clienti di tutti gli agriturismi
-         if agriturismo=="tutti":
-            context['clienti']=Rooms.objects.filter(IdAccountManagers=accounts_id)  
-         #visualizza i clienti di un singolo agriturismo
-         else:
-            agriturismo=FarmHouses.objects.get(IdAccountManagers_id=accounts_id, FarmHouseName=agriturismo)
-            agriturismo_id=agriturismo.id
-            if filtro=="tutte":
-               context['clienti']=Clients.objects.filter(IdFarmHouses=agriturismo_id)
-         template=loader.get_template('visualizza/visualizza_clienti.html')
-         return HttpResponse(template.render(context,request))
-   
-
 
 #la funzione aggiungi crea nuovo oggetti in base all'argomento e l'username che gli viene passato
 @login_required(login_url='login')
@@ -123,17 +94,7 @@ def aggiungi(request,username,agriturismo,oggetto):
 
    if request.POST:
       #crea un nuovo oggetto Rooms (funziona)
-      if oggetto=="camere": 
-         nuova_camera=Rooms(
-            number=request.POST['number'],
-            prize=request.POST['prize'],
-            clienti_ospitabili=request.POST['clienti_ospitabili'],
-            appunto=request.POST['appunto'],
-            IdFarmHouses_id=agriturismo_id
-            )
-         nuova_camera.save()
-         url=f"/gestione/{username}/{agriturismo}/{oggetto}/visualizza/tutte"
-         return redirect(url) 
+      
       if oggetto=="promozioni":
          nuova_promozione=Promotions(
             name=request.POST['name'],
@@ -224,26 +185,7 @@ def modifica(request,username,agriturismo,oggetto,id_oggetto):
    context['id_oggetto']=id_oggetto
    
    
-   if oggetto=="camere":
-      #seleziona l'oggetto dall'id
-      camera_da_modificare=Rooms.objects.get(id=id_oggetto)
-      #crea un indice con i dati dell'oggetto selezionato 
-      context['oggetto_selezionato']=camera_da_modificare
-      if request.POST:
-         if request.POST['prize']!="":
-            nuovo_prezzo=request.POST['prize']
-            camera_da_modificare.prize=nuovo_prezzo
-         if request.POST['number']!="":
-            nuovo_numero=request.POST['number']
-            camera_da_modificare.number=nuovo_numero
-         if request.POST['stato']!="":
-            nuovo_stato=request.POST['stato']
-            camera_da_modificare.stato=nuovo_stato
-         #salvataggio dell'oggetto con i dati modificati
-         camera_da_modificare.save()
-         #ridirezionamento alla fine della modifica
-         url=f"/gestione/{username}/{agriturismo}/{oggetto}/visualizza/tutte"
-         return redirect(url)
+   
    if oggetto=="clienti":
       cliente_da_modificare=Clients.objects.get(id=id_oggetto)
       context['oggetto_selezionato']=cliente_da_modificare
@@ -270,10 +212,7 @@ def modifica(request,username,agriturismo,oggetto,id_oggetto):
          if request.POST['iban']!="":
             nuovo_iban=request.POST['iban']
             dipendente_da_modificare.iban=nuovo_iban
-         if request.POST['mail']!="":
-            nuova_mail=request.POST['mail']
-            dipendente_da_modificare.mail=nuova_mail
-         camera_da_modificare.save()
+         
          url=f"/gestione/visualizza/{username}/{agriturismo}/{oggetto}/tutte"
          return redirect(url)
 
@@ -296,9 +235,6 @@ def elimina(request,username,agriturismo,oggetto,id_oggetto):
    # l'oggetto viene cercarto per il suo stesso id e poi eliminato. l'id viene passato attraverso la variabile "valore"
    if oggetto=="agriturismi":
       camera_da_rimuovere=FarmHouses.objects.get(id=id_oggetto)
-      camera_da_rimuovere.delete()
-   elif oggetto=="camere":
-      camera_da_rimuovere=Rooms.objects.get(id=id_oggetto)
       camera_da_rimuovere.delete()
    elif oggetto=="clienti":
       cliente_da_rimuovere=Clients.objects.get(id=id_oggetto)
@@ -326,130 +262,6 @@ def elimina(request,username,agriturismo,oggetto,id_oggetto):
 
 
 
-@login_required(login_url='login')
-def gestione_prenotazioni(request,username, agriturismo, funzione, attivita, filtro):
-   context={}
-   context['username']=username
-   context['agriturismo']=agriturismo
-   context['funzione']=funzione
-   
-   user=User.objects.get(username=username)
-   user_id=user.id
-   accounts=AccountManagers.objects.get(gestore_id=user_id)
-   accounts_id=accounts.id
-   agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
-   agriturismo_id=agriturismo_s.id
-
-   if funzione=="visualizza":
-      context['templates']="visualizza/modello_visualizza.html"
-      context['camere_prenotate']=Rooms.objects.filter(stato="prenotata", IdFarmHouses_id=agriturismo_id) 
-      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
-
-   elif funzione=="aggiungi":
-      context['templates']="modello_form.html"
-      context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
-      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
-      if request.POST:
-         id_camera=request.POST['camera_id']
-         camera=Rooms.objects.get(id=id_camera)
-         camera.stato="prenotata"
-         camera.save()
-
-         id_cliente=request.POST['cliente_id']
-         cliente=Clients.objects.get(id=id_cliente)
-         cliente.stato="attuale"
-         cliente.save()
-
-         nuova_prenotazione=Reservation(
-            IdAccountManager=accounts_id,
-            IdFarmHouse=agriturismo_id,
-            IdRoom=request.POST['camera_id'],
-            IdClient=request.POST['cliente_id'],
-            frOm_data=request.POST['data_arrivo'],
-            to=request.POST['data_partenza']
-         )
-         nuova_prenotazione.save()
-
-         url=f"/gestione/{username}/{agriturismo}/{attivita}/prenotazioni/visualizza/nessuno"
-         return redirect(url)
-      
-   elif funzione=="elimina":
-      cliente=Clients.objects.get(id=id_cliente)
-      camera_da_liberare=Rooms.objects.get(id=cliente.ClientRoom_id)
-      
-      cliente.ClientRoom=None
-      cliente.save()
-
-      camera_da_liberare.stato="libera"
-      camera_da_liberare.save()
-
-      url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza/nessuno"
-      return redirect(url)
-
-   elif funzione=="modifica":
-      context['templates']="modello_form.html"
-      context['block']="form.html"
-      
-
-      context['camere']=Rooms.objects.filter(IdFarmHouses=agriturismo_id)
-      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
-
-      cliente_da_modificare=Clients.objects.get(id=id_cliente)
-      camera_da_modificare=Rooms.objects.get(id=cliente_da_modificare.ClientRoom_id)
-
-      if request.POST:
-         if request.POST['data_arrivo']!="":
-            cliente_da_modificare.frOm_data=request.POST['data_arrivo']
-         if request.POST['data_partenza']!="":
-            cliente_da_modificare.to=request.POST['data_partenza']
-         cliente_da_modificare.save()
-
-         url=f"/gestione/{username}/{agriturismo}/prenotazioni/visualizza/nessuno"
-         return redirect(url)
-      
-
-      
-   template=loader.get_template('prenotazioni.html')
-   return HttpResponse(template.render(context,request))
-
-
-@login_required(login_url='login')
-def gestione_clienti_presenti(request,username, agriturismo, funzione, filtro):
-   context={}
-   context['username']=username
-   context['agriturismo']=agriturismo
-   context['funzione']=funzione
-   context['filtro']=filtro
-
-   user=User.objects.get(username=username)
-   user_id=user.id
-   accounts=AccountManagers.objects.get(gestore_id=user_id)
-   accounts_id=accounts.id
-   agriturismo_s=FarmHouses.objects.get(IdAccountManagers_id=accounts_id)
-   agriturismo_id=agriturismo_s.id
-
-   if funzione=="visualizza":
-      context['templates']="visualizza/modello_visualizza.html"
-      context['camere_occupate']=Rooms.objects.filter(stato="occupate", IdFarmHouses_id=agriturismo_id) 
-      context['clienti']=Clients.objects.filter(IdAccountManagers=accounts_id)
-   elif funzione=="aggiungi_prenotato":
-      cliente_arrivato=Clients.objects.get(id=filtro)
-      camera_da_occupare=Rooms.objects.get(id=cliente_arrivato.ClientRoom_id)
-
-      camera_da_occupare.stato="accupata"
-      camera_da_occupare.save()
-   elif funzione=="elimina":
-      cliente=Clients.objects.get(id=filtro)
-      camera_da_liberare=Rooms.objects.get(id=cliente.ClientRoom_id)
-      
-      cliente.ClientRoom=None
-      cliente.save()
-
-      camera_da_liberare.stato="libera"
-      camera_da_liberare.save()
-
-      url=f"/gestione/{username}/{agriturismo}/gestione_clienti_presenti/visualizza/nessuno"
-      return redirect(url)
 
 
 
@@ -472,11 +284,13 @@ def gestione_agtriturismi(request,username,funzione,filtro):
    account_id=account.id
 
    agriturismi=FarmHouses.objects.filter(IdAccountManagers_id=account_id)
-   context[f'valori_FarmHouses']=agriturismi
+   context['agriturismi']=agriturismi
    if funzione=="verifica_aggiungi":
       if agriturismi.exists():
          context['frase']="scegli agriturismo"
          context['esiste']="True"
+         context['agriturismi']=agriturismi
+
          return render(request, "gestione_agriturismi.html", context)
       else:
          context['esiste']="False"
@@ -489,17 +303,25 @@ def gestione_agtriturismi(request,username,funzione,filtro):
             )
             nuovo_agriturismo.save() 
          return render(request, "gestione_agriturismi.html", context)
-   elif funzione=="scelta":
-      context['funzione']=funzione
-      return render(request, "gestione_agriturismi.html", context)
    elif funzione=="aggiungi":
       context['funzione']=funzione
+      if request.POST:
+         nuovo_agriturismo=FarmHouses(
+            FarmHouseName=request.POST['name'],
+            address=request.POST['address'],
+            IdAccountManagers_id=account_id
+         )
+         nuovo_agriturismo.save() 
+         url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+         return redirect(url)
+      #finché non c'è una richiesta rimane sulla pagina gestione_agriturismi.html
       return render(request, "gestione_agriturismi.html", context)
    elif funzione=="elimina":
       context['funzione']=funzione
       camera_da_rimuovere=FarmHouses.objects.get(id=filtro)
       camera_da_rimuovere.delete()
-      return render(request, "gestione_agriturismi.html", context)
+      url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+      return redirect(url)
 
 
 

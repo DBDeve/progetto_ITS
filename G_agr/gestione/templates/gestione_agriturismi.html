@@ -5,7 +5,8 @@
         <div class="titolo">
            <h1> {{frase}}</h1> 
             {%if "False" in esiste or "aggiungi" in funzione%}
-                <form action="" method="POST">
+                <form action="/gestione/{{username}}/agriturismo/aggiungi/nessuno"
+                return redirect(url) method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name"> inserisci il nome dell'agriturismo </label> <br>
@@ -21,9 +22,9 @@
                 </form>
             {%elif "True" in esiste or "scelta" in funzione%}
                 <div>
-                    {%for valore in valori_FarmHouses%}
+                    {%for valore in agriturismi%}
                         <a href="{% url 'visualizza' username=username agriturismo=valore.FarmHouseName oggetto='camere' filtro='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
-                        <a href="/gestione/{{username}}/agriturismo/elimina/{{valore.id}}" role="button" > elimina</a>
+                        <a href="/gestione/{{username}}/agriturismo/elimina/{{valore.id}}" role="button" > elimina</a> <br>
                     {%endfor%}
                     <a href="/gestione/{{username}}/agriturismo/aggiungi/nessuno" role="button" > aggiungi</a>
                 </div>

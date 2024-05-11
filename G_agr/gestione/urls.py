@@ -12,6 +12,9 @@ urlpatterns = [
     path("login",views.accedi, name="login"),
     path("logout", views.log_out, name="logout"),
     path("<str:username>/agriturismo/<str:funzione>/<str:filtro>", views.gestione_agtriturismi,name="gestione_agriturismi"),
+    #path("<str:username>/<str:agriturismo>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
+
+
 
  
     #url per oggetti generici
@@ -24,7 +27,7 @@ urlpatterns = [
 
     
     #url per oggetti specifici
-    path("<str:username>/<str:agriturismo>/prenotazioni/<str:attivita>/<str:funzione>/<str:filtro>", views.gestione_prenotazioni, name="prenotazioni"),
-    path("<str:username>/<str:agriturismo>/gestione_clienti_presenti/<str:funzione>/<str:filtro>", views.gestione_clienti_presenti, name="gestione_clienti_presenti"),
+    #path("<str:username>/<str:agriturismo>/prenotazioni/<str:attivita>/<str:funzione>/<str:filtro>", views.gestione_prenotazioni, name="prenotazioni"),
+    #path("<str:username>/<str:agriturismo>/gestione_clienti_presenti/<str:funzione>/<str:filtro>", views.gestione_clienti_presenti, name="gestione_clienti_presenti"),
 
     ]  

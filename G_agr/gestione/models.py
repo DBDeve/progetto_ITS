@@ -121,7 +121,7 @@ class Reservation(models.Model):
   IdAccountManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   #dati da associare (inserire anche le altre attività)
-  IdRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
+  #IdRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
   IdClient=models.OneToOneField(Clients, on_delete=models.CASCADE)
   #dati prenotazione (obbligatori)
   FrOmData = models.DateField("data di arrivo", auto_now_add=True,null=True, blank=True)
@@ -133,7 +133,7 @@ class visit(models.Model):
   IdAccountManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   #dati da associare(inserire anche le altre attività)
-  IdRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
+  #IdRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
   IdClient=models.OneToOneField(Clients, on_delete=models.CASCADE)
   #dati visita
   visit_numbers=models.IntegerField(default=0)

@@ -2,11 +2,11 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Rooms,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients
+from .models import Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients
 
 
 
-admin.site.register(Rooms)
+
 admin.site.register(Services)
 admin.site.register(Employee)
 admin.site.register(AccountManagers)
