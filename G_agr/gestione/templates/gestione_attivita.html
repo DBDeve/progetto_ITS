@@ -1,0 +1,39 @@
+{% extends "form/modello_form.html" %}
+
+{%block form%}
+    <div class=float-center >
+        <div class="titolo">
+           <h1> {{frase}}</h1> 
+            {%if "False" in esiste or "aggiungi" in funzione%}
+                <form action="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="activity_type"> inserisci il tipo dell'attività </label> <br>
+                        <input type="text" class="form-control" name="activity_type" id="activity_type"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="activity_name"> inserisci il nome del attività </label> <br>
+                        <input type="text" class="form-control" name="activity_name" id="activity_name"> 
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+                <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi_camere/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività camere</button></a>
+                <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi_ristorante/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività ristorante</button></a>
+                <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi_paddok/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività paddok</button></a>
+                <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi_evento/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività eventi</button></a>
+                <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi_piscina/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività piscina</button></a>
+
+            {%elif "True" in esiste or "scelta" in funzione%}
+                <div>
+                    {%for valore in attivita%}
+                        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=valore.Activity_Name filtro='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.Activity_Name}}</button></a>
+                        <a href="/gestione/{{username}}/{{agriturismo}}/attivita/elimina/{{valore.id}}" role="button" > elimina</a> <br>
+                    {%endfor%}
+                    <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" role="button" > aggiungi</a>
+                </div>
+            {%endif%}
+        </div>
+    </div>
+{%endblock%}

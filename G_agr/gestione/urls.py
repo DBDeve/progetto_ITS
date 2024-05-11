@@ -12,7 +12,10 @@ urlpatterns = [
     path("login",views.accedi, name="login"),
     path("logout", views.log_out, name="logout"),
     path("<str:username>/agriturismo/<str:funzione>/<str:filtro>", views.gestione_agtriturismi,name="gestione_agriturismi"),
-    #path("<str:username>/<str:agriturismo>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
+    path("<str:username>/<str:agriturismo>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
+    #path("<str:username>/<str:agriturismo>/<str:attivita>/<str:oggetto>/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
+
+
 
 
 

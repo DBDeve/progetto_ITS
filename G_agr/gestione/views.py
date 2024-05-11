@@ -13,10 +13,218 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
+from .models import Activity,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
 
 
 # Create your views here.
+
+def cambia_password(request):
+   context={}
+
+   if request.POST:
+      user=User.objects.get(username=request.POST['username'])
+      nuova_password=request.POST['nuova_password']
+      username = request.POST.get('username')
+      try:
+         user = User.objects.get(username=username)
+         # Imposta la nuova password con hashing
+         user.set_password(nuova_password)
+         user.save()
+         messages.success(request, 'Password aggiornata con successo.')
+         return redirect('login')
+      except User.DoesNotExist:
+         messages.error(request, 'Utente non trovato.')
+         return redirect('cambia_password')
+   
+   template=loader.get_template('form/form_cambia_password.html')
+   return HttpResponse(template.render(context,request))
+   
+
+
+#fa registrare un nuovo utente
+def registrati(request):
+   context={}
+
+   if request.POST:
+      #crea un nuovo user
+      user = User.objects.create_user(
+         username=request.POST['username'],
+         email=request.POST['email'],
+         password=request.POST['password'],
+         first_name=request.POST['first_name'],
+         last_name=request.POST['last_name'],
+         )
+      user.save()
+      
+      #crea un nuovo account collegato allo user appena creato
+      IdUser=user.id
+      nuovo_account=AccountManagers(
+         gestore_id=IdUser
+      )
+      nuovo_account.save()
+
+      #rendirizza alla pagina di login
+      url=f"login"
+      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+
+
+   template=loader.get_template('form/form_registrati.html')
+   return HttpResponse(template.render(context,request))
+
+
+
+#fa accedere un utente già registrato
+def accedi(request):
+   if request.method=="POST":
+      username = request.POST["username"]
+      password = request.POST["password"]
+      user = authenticate(request, username=username, password=password)
+      #verifica che l'user sia stato autenticato
+      if  user is not None:
+         login(request, user)
+         messages.success(request, f"benvenuto {user.username}")
+         url=f"{user.username}/agriturismo/verifica_aggiungi/nessuno"
+         return redirect(url)
+      else:
+         messages.error(request, f"si è verificato un problema. riprova")
+         #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
+         return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+   else:
+      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+
+
+
+#fa fare il logout e rendirizza alla pagina di login
+def log_out(request):
+   logout(request)
+   return redirect('login')
+
+
+
+
+
+
+#crea verifica se l'accounta ha un agriturismo e se non ce l'ha lo fa aggiungere
+@login_required(login_url='login')
+def gestione_agtriturismi(request,username,funzione,filtro):
+
+   context={}
+   context['username']=username
+
+   user=User.objects.get(username=username)
+   user_id=user.id
+   account=AccountManagers.objects.get(gestore_id=user_id)
+   account_id=account.id
+
+   agriturismi=FarmHouses.objects.filter(IdAccountManagers_id=account_id)
+   context['agriturismi']=agriturismi
+   if funzione=="verifica_aggiungi":
+      if agriturismi.exists():
+         context['frase']="scegli agriturismo"
+         context['esiste']="True"
+         context['agriturismi']=agriturismi
+
+         return render(request, "gestione_agriturismi.html", context)
+      else:
+         context['esiste']="False"
+         context['frase']="crea agriturismo"
+         if request.POST:
+            nuovo_agriturismo=FarmHouses(
+               FarmHouseName=request.POST['name'],
+               address=request.POST['address'],
+               IdAccountManagers_id=account_id
+            )
+            nuovo_agriturismo.save() 
+         return render(request, "gestione_agriturismi.html", context)
+   elif funzione=="aggiungi":
+      context['funzione']=funzione
+      if request.POST:
+         nuovo_agriturismo=FarmHouses(
+            FarmHouseName=request.POST['name'],
+            address=request.POST['address'],
+            IdAccountManagers_id=account_id
+         )
+         nuovo_agriturismo.save() 
+         url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+         return redirect(url)
+      #finché non c'è una richiesta rimane sulla pagina gestione_agriturismi.html
+      return render(request, "gestione_agriturismi.html", context)
+   elif funzione=="elimina":
+      context['funzione']=funzione
+      camera_da_rimuovere=FarmHouses.objects.get(id=filtro)
+      camera_da_rimuovere.delete()
+      url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+      return redirect(url)
+
+
+
+@login_required(login_url='login')
+def gestione_attivita(request,username,agriturismo,funzione,filtro):
+   context={}
+   context['username']=username
+   context['agriturismo']=agriturismo
+   context['funzione']=funzione
+   context['filtro']=filtro
+
+   user=User.objects.get(username=username)
+   user_id=user.id
+   account=AccountManagers.objects.get(gestore_id=user_id)
+   account_id=account.id
+   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
+   attivita=Activity.objects.filter(IdFarmHouses=agriturismo_id)
+
+   if funzione=="verifica_scegli":
+      if attivita.exists():
+         context['frase']="scegli attivita"
+         context['esiste']="True"
+         context['attivita']=attivita
+         return render(request, "gestione_attivita.html", context)
+      else:
+         context['esiste']="False"
+         context['frase']="crea agriturismo"
+         if request.POST:
+            nuova_attivita=Activity(
+               ActivityName=request.POST['activity_name'],
+               ActivityType=request.POST['activity_type'],
+               IdFarmHouses=agriturismo_id
+            )
+            nuova_attivita.save() 
+         
+         return render(request, "gestione_attivita.html", context)
+   elif funzione=="aggiungi":
+      nuova_attivita=Activity(
+         ActivityName=request.POST['activity_name'],
+         ActivityType=request.POST['activity_type'],
+         IdFarmHouses=agriturismo_id
+      )
+      nuova_attivita.save() 
+   elif funzione=="elimina":
+      attivita_da_rimuovere=Activity.objects.get(id=filtro)
+      attivita_da_rimuovere.delete()
+   elif funzione=="aggiungi_camere":
+      camere=Activity(
+         Activity_type="camere",
+         Activity_Name="camere",
+         IdFarmHouses_id=agriturismo_id
+      )
+      camere.save()
+   
+
+      
+   return render(request, "gestione_attivita.html", context)
+      
+
+
+
+
+
+
+   
+
+
+
+
 
 @login_required(login_url='login')
 def visualizza(request,username,agriturismo,oggetto,filtro):
@@ -271,139 +479,3 @@ def elimina(request,username,agriturismo,oggetto,id_oggetto):
 
 
 
-#crea verifica se l'accounta ha un agriturismo e se non ce l'ha lo fa aggiungere
-@login_required(login_url='login')
-def gestione_agtriturismi(request,username,funzione,filtro):
-
-   context={}
-   context['username']=username
-
-   user=User.objects.get(username=username)
-   user_id=user.id
-   account=AccountManagers.objects.get(gestore_id=user_id)
-   account_id=account.id
-
-   agriturismi=FarmHouses.objects.filter(IdAccountManagers_id=account_id)
-   context['agriturismi']=agriturismi
-   if funzione=="verifica_aggiungi":
-      if agriturismi.exists():
-         context['frase']="scegli agriturismo"
-         context['esiste']="True"
-         context['agriturismi']=agriturismi
-
-         return render(request, "gestione_agriturismi.html", context)
-      else:
-         context['esiste']="False"
-         context['frase']="crea agriturismo"
-         if request.POST:
-            nuovo_agriturismo=FarmHouses(
-               FarmHouseName=request.POST['name'],
-               address=request.POST['address'],
-               IdAccountManagers_id=account_id
-            )
-            nuovo_agriturismo.save() 
-         return render(request, "gestione_agriturismi.html", context)
-   elif funzione=="aggiungi":
-      context['funzione']=funzione
-      if request.POST:
-         nuovo_agriturismo=FarmHouses(
-            FarmHouseName=request.POST['name'],
-            address=request.POST['address'],
-            IdAccountManagers_id=account_id
-         )
-         nuovo_agriturismo.save() 
-         url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
-         return redirect(url)
-      #finché non c'è una richiesta rimane sulla pagina gestione_agriturismi.html
-      return render(request, "gestione_agriturismi.html", context)
-   elif funzione=="elimina":
-      context['funzione']=funzione
-      camera_da_rimuovere=FarmHouses.objects.get(id=filtro)
-      camera_da_rimuovere.delete()
-      url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
-      return redirect(url)
-
-
-
-def cambia_password(request):
-   context={}
-
-   if request.POST:
-      user=User.objects.get(username=request.POST['username'])
-      nuova_password=request.POST['nuova_password']
-      username = request.POST.get('username')
-      try:
-         user = User.objects.get(username=username)
-         # Imposta la nuova password con hashing
-         user.set_password(nuova_password)
-         user.save()
-         messages.success(request, 'Password aggiornata con successo.')
-         return redirect('login')
-      except User.DoesNotExist:
-         messages.error(request, 'Utente non trovato.')
-         return redirect('cambia_password')
-   
-   template=loader.get_template('form/form_cambia_password.html')
-   return HttpResponse(template.render(context,request))
-   
-
-
-#fa registrare un nuovo utente
-def registrati(request):
-   context={}
-
-   if request.POST:
-      #crea un nuovo user
-      user = User.objects.create_user(
-         username=request.POST['username'],
-         email=request.POST['email'],
-         password=request.POST['password'],
-         first_name=request.POST['first_name'],
-         last_name=request.POST['last_name'],
-         )
-      user.save()
-      
-      #crea un nuovo account collegato allo user appena creato
-      IdUser=user.id
-      nuovo_account=AccountManagers(
-         gestore_id=IdUser
-      )
-      nuovo_account.save()
-
-      #rendirizza alla pagina di login
-      url=f"login"
-      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
-
-
-   template=loader.get_template('form/form_registrati.html')
-   return HttpResponse(template.render(context,request))
-
-
-
-#fa accedere un utente già registrato
-def accedi(request):
-   if request.method=="POST":
-      username = request.POST["username"]
-      password = request.POST["password"]
-      user = authenticate(request, username=username, password=password)
-      #verifica che l'user sia stato autenticato
-      if  user is not None:
-         login(request, user)
-         messages.success(request, f"benvenuto {user.username}")
-         url=f"{user.username}/agriturismo/verifica_aggiungi/nessuno"
-         return redirect(url)
-      else:
-         messages.error(request, f"si è verificato un problema. riprova")
-         #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
-         return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
-   else:
-      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
-
-
-
-#fa fare il logout e rendirizza alla pagina di login
-def log_out(request):
-   logout(request)
-   return redirect('login')
-
-   
