@@ -15,6 +15,7 @@
                         <label for="activity_name"> inserisci il nome del attività </label> <br>
                         <input type="text" class="form-control" name="activity_name" id="activity_name"> 
                     </div>
+
                     <div>
                         <input type="submit" class="btn btn-primary">
                     </div>
@@ -28,7 +29,7 @@
             {%elif "True" in esiste or "scelta" in funzione%}
                 <div>
                     {%for valore in attivita%}
-                        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=valore.Activity_Name filtro='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.Activity_Name}}</button></a>
+                        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=valore.ActivityName filtro='tutte' %}"> <button type="button" class="btn btn-outline-info"> {{valore.ActivityName}}</button></a>
                         <a href="/gestione/{{username}}/{{agriturismo}}/attivita/elimina/{{valore.id}}" role="button" > elimina</a> <br>
                     {%endfor%}
                     <a href="/gestione/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" role="button" > aggiungi</a>

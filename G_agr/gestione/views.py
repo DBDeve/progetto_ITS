@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Activity,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
+from .models import Activity,GroupObjects,ActivityObject,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
 
 
 # Create your views here.
@@ -203,16 +203,28 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
       attivita_da_rimuovere=Activity.objects.get(id=filtro)
       attivita_da_rimuovere.delete()
    elif funzione=="aggiungi_camere":
-      camere=Activity(
-         Activity_type="camere",
-         Activity_Name="camere",
+      attivita_camere=Activity(
+         ActivityType="camere",
+         ActivityName="camere",
          IdFarmHouses_id=agriturismo_id
       )
-      camere.save()
-   
+      attivita_camere.save()
+      gruppo_oggetti=GroupObjects(
+         IdGroupObjects_id=attivita_camere.Id,
+         GroupName="camera"
+      )
+      gruppo_oggetti.save()
 
-      
+   
    return render(request, "gestione_attivita.html", context)
+
+
+
+@login_required(login_url='login')
+def gestione_gruppo_oggetti(request,username,agriturismo,attivita,funzione,filtro):
+   context={}
+   return render(request, "gestione_gruppo_oggetti.html", context)
+
       
 
 
