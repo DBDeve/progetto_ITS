@@ -13,8 +13,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
 #importa il modello question
-from .models import Activity,GroupObjects,ActivityObject,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
-
+from .models import Activity,TypeObjects,ActivityObject,Services,Employee,AccountManagers,Earnings,FarmHouses,Expense,Salary,Clients,Promotions,Reservation
 
 # Create your views here.
 
@@ -209,7 +208,7 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
          IdFarmHouses_id=agriturismo_id
       )
       attivita_camere.save()
-      gruppo_oggetti=GroupObjects(
+      gruppo_oggetti=TypeObjects(
          IdGroupObjects_id=attivita_camere.Id,
          GroupName="camera"
       )
@@ -221,9 +220,49 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
 
 
 @login_required(login_url='login')
-def gestione_gruppo_oggetti(request,username,agriturismo,attivita,funzione,filtro):
+def gestione_tipo_oggetto(request,username,agriturismo,attivita,funzione,filtro):
    context={}
-   return render(request, "gestione_gruppo_oggetti.html", context)
+   return render(request, "gestione_tipo_oggetti.html", context)
+
+
+@login_required(login_url='login')
+def gestione_oggetto_singolo(request,username,agriturismo,attivita,tipo_oggetto,funzione,filtro):
+   context={}
+   context['username']=username
+   context['agriturismo']=agriturismo
+   context['attivita']=attivita
+   context['tipo_oggetto']=tipo_oggetto
+   context['funzione']=funzione
+   context['filtro']=filtro
+
+   user=User.objects.get(username=username)
+   user_id=user.id
+   account=AccountManagers.objects.get(gestore_id=user_id)
+   account_id=account.id
+   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
+   attivita=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
+   attivita_id=attivita.id
+   tipo_oggetto_s=TypeObjects.objects.get(IdActivity=attivita_id, TypeName=tipo_oggetto)
+   tipo_oggetto_id=tipo_oggetto_s.id
+
+   if funzione=="visualizza":
+      if filtro=="tutti":
+         context['oggetti']=ActivityObject.objects.filter(IdTypeObjects=tipo_oggetto_id)
+      elif filtro !="tutti":
+         context['oggetti']=ActivityObject.objects.filter(IdTypeObjects=tipo_oggetto_id, stato=filtro)
+   elif funzione=="aggiungi":
+      if request.POST:
+            nuovo_oggetto=ActivityObject(
+               IdTypeObjects=tipo_oggetto_id,
+               ObjectNumber=request.POST['numero_oggetto'],
+               ObjectPrize=request.POST['prezzo_oggetto'],
+               stato="non disponibile"
+            )
+            nuovo_oggetto.save()
+      return render(request, "gestione_oggetto_singolo.html", context)
+
+   return render(request, "gestione_oggetto_singolo.html", context)
 
       
 
