@@ -27,14 +27,14 @@ class Activity(models.Model): #esempio: ristorante
 
 #le attività sono collegate ad un gruppo di oggetti
 
-class GroupObjects(models.Model):
+class TypeObjects(models.Model):
   IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
-  GroupName=models.CharField(max_length=255)
+  TypeName=models.CharField(max_length=255)
 
 #il gruppo di oggetti si collega ai vari oggetti del gruppo
 
 class ActivityObject(models.Model): 
-  IdGroupObjects=models.ForeignKey(GroupObjects, on_delete=models.CASCADE)
+  IdTypeObjects=models.ForeignKey(TypeObjects, on_delete=models.CASCADE)
   ObjectNumber = models.IntegerField( default=0)
   ObjectPrize=models.DecimalField(default=0, max_digits=8, decimal_places=2)
   stati_oggetto={

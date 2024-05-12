@@ -12,17 +12,20 @@ urlpatterns = [
     path("login",views.accedi, name="login"),
     path("logout", views.log_out, name="logout"),
 
+    #url per oggetti personalizati dall'utente
     path("<str:username>/agriturismo/<str:funzione>/<str:filtro>", views.gestione_agtriturismi,name="gestione_agriturismi"),
     path("<str:username>/<str:agriturismo>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
-    path("<str:username>/<str:agriturismo>/<str:attivita>/gruppo_oggetti/<str:funzione>/<str:filtro>", views.gestione_oggetti,name="gestione_oggetti"),
+    path("<str:username>/<str:agriturismo>/<str:attivita>/tipo_oggetti/<str:funzione>/<str:filtro>", views.gestione_tipo_oggetto,name="gestione_tipo_oggetto"),
+    path("<str:username>/<str:agriturismo>/<str:attivita>/<str:tipo_oggetti>/oggetto_singolo/<str:funzione>/<str:filtro>", views.gestione_oggetto_singolo,name="gestione_oggetto_singolo"),
+
 
 
 
  
-    #url per oggetti generici
-    path("<str:username>/<str:agriturismo>/<str:oggetto>/aggiungi", views.aggiungi, name="aggiungi"),
-    path("<str:username>/<str:agriturismo>/<str:oggetto>/elimina/<str:id_oggetto>", views.elimina, name="elimina"),
-    path("<str:username>/<str:agriturismo>/<str:oggetto>/modifica/<str:id_oggetto>", views.modifica, name="modifica"),
+    #url per oggetti non personalizati
+    path("<str:username>/<str:agriturismo>/<str:attivita>/<str:oggetto>/aggiungi", views.aggiungi, name="aggiungi"),
+    path("<str:username>/<str:agriturismo>/<str:attivita>/<str:oggetto>/elimina/<str:id_oggetto>", views.elimina, name="elimina"),
+    path("<str:username>/<str:agriturismo>/<str:attivita>/<str:oggetto>/modifica/<str:id_oggetto>", views.modifica, name="modifica"),
 
     path("<str:username>/<str:agriturismo>/<str:oggetto>/visualizza/<str:filtro>", views.visualizza, name="visualizza"),
     path("<str:username>/tutti/<str:oggetto>/visualizza/<str:filtro>", views.visualizza, name="visualizza"),
