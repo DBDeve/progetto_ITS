@@ -21,8 +21,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #eventuale nome di un'altra applicazione che chiamo applicazione2 (devi anche aggiungerle ad installed_apps)
-    #path('applicazione2/', include('applicazione2.urls')),
     path('gestione/',include('gestione.urls')),
-    
+    path('system/',include('system.urls')),
+    #path('principal_objects/',include('principal_objects.urls')),
+    #path('management_objects/',include('management_objects.urls')),
+    #path('registrer_objects/',include('registrer_objects.urls')),
+    #path('view/',include('view.urls')),
 ]
