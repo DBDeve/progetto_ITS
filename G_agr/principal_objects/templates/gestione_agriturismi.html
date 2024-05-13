@@ -1,12 +1,11 @@
-{% extends "modelli/modello_form.html" %}
+{% extends "modello_form.html" %}
 
 {%block form%}
     <div class=float-center >
         <div class="titolo">
            <h1> {{frase}}</h1> 
             {%if "False" in esiste or "aggiungi" in funzione%}
-                <form action="/gestione/{{username}}/agriturismo/aggiungi/nessuno"
-                return redirect(url) method="POST">
+                <form action="/principal_objects/{{username}}/agriturismo/aggiungi/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name"> inserisci il nome dell'agriturismo </label> <br>

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from django.template import loader
 
-from gestione.models import AccountManagers
+from principal_objects.models import AccountManagers
 
 
 # Create your views here.
@@ -27,7 +27,7 @@ def cambia_password(request):
       except User.DoesNotExist:
          return redirect('cambia_password')
    
-   template=loader.get_template('form/form_cambia_password.html')
+   template=loader.get_template('form_cambia_password.html')
    return HttpResponse(template.render(context,request))
    
 
@@ -55,11 +55,9 @@ def registrati(request):
       nuovo_account.save()
 
       #rendirizza alla pagina di login
-      url=f"login"
-      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+      return redirect('login')
 
-
-   template=loader.get_template('form/form_registrati.html')
+   template=loader.get_template('form_registrati.html')
    return HttpResponse(template.render(context,request))
 
 
@@ -73,13 +71,13 @@ def log_in(request):
       #verifica che l'user sia stato autenticato
       if  user is not None:
          login(request, user)
-         url=f"{user.username}/agriturismo/verifica_aggiungi/nessuno"
+         url=f"/principal_objects/{user.username}/agriturismo/verifica_aggiungi/None"
          return redirect(url)
       else:
          #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
-         return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+         return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
    else:
-      return render(request, "form/form_accedi.html", {"argomento":'log in | accedi'})
+      return render(request, "form_accedi.html", {"argomento":'log in | accedi'})
 
 
 

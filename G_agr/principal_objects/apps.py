@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GestioneConfig(AppConfig):
+class PrincipalObjectsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'gestione'
+    name = 'principal_objects'
