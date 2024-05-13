@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('system/',include('system.urls')),
     path('principal_objects/',include('principal_objects.urls')),
-    #path('management_objects/',include('management_objects.urls')),
-    #path('registrer_objects/',include('registrer_objects.urls')),
-    #path('view/',include('view.urls')),
+    path('management_objects/',include('management_objects.urls')),
+    path('register_objects/',include('registrer_objects.urls')),
+    path('view/',include('view.urls')),
 ]
