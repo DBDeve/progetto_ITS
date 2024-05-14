@@ -144,6 +144,37 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
 @login_required(login_url='login')
 def gestione_tipo_oggetto(request,username,agriturismo,attivita,funzione,filtro):
    context={}
+   context['username']=username
+   context['agriturismo']=agriturismo
+   context['attivita']=attivita
+   context['funzione']=funzione
+   context['filtro']=filtro
+
+   user=User.objects.get(username=username)
+   user_id=user.id
+   account=AccountManagers.objects.get(gestore_id=user_id)
+   account_id=account.id
+   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo.id
+   attivita=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
+   attivita_id=attivita.id
+   
+   if funzione=="aggiungi":
+      if request.POST:
+         nuovo_tipo_oggetto=TypeObjects(
+            IdActivity=attivita_id,
+            TypeName=request.POST['type_name']
+         )
+         nuovo_tipo_oggetto.save()
+   elif funzione=="modifica":
+      tipo_oggetto_da_modificare=TypeObjects.objects.get(id=filtro)
+      if request.POST:
+         if request.POST['new_type']!="":
+            tipo_oggetto_da_modificare.TypeName=request.POST['new_type']
+      tipo_oggetto_da_modificare.save()
+   elif funzione=="elimina":
+      tipo_oggetto_da_eliminare=TypeObjects.objects.get(Id=filtro)
+      tipo_oggetto_da_eliminare.delete()
    return render(request, "gestione_tipo_oggetti.html", context)
 
 
@@ -168,12 +199,8 @@ def gestione_oggetto_singolo(request,username,agriturismo,attivita,tipo_oggetto,
    tipo_oggetto_s=TypeObjects.objects.get(IdActivity=attivita_id, TypeName=tipo_oggetto)
    tipo_oggetto_id=tipo_oggetto_s.id
 
-   if funzione=="visualizza":
-      if filtro=="tutti":
-         context['oggetti']=ActivityObject.objects.filter(IdTypeObjects=tipo_oggetto_id)
-      elif filtro !="tutti":
-         context['oggetti']=ActivityObject.objects.filter(IdTypeObjects=tipo_oggetto_id, stato=filtro)
-   elif funzione=="aggiungi":
+   
+   if funzione=="aggiungi":
       if request.POST:
             nuovo_oggetto=ActivityObject(
                IdTypeObjects=tipo_oggetto_id,
@@ -183,5 +210,16 @@ def gestione_oggetto_singolo(request,username,agriturismo,attivita,tipo_oggetto,
             )
             nuovo_oggetto.save()
       return render(request, "gestione_oggetto_singolo.html", context)
-
+   elif funzione=="modifica":
+      oggetto_da_modificare=ActivityObject.objects.get(id=filtro)
+      if request.POST:
+         if request.POST['new_number']!="":
+            oggetto_da_modificare.ObjectNumber=request.POST['new_number']
+         if request.POST['ner_prize']!="":
+            oggetto_da_modificare.ObjectPrize=request.POST['new_Prize']
+         if request.POST['stato']!="":
+            oggetto_da_modificare.stato=request.POST['stato']
+   elif funzione=="elimina":
+      oggetto_da_eliminare=ActivityObject.objects.get(id=filtro)
+      oggetto_da_eliminare.delete()
    return render(request, "gestione_oggetto_singolo.html", context)

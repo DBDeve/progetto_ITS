@@ -8,10 +8,9 @@ from register_objects.models  import Clients
 class Reservation(models.Model):
   #inserire collegamento alle attività
   #collegamenti
-  IdAccountManager=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  IdFarmHouse=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
   #dati da associare (inserire anche le altre attività)
-  #IdRoom=models.OneToOneField(Rooms, on_delete=models.CASCADE)
+  IdActivityObject=models.OneToOneField(ActivityObject, on_delete=models.CASCADE)
   IdClient=models.OneToOneField(Clients, on_delete=models.CASCADE)
   #dati prenotazione (obbligatori)
   FrOmData = models.DateField("data di arrivo", auto_now_add=True,null=True, blank=True)
