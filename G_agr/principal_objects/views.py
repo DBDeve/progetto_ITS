@@ -49,7 +49,7 @@ def gestione_agtriturismi(request,username,funzione,filtro):
             IdAccountManagers_id=account_id
          )
          nuovo_agriturismo.save() 
-         url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+         url=f"/principal_objects/{username}/agriturismo/verifica_aggiungi/None"
          return redirect(url)
       #finché non c'è una richiesta rimane sulla pagina gestione_agriturismi.html
       return render(request, "gestione_agriturismi.html", context)
@@ -57,7 +57,7 @@ def gestione_agtriturismi(request,username,funzione,filtro):
       context['funzione']=funzione
       camera_da_rimuovere=FarmHouses.objects.get(id=filtro)
       camera_da_rimuovere.delete()
-      url=f"/gestione/{username}/agriturismo/verifica_aggiungi/nessuno"
+      url=f"/principal_objects/{username}/agriturismo/verifica_aggiungi/None"
       return redirect(url)
 
 
@@ -114,27 +114,28 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
       )
       attivita_camere.save()
       gruppo_oggetti=TypeObjects(
-         IdGroupObjects_id=attivita_camere.Id,
-         GroupName="camera"
+         IdGroupObjects_id=attivita_camere,
+         TypeName="camera"
       )
       gruppo_oggetti.save()
    elif funzione=="aggiungi_ristorante":
-      attivita_ristorante=Activity(
-         ActivityType="ristorante",
-         ActivityName=request.POST['name'],
-         IdFarmHouses_id=agriturismo_id
-      )
-      attivita_ristorante.save()
-      gruppo_oggetti_tavoli=TypeObjects(
-         IdGroupObjects_id=attivita_ristorante.Id,
-         GroupName="tavoli"
-      )
-      gruppo_oggetti_tavoli.save()
-      gruppo_oggetti_menu=TypeObjects(
-         IdGroupObjects_id=attivita_ristorante.Id,
-         GroupName="piatti del menù"
-      )
-      gruppo_oggetti_menu.save()
+      if request.POST:
+         attivita_ristorante=Activity(
+            ActivityType="ristorante",
+            ActivityName=request.POST['activity_name'],
+            IdFarmHouses_id=agriturismo_id
+         )
+         attivita_ristorante.save()
+         gruppo_oggetti_tavoli=TypeObjects(
+            IdActivity=attivita_ristorante,
+            TypeName="tavoli"
+         )
+         gruppo_oggetti_tavoli.save()
+         gruppo_oggetti_menu=TypeObjects(
+            IdActivity=attivita_ristorante,
+            TypeName="piatti del menù"
+         )
+         gruppo_oggetti_menu.save()
 
    
    return render(request, "gestione_attivita.html", context)

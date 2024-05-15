@@ -22,10 +22,10 @@
             {%elif "True" in esiste or "scelta" in funzione%}
                 <div>
                     {%for valore in agriturismi%}
-                        <a href="/gestione/{{username}}/{{valore.FarmHouseName}}/attivita/verifica_scegli/None"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
-                        <a href="/gestione/{{username}}/agriturismo/elimina/{{valore.id}}" role="button" > elimina</a> <br>
+                        <a href="/principal_objects/{{username}}/{{valore.FarmHouseName}}/attivita/verifica_scegli/None"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
+                        <a href="/principal_objects/{{username}}/agriturismo/elimina/{{valore.id}}" role="button" > elimina</a> <br>
                     {%endfor%}
-                    <a href="/gestione/{{username}}/agriturismo/aggiungi/nessuno" role="button" > aggiungi</a>
+                    <a href="/principal_objects/{{username}}/agriturismo/aggiungi/nessuno" role="button" > aggiungi</a>
                 </div>
             {%endif%}
         </div>
