@@ -1,6 +1,6 @@
 from django.db import models
 
-from .models import User,AccountManagers,FarmHouses,Activity,TypeObjects,ActivityObject
+from principal_objects.models import User,AccountManagers,FarmHouses,Activity,TypeObjects,ActivityObject
 
 
 # Create your models here.
@@ -43,7 +43,7 @@ class Clients(models.Model):
   #collegare alle attività
   #collegamenti permanenti
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
-  IdFarmHouses=models.ForeignKey('FarmHouses', on_delete=models.CASCADE)
+  IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
   #dati clienti
   name=models.CharField(default="",max_length=255,help_text = "*")
   mail=models.EmailField(default="", help_text = "*")

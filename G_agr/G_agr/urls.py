@@ -24,6 +24,6 @@ urlpatterns = [
     path('system/',include('system.urls')),
     path('principal_objects/',include('principal_objects.urls')),
     path('management_objects/',include('management_objects.urls')),
-    path('register_objects/',include('registrer_objects.urls')),
+    path('register_objects/',include('register_objects.urls')),
     path('view/',include('view.urls')),
 ]
