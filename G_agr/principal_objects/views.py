@@ -74,8 +74,8 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
    user_id=user.id
    account=AccountManagers.objects.get(gestore_id=user_id)
    account_id=account.id
-   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo.id
+   agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
+   agriturismo_id=agriturismo_r.id
    attivita=Activity.objects.filter(IdFarmHouses=agriturismo_id)
 
    if funzione=="verifica_scegli":
@@ -86,58 +86,103 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
          return render(request, "gestione_attivita.html", context)
       else:
          context['esiste']="False"
-         context['frase']="crea agriturismo"
+         context['frase']="crea attività"
          if request.POST:
             nuova_attivita=Activity(
                ActivityName=request.POST['activity_name'],
                ActivityType=request.POST['activity_type'],
-               IdFarmHouses=agriturismo_id
+               IdFarmHouses=agriturismo_r
             )
             nuova_attivita.save() 
          
          return render(request, "gestione_attivita.html", context)
    elif funzione=="aggiungi":
-      nuova_attivita=Activity(
-         ActivityName=request.POST['activity_name'],
-         ActivityType=request.POST['activity_type'],
-         IdFarmHouses=agriturismo_id
-      )
-      nuova_attivita.save() 
+      if request.POST:
+         nuova_attivita=Activity(
+            ActivityName=request.POST['activity_name'],
+            ActivityType=request.POST['activity_type'],
+            IdFarmHouses=agriturismo_r
+         )
+         nuova_attivita.save() 
+         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         return redirect(url)    
    elif funzione=="elimina":
       attivita_da_rimuovere=Activity.objects.get(id=filtro)
       attivita_da_rimuovere.delete()
+      url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+      return redirect(url)
+   
    elif funzione=="aggiungi_camere":
-      attivita_camere=Activity(
-         ActivityType="camere",
-         ActivityName="camere",
-         IdFarmHouses_id=agriturismo_id
-      )
-      attivita_camere.save()
-      gruppo_oggetti=TypeObjects(
-         IdGroupObjects_id=attivita_camere,
-         TypeName="camera"
-      )
-      gruppo_oggetti.save()
+      if request.POST:
+         attivita_camere=Activity(
+            ActivityType="camere",
+            ActivityName=request.POST['activity_name'],
+            IdFarmHouses_id=agriturismo_r.id
+         )
+         attivita_camere.save()
+         gruppo_oggetti=TypeObjects(
+            IdActivity=attivita_camere,
+            TypeName="camera"
+         )
+         gruppo_oggetti.save()
+         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         return redirect(url)
    elif funzione=="aggiungi_ristorante":
       if request.POST:
          attivita_ristorante=Activity(
             ActivityType="ristorante",
             ActivityName=request.POST['activity_name'],
-            IdFarmHouses_id=agriturismo_id
+            IdFarmHouses_id=agriturismo_r.id
          )
          attivita_ristorante.save()
          gruppo_oggetti_tavoli=TypeObjects(
             IdActivity=attivita_ristorante,
-            TypeName="tavoli"
+            TypeName="tavolo"
          )
          gruppo_oggetti_tavoli.save()
          gruppo_oggetti_menu=TypeObjects(
             IdActivity=attivita_ristorante,
-            TypeName="piatti del menù"
+            TypeName="piatto del menù"
          )
          gruppo_oggetti_menu.save()
+         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         return redirect(url)
+   elif funzione=="aggiungi_stalle":
+      if request.POST:
+         attivita_stalle=Activity(
+            ActivityType="stalle",
+            ActivityName=request.POST['activity_name'],
+            IdFarmHouses_id=agriturismo_r.id
+         )
+         attivita_stalle.save()
+         gruppo_oggetti_tavoli=TypeObjects(
+            IdActivity=attivita_stalle,
+            TypeName="stalla"
+         )
+         gruppo_oggetti_tavoli.save()
+         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         return redirect(url)
+   elif funzione=="aggiungi_piscina":
+      if request.POST:
+         attivita_piscina=Activity(
+            ActivityType="piscina",
+            ActivityName=request.POST['activity_name'],
+            IdFarmHouses_id=agriturismo_r.id
+         )
+         attivita_piscina.save()
+         gruppo_oggetti_ombrelloni=TypeObjects(
+            IdActivity=attivita_piscina,
+            TypeName="ombrellone"
+         )
+         gruppo_oggetti_ombrelloni.save()
+         gruppo_oggetti_sdraio=TypeObjects(
+            IdActivity=attivita_piscina,
+            TypeName="sdraio"
+         )
+         gruppo_oggetti_sdraio.save()
+         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         return redirect(url)
 
-   
    return render(request, "gestione_attivita.html", context)
 
 
