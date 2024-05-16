@@ -33,17 +33,33 @@ class Employee(models.Model):
   #collegamenti 
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
   #dati tabella 
   name=models.CharField(max_length=200,default="")
   codice_fiscale=models.CharField(max_length=200, default="")
   iban=models.IntegerField(default=0)
   mail=models.CharField(max_length=200,default="")
 
+#salari (collegato a lavoratori)
+class Salary(models.Model):
+  #collegamenti superiori
+  SalaryEmployee=models.OneToOneField(Employee, on_delete=models.CASCADE)
+  #dati tabella
+  Salary_Type={
+    "a_ore":" a_ore",
+    "a_settimana":" a_settimana",
+    "a_mese":"a_mese",
+    "a_servizio": "a_servizio"}
+  stato = models.CharField(max_length=15, choices=Salary_Type, default="a_mese")
+  quantity=models.DecimalField(default=0, max_digits=8, decimal_places=2)
+
+
 class Clients(models.Model):
   #collegare alle attività
   #collegamenti permanenti
   IdAccountManagers=models.ForeignKey(AccountManagers, on_delete=models.CASCADE)
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  IdActivity=models.ForeignKey(Activity, on_delete=models.CASCADE)
   #dati clienti
   name=models.CharField(default="",max_length=255,help_text = "*")
   mail=models.EmailField(default="", help_text = "*")
@@ -52,7 +68,7 @@ class Clients(models.Model):
 
 
 
-
+#pensarci dopo
 class Services(models.Model):
   #inserire collegamento ai singoli elementi delle attività
   #dati servizio
