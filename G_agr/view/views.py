@@ -32,6 +32,9 @@ def visualizza_per_attivita(request,username,agriturismo,attivita,filtro):
     context['uscite_attivita']=Expense.objects.filter(IdActivity_id=attivita_id)
     context['clienti_attivita']=Clients.objects.filter(IdActivity_id=attivita_id)
     context['lavoratori_attivita']=Employee.objects.filter(IdActivity_id=attivita_id)
+
+    return render(request, "visualizza_per_attivita.html", context)
+
     
     
     #return render(request, "gestione_oggetto_singolo.html", context)

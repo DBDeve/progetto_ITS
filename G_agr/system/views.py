@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from django.template import loader
 
-from principal_objects.models import AccountManagers
+from .models import AccountManagers
 
 
 # Create your views here.
@@ -48,9 +48,9 @@ def registrati(request):
       user.save()
       
       #crea un nuovo account collegato allo user appena creato
-      IdUser=user.id
+      IdUser_id=user.id
       nuovo_account=AccountManagers(
-         gestore_id=IdUser
+         gestore_id=IdUser_id
       )
       nuovo_account.save()
 

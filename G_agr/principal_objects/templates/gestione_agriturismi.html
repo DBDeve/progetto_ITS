@@ -4,7 +4,7 @@
     <div class=float-center >
         <div class="titolo">
            <h1> {{frase}}</h1> 
-            {%if "False" in esiste or "aggiungi" in funzione%}
+            {%if "False" in esiste or funzione == 'aggiungi'%}
                 <form action="/principal_objects/{{username}}/agriturismo/aggiungi/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
@@ -19,7 +19,7 @@
                         <input type="submit" class="btn btn-primary">
                     </div>
                 </form>
-            {%elif "True" in esiste or "scelta" in funzione%}
+            {%elif "True" in esiste or funzione == 'scelta'%}
                 <div>
                     {%for valore in agriturismi%}
                         <a href="/principal_objects/{{username}}/{{valore.FarmHouseName}}/attivita/verifica_scegli/None"> <button type="button" class="btn btn-outline-info"> {{valore.FarmHouseName}} {{valore.address}}</button></a>
