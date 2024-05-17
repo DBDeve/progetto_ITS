@@ -1,0 +1,106 @@
+
+<!-- è uno stamino per le pagine--> 
+
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title> {% block title %}  {% endblock %}</title>
+  {%block CSS%}
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style> 
+    div.col-md-2{
+      padding:0;
+    }
+    /* stile pulsanti boostrap*/
+    .btn { 
+      border-radius: 20px;
+      margin: 7px;
+      } 
+    #menu .btn{
+      width: 75%;
+      margin-top:3px;
+    }
+    img{
+      width: 100px;
+      border-radius: 100%;
+      margin-top: 2em;
+    }
+    </style>
+
+
+    {%endblock%}
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="text-center float-center" id="menu">
+        <!-- come scrivere gli url -->
+        <div class="text-center" style="margin: 20px">
+          <a > <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
+          <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
+        </div>
+        <a href="/gestione/{{username}}/agriturismo/scelta/nessuno" class="btn btn-primary" role="button">  cambia agriturismo  </a> 
+        <a href="{%url 'prenotazioni' username=username agriturismo=agriturismo funzione='visualizza' attivita='camere' filtro='nessuno'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> prenotazioni </i> </a> 
+        <!-- sono per forza filtrate per agriturismo -->
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='camere' filtro='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-houses-fill"> camere </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='entrate' filtro='tutte'%}" class="btn btn-primary" role="button"> entrate   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='uscite' filtro='tutte'%}" class="btn btn-primary" role="button"> uscite </a> 
+        <br>
+        <br>
+        <!-- non sono per forza filtrate per agriturismo-->
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='clienti' filtro='tutte'%}" class="btn btn-primary" role="button"> <i class="bi bi-people-fill"> clienti </i> </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='dipendenti' filtro='tutte'%}" class="btn btn-primary" role="button"> dipendenti   </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='promozioni' filtro='tutte'%}" class="btn btn-primary" role="button"> promozioni </a> 
+        <a href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto='servizzi' filtro='tutte'%}" class="btn btn-primary" role="button"> servizzi </a> 
+
+        
+
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="container" >
+    
+        <h2 class="btn-group"> 
+          {%block h2%}{%endblock%}
+          {%block seleziona_agriturismo%} {%endblock%} 
+          {%block filtri%} {%endblock%}  
+        </h2>  
+
+        <div class="table-responsive">          
+          <table class="table">
+            <!-- blocco per inserimento dei dati delle tabelle-->
+            {% block data%}
+            {%endblock%}
+          </table>
+        </div>
+      </div>
+    
+<div class="text-center">
+  {% block pulsanti %}
+  
+  {% endblock %}
+</div>
+
+</body>
+</html>
