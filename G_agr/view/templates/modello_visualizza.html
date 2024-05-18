@@ -53,6 +53,8 @@
 
 <div class="container-fluid">
   <div class="row">
+
+    <!--parte di pagina sinistra-->
     <div class="col-md-2">
       <div class="text-center float-center" id="menu">
         <!-- come scrivere gli url -->
@@ -75,29 +77,36 @@
         </div>
       </div>
     </div>
+
+    <!--parte di pagina destra-->
     <div class="col-md-10">
       <div class="container" >
-    
-        <h2 class="btn-group"> 
-          {%block h2%}{%endblock%}
-          {%block seleziona_agriturismo%} {%endblock%} 
-          {%block filtri%} {%endblock%}  
-        </h2>  
 
-        <div class="table-responsive">          
+        <!-- titolo parte di pagine destra-->
+        <h2 class="btn-group"> 
+          {%block h1%}{%endblock%} 
+        </h2>
+
+        <div>
+          {% block pulsanti_registri%}{%endblock%}
+        </div>
+        
+        <!-- blocco per inserimento dei dati delle tabelle-->
+        <div class="table-responsive">
           <table class="table">
-            <!-- blocco per inserimento dei dati delle tabelle-->
             {% block data%}
             {%endblock%}
           </table>
         </div>
-      </div>
-    
-<div class="text-center">
-  {% block pulsanti %}
-  
-  {% endblock %}
-</div>
 
+        <!--pulsanti della pagina-->
+        <div class="text-center">
+          {% block pulsanti %}
+          {% endblock %}
+        </div>
+
+      </div>
+    </div>
+  </div> 
 </body>
 </html>

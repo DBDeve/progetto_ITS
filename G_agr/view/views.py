@@ -10,16 +10,21 @@ from .models import Reservation, visit
 # Create your views here.
 
 @login_required(login_url='login')
-def visualizza_per_attivita(request,username,agriturismo_id,attivita_id):
+def visualizza_per_attivita(request,username,agriturismo_id,attivita_id,lista):
     context={}
     context['username']=username
+    context['lista']=lista
+
+
     
     #filtra le informazioni
     agriturismo=FarmHouses.objects.get(id=agriturismo_id)
     context['agriturismo_id']=agriturismo.id
+    context['agriturismo_name']=agriturismo.FarmHouseName
     attivita=Activity.objects.get(id=attivita_id)
     context['attivita_id']=attivita.id
-    
+    context['attivita_name']=attivita.ActivityType
+     
     
     #crea una query con tutte le attività legate all'agriturismo
     context['lista_attivita_agriturismo']=Activity.objects.filter(IdFarmHouses=agriturismo_id)
@@ -27,10 +32,14 @@ def visualizza_per_attivita(request,username,agriturismo_id,attivita_id):
 
     
     #crea delle query degli oggetti legati alle attività
-    context['entrate_attivita']=Earnings.objects.filter(IdActivity_id=attivita_id)
-    context['uscite_attivita']=Expense.objects.filter(IdActivity_id=attivita_id)
-    context['clienti_attivita']=Clients.objects.filter(IdActivity_id=attivita_id)
-    context['lavoratori_attivita']=Employee.objects.filter(IdActivity_id=attivita_id)
+    if lista=="entrate":
+        context['entrate_attivita']=Earnings.objects.filter(IdActivity_id=attivita_id)
+    elif lista=="uscite":
+        context['uscite_attivita']=Expense.objects.filter(IdActivity_id=attivita_id)
+    elif lista=="clienti":
+        context['clienti_attivita']=Clients.objects.filter(IdActivity_id=attivita_id)
+    elif lista=="lavoratori":
+        context['lavoratori_attivita']=Employee.objects.filter(IdActivity_id=attivita_id)
      
     #manda il contenuto delle query alla pagine "visualizza_per_attivita.html"
     return render(request, "visualizza_per_attivita.html", context)

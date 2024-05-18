@@ -1,40 +1,116 @@
 <!--visualizza i dati di una specifica attivita-->
 {% extends "modello_visualizza.html" %}
 
-{% if nome_pagina %}
-       {% block title %} {{agriturismo}} {% endblock %}
-       {%block h1%} {{agriturismo}} {%endblock%}
-       {%block h2%} {{nome_pagina}} {{agriturismo}} {%endblock%}
-{% endif %}
+
+<!-- crea un titolo con il nome dell'attività e dell'agriturismo in cui si trova l'utente-->
+{%block h1%} {{attivita_name}} {{agriturismo_name}} {%endblock%}
+
 
 
 <!-- crea un pulsante per ogni attivita dell'agriturismo con un link per andare a quell'attivita-->
 {%block attivita%}
     {% for attivita in lista_attivita_agriturismo%}
-        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
+        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}/None" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
     {%endfor%}
 {%endblock%}
 
+<!-- crea un pulsante per ogni gruppo di oggetti dell'attivita con un link per andare a quel gruppo-->
 {%block gruppi_oggetti%}
     {% for gruppo in lista_gruppo_oggetti_attivita%}
         <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/{{gruppo.id}}/None" class="btn btn-primary" role="button"> {{gruppo.TypeName}} </a> 
     {%endfor%}
 {%endblock%}
 
-
-{%block filtri %}
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            stato
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        
-        </div>
-    </div>
+<!-- crea dei pulsanti per la visualizzazione delle liste collegate alle attivita-->
+{% block pulsanti_registri%}
+    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/entrate" class="btn btn-primary" role="button"> entrate </a> 
+    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/uscite" class="btn btn-primary" role="button"> uscite </a> 
+    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/lavoratori" class="btn btn-primary" role="button"> lavoratori </a> 
+    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/clienti " class="btn btn-primary" role="button"> clienti </a> 
 {%endblock%}
 
+
+{% block pulsanti %}
+    <a href="/gestione/{{username}}/{{agriturismo_id}}/{{oggetto}}/aggiungi" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
+{%endblock%}
+
+
+<!-- blocco per la visualizzazione dei registri delle attività -->
 {% block data%}
-    {% if "camere" in oggetto and "tutte" in filtro%}
+    <!-- lista delle entrate -->
+    {% if lista == "entrate"%}
+        <tr>
+            <th> numero camera</th>
+            <th> prezzo </th>
+            <th> stato </th>
+            <th> persone ospitabili </th>
+            <th> appunti</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {%for camera in camere%}
+            <tr>
+                <th>{{camera.number}}</th>
+                <th>{{camera.prize}}</th>
+                <th>{{camera.stato}}</th>
+                <th>{{camera.clienti_ospitabili}}</th>
+                <th>{{camera.appunto}}</th>
+                <th></th>
+                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
+                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+            </tr>
+        {%endfor%}
+    <!-- lista delle uscite -->
+    {% elif lista == "uscite"%}
+        <tr>
+            <th> numero camera</th>
+            <th> prezzo </th>
+            <th> stato </th>
+            <th> persone ospitabili </th>
+            <th> appunti</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {%for camera in camere%}
+            <tr>
+                <th>{{camera.number}}</th>
+                <th>{{camera.prize}}</th>
+                <th>{{camera.stato}}</th>
+                <th>{{camera.clienti_ospitabili}}</th>
+                <th>{{camera.appunto}}</th>
+                <th></th>
+                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
+                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+            </tr>
+        {%endfor%}
+    <!-- lista dei clienti -->
+    {% elif lista == "clienti"%}
+        <tr>
+            <th> numero camera</th>
+            <th> prezzo </th>
+            <th> stato </th>
+            <th> persone ospitabili </th>
+            <th> appunti</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {%for camera in camere%}
+            <tr>
+                <th>{{camera.number}}</th>
+                <th>{{camera.prize}}</th>
+                <th>{{camera.stato}}</th>
+                <th>{{camera.clienti_ospitabili}}</th>
+                <th>{{camera.appunto}}</th>
+                <th></th>
+                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
+                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+            </tr>
+        {%endfor%}
+    <!-- lista dei lavoratori -->
+    {% elif lista == "lavoratori"%}
         <tr>
             <th> numero camera</th>
             <th> prezzo </th>
@@ -58,8 +134,4 @@
             </tr>
         {%endfor%}
     {%endif%}
-{%endblock%}
-
-{% block pulsanti %}
-    <a href="/gestione/{{username}}/{{agriturismo}}/{{oggetto}}/aggiungi" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
 {%endblock%}
