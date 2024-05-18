@@ -60,9 +60,19 @@
           <a > <img src="{% static 'immagine utente.webp' %}" alt="immagine utente"> </a>
           <p style=" padding-left: 10px;"> benvenuto {{user.username}} </p> <a href="{% url 'logout' %}"> logout</a>
         </div>
+        <br>
         <a href="/gestione/{{username}}/agriturismo/scelta/nessuno" class="btn btn-primary" role="button">  cambia agriturismo  </a> 
-        {%block attivita%}
-        {%endblock%}
+        <br>
+        <br> 
+        <div>
+          {%block attivita%}
+          {%endblock%}
+        </div>
+        <br>
+        <div>
+          {%block gruppi_oggetti%}
+          {%endblock%}
+        </div>
       </div>
     </div>
     <div class="col-md-10">

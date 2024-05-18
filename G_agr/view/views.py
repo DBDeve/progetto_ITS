@@ -10,31 +10,48 @@ from .models import Reservation, visit
 # Create your views here.
 
 @login_required(login_url='login')
-def visualizza_per_attivita(request,username,agriturismo,attivita,filtro):
+def visualizza_per_attivita(request,username,agriturismo_id,attivita_id):
     context={}
     context['username']=username
-    context['agriturismo']=agriturismo
-    context['attivita']=attivita
-    context['filtro']=filtro
     
     #filtra le informazioni
-    user=User.objects.get(username=username)
-    user_id=user.id
-    account=AccountManagers.objects.get(gestore_id=user_id)
-    account_id=account.id
-    agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-    agriturismo_id=agriturismo.id
-    attivita=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-    attivita_id=attivita.id
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
+    
     
     #crea una query con tutte le attività legate all'agriturismo
-    context['attivita']=Activity.objects.filter(IdFarmHouses=agriturismo_id)
+    context['lista_attivita_agriturismo']=Activity.objects.filter(IdFarmHouses=agriturismo_id)
+    context['lista_gruppo_oggetti_attivita']=TypeObjects.objects.filter(IdActivity=attivita_id)
+
     
     #crea delle query degli oggetti legati alle attività
     context['entrate_attivita']=Earnings.objects.filter(IdActivity_id=attivita_id)
     context['uscite_attivita']=Expense.objects.filter(IdActivity_id=attivita_id)
     context['clienti_attivita']=Clients.objects.filter(IdActivity_id=attivita_id)
     context['lavoratori_attivita']=Employee.objects.filter(IdActivity_id=attivita_id)
+     
+    #manda il contenuto delle query alla pagine "visualizza_per_attivita.html"
+    return render(request, "visualizza_per_attivita.html", context)
+
+
+@login_required(login_url='login')
+def visualizza_per_gruppi_oggetti(request,username,agriturismo_id,attivita_id,gruppo_oggetti_id,filtro):
+    context={}
+    context['username']=username
+    
+    #filtra le informazioni
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
+    
+    #crea una query con tutte le attività legate all'agriturismo
+    context['lista_attivita_agriturismo']=Activity.objects.filter(IdFarmHouses=agriturismo_id)
+    context['lista_gruppo_oggetti_attivita']=TypeObjects.objects.filter(IdActivity=attivita_id)
+    context['lista_oggetti_gruppo']=ActivityObject.objects.filter(IdTypeObjects=gruppo_oggetti_id)
+
     
     #manda il contenuto delle query alla pagine "visualizza_per_attivita.html"
     return render(request, "visualizza_per_attivita.html", context)

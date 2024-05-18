@@ -10,8 +10,14 @@
 
 <!-- crea un pulsante per ogni attivita dell'agriturismo con un link per andare a quell'attivita-->
 {%block attivita%}
-    {% for attivita in attivita%}
-        <a href="/view/{{username}}/{{agriturismo}}/{{attivita.ActivityName}}/None" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
+    {% for attivita in lista_attivita_agriturismo%}
+        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
+    {%endfor%}
+{%endblock%}
+
+{%block gruppi_oggetti%}
+    {% for gruppo in lista_gruppo_oggetti_attivita%}
+        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/{{gruppo.id}}/None" class="btn btn-primary" role="button"> {{gruppo.TypeName}} </a> 
     {%endfor%}
 {%endblock%}
 
