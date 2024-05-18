@@ -78,6 +78,8 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
    agriturismo_id=agriturismo_r.id
    attivita=Activity.objects.filter(IdFarmHouses=agriturismo_id)
 
+   context['agriturismo_id']=agriturismo_id
+
    if funzione=="verifica_scegli":
       if attivita.exists():
          context['frase']="scegli attivita"

@@ -21,6 +21,7 @@ class FarmHouses(models.Model):
 
 class Activity(models.Model): #esempio: ristorante
   IdFarmHouses=models.ForeignKey(FarmHouses, on_delete=models.CASCADE)
+  #mettere activityType e ActivityName in un unico valore per poterle distinguere meglio
   ActivityType=models.CharField(max_length=255)
   ActivityName=models.CharField(max_length=255)
 

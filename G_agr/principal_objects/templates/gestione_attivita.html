@@ -28,9 +28,9 @@
 
             {%elif "True" in esiste or funzione == 'scelta'%}
                 <div>
-                    {%for valore in attivita%}
-                        <a href="/principal_objects/{{username}}/{{agriturismo}}/{{valore.ActivityName}}/verifica_scegli/None"> <button type="button" class="btn btn-outline-info"> {{valore.ActivityType}} {{valore.ActivityName}}</button></a>
-                        <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/elimina/{{valore.id}}" role="button" > elimina</a> <br>
+                    {%for attivita in attivita%}
+                        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}"> <button type="button" class="btn btn-outline-info"> {{attivita.ActivityType}} {{attivita.ActivityName}}</button></a>
+                        <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/elimina/{{attivita.id}}" role="button" > elimina</a> <br>
                     {%endfor%}
                     <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" role="button" > aggiungi</a>
                 </div>
