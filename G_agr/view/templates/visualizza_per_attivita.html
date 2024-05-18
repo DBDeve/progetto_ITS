@@ -1,5 +1,5 @@
-<!--visualizza i dati di tutte le camere-->
-{% extends modello_visualizza.html" %}
+<!--visualizza i dati di una specifica attivita-->
+{% extends "modello_visualizza.html" %}
 
 {% if nome_pagina %}
        {% block title %} {{agriturismo}} {% endblock %}
@@ -7,17 +7,22 @@
        {%block h2%} {{nome_pagina}} {{agriturismo}} {%endblock%}
 {% endif %}
 
+
+<!-- crea un pulsante per ogni attivita dell'agriturismo con un link per andare a quell'attivita-->
+{%block attivita%}
+    {% for attivita in attivita%}
+        <a href="/view/{{username}}/{{agriturismo}}/{{attivita.ActivityName}}/None" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
+    {%endfor%}
+{%endblock%}
+
+
 {%block filtri %}
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             stato
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=oggetto filtro='occupata' %}"> occupata </a>
-            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=oggetto filtro='libera' %}"> libera </a>
-            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=oggetto filtro='prenotata' %}"> prenotata </a>
-            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=oggetto filtro='non disponibile' %}"> non disponibile </a>
-            <a class="dropdown-item" href="{% url 'visualizza' username=username agriturismo=agriturismo oggetto=oggetto filtro='tutte' %}"> tutte </a>
+        
         </div>
     </div>
 {%endblock%}
