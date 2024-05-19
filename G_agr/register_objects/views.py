@@ -10,21 +10,21 @@ from .models import Earnings,Expense,Clients,Employee,Salary
 
 
 @login_required(login_url='login')
-def gestione_entrate(request,username,agriturismo,attivita,tipo_oggetto,funzione,filtro):
-    context={}
-    context['username']==username
-    context['agriturismo']==agriturismo
-    context['attivita']==attivita
-    context['tipo_oggetto']==tipo_oggetto
+def gestione_entrate(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
+    
+    context={}    
+    
+    #
+    account=AccountManagers.objects.get(id=account_id)
+    context['account_id']=account.id
 
-    user=User.objects.get(username=username)
-    user_id=user.id
-    account=AccountManagers.objects.get(gestore_id=user_id)
-    account_id=account.id
-    agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-    agriturismo_id=agriturismo_r.id
-    attivita_r=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-    attivita_id=attivita_r.id
+    # seleziona l'agriturismo con l'id passato tramite url
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    
+    # seleziona l'attività con l'id passato tramite url
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
 
     if funzione=="aggiungi":
         if request.POST:
@@ -52,21 +52,23 @@ def gestione_entrate(request,username,agriturismo,attivita,tipo_oggetto,funzione
 
 
 @login_required(login_url='login')
-def gestione_uscite(request,username,agriturismo,attivita,tipo_oggetto,funzione,filtro):
+def gestione_uscite(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_id,funzione,filtro):
+    
+    #
     context={}
-    context['username']==username
-    context['agriturismo']==agriturismo
-    context['attivita']==attivita
-    context['tipo_oggetto']==tipo_oggetto
 
-    user=User.objects.get(username=username)
-    user_id=user.id
-    account=AccountManagers.objects.get(gestore_id=user_id)
-    account_id=account.id
-    agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-    agriturismo_id=agriturismo_r.id
-    attivita_r=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-    attivita_id=attivita_r.id
+    #
+    account=AccountManagers.objects.get(id=account_id)
+    context['account_id']=account.id
+
+    # seleziona l'agriturismo con l'id passato tramite url
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    
+    # seleziona l'attività con l'id passato tramite url
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
+
 
     if funzione=="aggiungi":
         if request.POST:
@@ -94,20 +96,19 @@ def gestione_uscite(request,username,agriturismo,attivita,tipo_oggetto,funzione,
 
 
 @login_required(login_url='login')
-def gestione_clienti(request,username,agriturismo,attivita,funzione,filtro):
+def gestione_clienti(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
     context={}
-    context['username']==username
-    context['agriturismo']==agriturismo
-    context['attivita']==attivita
 
-    user=User.objects.get(username=username)
-    user_id=user.id
-    account=AccountManagers.objects.get(gestore_id=user_id)
-    account_id=account.id
-    agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-    agriturismo_id=agriturismo_r.id
-    attivita_r=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-    attivita_id=attivita_r.id
+    account=AccountManagers.objects.get(id=account_id)
+    context['account_id']=account.id
+
+    # seleziona l'agriturismo con l'id passato tramite url
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    
+    # seleziona l'attività con l'id passato tramite url
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
 
     if funzione=="aggiungi":
         if request.POST:
@@ -139,20 +140,20 @@ def gestione_clienti(request,username,agriturismo,attivita,funzione,filtro):
 
 
 @login_required(login_url='login')
-def gestione_lavoratori(request,username,agriturismo,attivita,funzione,filtro):
+def gestione_lavoratori(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
     context={}
-    context['username']==username
-    context['agriturismo']==agriturismo
-    context['attivita']==attivita
+    
+    #
+    account=AccountManagers.objects.get(id=account_id)
+    context['account_id']=account.id
 
-    user=User.objects.get(username=username)
-    user_id=user.id
-    account=AccountManagers.objects.get(gestore_id=user_id)
-    account_id=account.id
-    agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-    agriturismo_id=agriturismo_r.id
-    attivita_r=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-    attivita_id=attivita_r.id
+    # seleziona l'agriturismo con l'id passato tramite url
+    agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+    context['agriturismo_id']=agriturismo.id
+    
+    # seleziona l'attività con l'id passato tramite url
+    attivita=Activity.objects.get(id=attivita_id)
+    context['attivita_id']=attivita.id
 
     if funzione=="aggiungi":
         if request.POST:
