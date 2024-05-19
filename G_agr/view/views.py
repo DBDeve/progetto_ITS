@@ -10,17 +10,18 @@ from .models import Reservation, visit
 # Create your views here.
 
 @login_required(login_url='login')
-def visualizza_per_attivita(request,username,agriturismo_id,attivita_id,lista):
+def visualizza_per_attivita(request,account_id,agriturismo_id,attivita_id,lista):
     context={}
-    context['username']=username
     context['lista']=lista
 
-
+    account=AccountManagers.objects.get(id=account_id)
+    context['account_id']=account.id
     
     #filtra le informazioni
     agriturismo=FarmHouses.objects.get(id=agriturismo_id)
     context['agriturismo_id']=agriturismo.id
     context['agriturismo_name']=agriturismo.FarmHouseName
+    
     attivita=Activity.objects.get(id=attivita_id)
     context['attivita_id']=attivita.id
     context['attivita_name']=attivita.ActivityType
@@ -46,9 +47,8 @@ def visualizza_per_attivita(request,username,agriturismo_id,attivita_id,lista):
 
 
 @login_required(login_url='login')
-def visualizza_per_gruppi_oggetti(request,username,agriturismo_id,attivita_id,gruppo_oggetti_id,filtro):
+def visualizza_per_gruppi_oggetti(request,account_id,agriturismo_id,attivita_id,gruppo_oggetti_id,filtro):
     context={}
-    context['username']=username
     
     #filtra le informazioni
     agriturismo=FarmHouses.objects.get(id=agriturismo_id)

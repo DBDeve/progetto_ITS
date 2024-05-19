@@ -6,20 +6,21 @@
 {%block h1%} {{attivita_name}} {{agriturismo_name}} {%endblock%}
 
 
-
 <!-- crea un pulsante per ogni attivita dell'agriturismo con un link per andare a quell'attivita-->
 {%block attivita%}
     {% for attivita in lista_attivita_agriturismo%}
-        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}/None" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
+        <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita.id}}/None" class="btn btn-primary" role="button"> {{attivita.ActivityType}} {{attivita.ActivityName}}  </a> 
     {%endfor%}
 {%endblock%}
+
 
 <!-- crea un pulsante per ogni gruppo di oggetti dell'attivita con un link per andare a quel gruppo-->
 {%block gruppi_oggetti%}
     {% for gruppo in lista_gruppo_oggetti_attivita%}
-        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/{{gruppo.id}}/None" class="btn btn-primary" role="button"> {{gruppo.TypeName}} </a> 
+        <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/{{gruppo.id}}/None" class="btn btn-primary" role="button"> {{gruppo.TypeName}} </a> 
     {%endfor%}
 {%endblock%}
+
 
 <!-- crea dei pulsanti per la visualizzazione delle liste collegate alle attivita-->
 {% block pulsanti_registri%}
@@ -31,7 +32,7 @@
 
 
 {% block pulsanti %}
-    <a href="/gestione/{{username}}/{{agriturismo_id}}/{{oggetto}}/aggiungi" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
+    <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
 {%endblock%}
 
 
@@ -40,97 +41,79 @@
     <!-- lista delle entrate -->
     {% if lista == "entrate"%}
         <tr>
-            <th> numero camera</th>
-            <th> prezzo </th>
-            <th> stato </th>
-            <th> persone ospitabili </th>
-            <th> appunti</th>
+            <th> data</th>
+            <th> quantita</th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
-        {%for camera in camere%}
+        {%for entrata in entrate_attivita%}
             <tr>
-                <th>{{camera.number}}</th>
-                <th>{{camera.prize}}</th>
-                <th>{{camera.stato}}</th>
-                <th>{{camera.clienti_ospitabili}}</th>
-                <th>{{camera.appunto}}</th>
+                <th>{{entrata.Date}}</th>
+                <th>{{entrata.Quantity}}</th>
                 <th></th>
-                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
-                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/entrate/modifica" role="button" > modifica </a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/entrate/elimina" role="button" > elimina</a></th>
             </tr>
         {%endfor%}
     <!-- lista delle uscite -->
     {% elif lista == "uscite"%}
         <tr>
-            <th> numero camera</th>
-            <th> prezzo </th>
-            <th> stato </th>
-            <th> persone ospitabili </th>
-            <th> appunti</th>
+            <th> data</th>
+            <th> quantità </th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
-        {%for camera in camere%}
+        {%for uscita in uscite_attivita%}
             <tr>
-                <th>{{camera.number}}</th>
-                <th>{{camera.prize}}</th>
-                <th>{{camera.stato}}</th>
-                <th>{{camera.clienti_ospitabili}}</th>
-                <th>{{camera.appunto}}</th>
+                <th>{{uscita.Date}}</th>
+                <th>{{uscita.Qunatity}}</th>
                 <th></th>
-                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
-                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/uscite/modifica" role="button" > modifica </a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/uscite/modifica" role="button" > elimina</a></th>
             </tr>
         {%endfor%}
     <!-- lista dei clienti -->
     {% elif lista == "clienti"%}
         <tr>
-            <th> numero camera</th>
-            <th> prezzo </th>
-            <th> stato </th>
-            <th> persone ospitabili </th>
-            <th> appunti</th>
+            <th> nome</th>
+            <th> mail </th>
+            <th> numero di telefono </th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
-        {%for camera in camere%}
+        {%for cliente in clienti_attivita%}
             <tr>
-                <th>{{camera.number}}</th>
-                <th>{{camera.prize}}</th>
-                <th>{{camera.stato}}</th>
-                <th>{{camera.clienti_ospitabili}}</th>
-                <th>{{camera.appunto}}</th>
+                <th>{{cliente.name}}</th>
+                <th>{{cliente.mail}}</th>
+                <th>{{cliente.number_cell}}</th>
                 <th></th>
-                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
-                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/clienti/modifica" role="button" > modifica </a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/uscite/elimina" role="button" > elimina</a></th>
             </tr>
         {%endfor%}
     <!-- lista dei lavoratori -->
     {% elif lista == "lavoratori"%}
         <tr>
-            <th> numero camera</th>
-            <th> prezzo </th>
-            <th> stato </th>
-            <th> persone ospitabili </th>
-            <th> appunti</th>
+            <th> nome </th>
+            <th> codice fiscale </th>
+            <th> iban </th>
+            <th> mail </th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
-        {%for camera in camere%}
+        {%for lavoratore in lavoratori_attivita%}
             <tr>
-                <th>{{camera.number}}</th>
-                <th>{{camera.prize}}</th>
-                <th>{{camera.stato}}</th>
-                <th>{{camera.clienti_ospitabili}}</th>
-                <th>{{camera.appunto}}</th>
+                <th>{{lavoratore.name}}</th>
+                <th>{{lavoratore.codice_fiscale}}</th>
+                <th>{{lavoratore.iban}}</th>
+                <th>{{lavoratore.mail}}</th>
                 <th></th>
-                <th> <a href="{% url 'modifica' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > modifica </a></th>
-                <th> <a href="{% url 'elimina' username=username agriturismo=agriturismo oggetto=oggetto id_oggetto=camera.id %}" role="button" > elimina</a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/lavoratori/modifica" role="button" > modifica </a></th>
+                <th> <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/lavoratori/elimina" role="button" > elimina</a></th>
             </tr>
         {%endfor%}
     {%endif%}
