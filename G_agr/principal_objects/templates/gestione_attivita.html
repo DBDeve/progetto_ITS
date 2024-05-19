@@ -5,7 +5,7 @@
         <div class="titolo">
            <h1> {{frase}}</h1> 
             {%if "False" in esiste or funzione == 'aggiungi'%}
-                <form action="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" method="POST">
+                <form action="/principal_objects/{{account_id}}/{{agriturismo_id}}/attivita/aggiungi/nessuno" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="activity_type"> inserisci il tipo dell'attività </label> <br>
@@ -20,22 +20,22 @@
                         <input type="submit" class="btn btn-primary">
                     </div>
                 </form>
-                <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_camere/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività camere</button></a>
-                <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_ristorante/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività ristorante</button></a>
-                <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_paddok/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività paddok</button></a>
-                <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_evento/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività eventi</button></a>
-                <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_piscina/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività piscina</button></a>
+                <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_camere/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività camere</button></a>
+                <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_ristorante/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività ristorante</button></a>
+                <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_paddok/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività paddok</button></a>
+                <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_evento/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività eventi</button></a>
+                <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_piscina/{{filtro}}"> <button type="button" class="btn btn-outline-info"> crea attività piscina</button></a>
 
             {%elif "True" in esiste or funzione == 'scelta'%}
                 <div>
                     {%for attivita in attivita%}
-                        <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita.id}}"> <button type="button" class="btn btn-outline-info"> {{attivita.ActivityType}} {{attivita.ActivityName}}</button></a>
-                        <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/elimina/{{attivita.id}}" role="button" > elimina</a> <br>
+                        <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita.id}}/None"> <button type="button" class="btn btn-outline-info"> {{attivita.ActivityType}} {{attivita.ActivityName}}</button></a>
+                        <a href="/principal_objects/{{account_id}}/{{agriturismo_id}}/attivita/elimina/{{attivita.id}}" role="button" > elimina</a> <br>
                     {%endfor%}
-                    <a href="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi/nessuno" role="button" > aggiungi</a>
+                    <a href="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi/nessuno" role="button" > aggiungi</a>
                 </div>
             {% elif funzione == 'aggiungi_camere' %}
-                <form action="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_camere/None" method="POST">
+                <form action="/principal_objects/{{account_id}}/{{agriturismo_id}}/attivita/aggiungi_camere/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="activity_name"> inserisci il nome del attività. se è solo una inserisci il nome dell'agriturismo </label> <br>
@@ -47,7 +47,7 @@
                     </div>
                 </form>
             {% elif funzione == 'aggiungi_ristorante' %}
-                <form action="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_ristorante/None" method="POST">
+                <form action="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_ristorante/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="activity_name"> inserisci il nome del attività. se è solo una inserisci il nome dell'agriturismo </label> <br>
@@ -59,7 +59,7 @@
                     </div>
                 </form>
             {% elif funzione == 'aggiungi_stalle' %}
-                <form action="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_stalle/None" method="POST">
+                <form action="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_stalle/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="activity_name"> inserisci il nome del attività. se è solo una inserisci il nome dell'agriturismo </label> <br>
@@ -71,7 +71,7 @@
                     </div>
                 </form>
             {% elif funzione == 'aggiungi_piscina' %}
-                <form action="/principal_objects/{{username}}/{{agriturismo}}/attivita/aggiungi_piscina/None" method="POST">
+                <form action="/principal_objects/{{username}}/{{agriturismo_id}}/attivita/aggiungi_piscina/None" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="activity_name"> inserisci il nome del attività. se è solo una inserisci il nome dell'agriturismo </label> <br>

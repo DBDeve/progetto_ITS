@@ -8,20 +8,20 @@ from .models import User,AccountManagers,FarmHouses,Activity,TypeObjects,Activit
 # Create your views here.
 
 
-#crea verifica se l'accounta ha un agriturismo e se non ce l'ha lo fa aggiungere
+#funzione per la gestione degli oggetti FarmHouses
 @login_required(login_url='login')
-def gestione_agtriturismi(request,username,funzione,filtro):
-
+def gestione_agtriturismi(request,account_id,funzione,filtro):
+   #creo un dizionario vuoto
    context={}
-   context['username']=username
 
-   user=User.objects.get(username=username)
-   user_id=user.id
-   account=AccountManagers.objects.get(gestore_id=user_id)
-   account_id=account.id
+   #creo una query con l'account selezionato e lo metto nel dizionario
+   account=AccountManagers.objects.get(id=account_id)
+   context['account_id']=account.id
 
+   #creo una lista di tutti gli agriturismi collegati all'account selezionato
    agriturismi=FarmHouses.objects.filter(IdAccountManagers_id=account_id)
-   context['agriturismi']=agriturismi
+
+
    if funzione=="verifica_aggiungi":
       if agriturismi.exists():
          context['frase']="scegli agriturismo"
@@ -49,7 +49,7 @@ def gestione_agtriturismi(request,username,funzione,filtro):
             IdAccountManagers_id=account_id
          )
          nuovo_agriturismo.save() 
-         url=f"/principal_objects/{username}/agriturismo/verifica_aggiungi/None"
+         url=f"/principal_objects/{account_id}/agriturismo/verifica_aggiungi/None"
          return redirect(url)
       #finché non c'è una richiesta rimane sulla pagina gestione_agriturismi.html
       return render(request, "gestione_agriturismi.html", context)
@@ -57,28 +57,28 @@ def gestione_agtriturismi(request,username,funzione,filtro):
       context['funzione']=funzione
       camera_da_rimuovere=FarmHouses.objects.get(id=filtro)
       camera_da_rimuovere.delete()
-      url=f"/principal_objects/{username}/agriturismo/verifica_aggiungi/None"
+      url=f"/principal_objects/{account_id}/agriturismo/verifica_aggiungi/None"
       return redirect(url)
 
 
 
 @login_required(login_url='login')
-def gestione_attivita(request,username,agriturismo,funzione,filtro):
+def gestione_attivita(request,account_id,agriturismo_id,funzione,filtro):
    context={}
-   context['username']=username
-   context['agriturismo']=agriturismo
    context['funzione']=funzione
    context['filtro']=filtro
+   
+   #crea una query con l'account selezionato attraverso l'id passato tramite url
+   account=AccountManagers.objects.get(id=account_id)
+   context['account_id']=account.id
 
-   user=User.objects.get(username=username)
-   user_id=user.id
-   account=AccountManagers.objects.get(gestore_id=user_id)
-   account_id=account.id
-   agriturismo_r=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo_r.id
+   #crea una query con l'agriturismo selezionato attraverso l'id passato tramite url
+   agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+   context['agriturismo_name']=agriturismo.FarmHouseName
+   context['agriturismo_id']=agriturismo.id
+
+   #crea una query con la lista delle attività legate all'agriturismo
    attivita=Activity.objects.filter(IdFarmHouses=agriturismo_id)
-
-   context['agriturismo_id']=agriturismo_id
 
    if funzione=="verifica_scegli":
       if attivita.exists():
@@ -93,7 +93,7 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
             nuova_attivita=Activity(
                ActivityName=request.POST['activity_name'],
                ActivityType=request.POST['activity_type'],
-               IdFarmHouses=agriturismo_r
+               IdFarmHouses_id=agriturismo_id
             )
             nuova_attivita.save() 
          
@@ -103,15 +103,15 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
          nuova_attivita=Activity(
             ActivityName=request.POST['activity_name'],
             ActivityType=request.POST['activity_type'],
-            IdFarmHouses=agriturismo_r
+            IdFarmHouses_id=agriturismo_id
          )
          nuova_attivita.save() 
-         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
          return redirect(url)    
    elif funzione=="elimina":
       attivita_da_rimuovere=Activity.objects.get(id=filtro)
       attivita_da_rimuovere.delete()
-      url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+      url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
       return redirect(url)
    
    elif funzione=="aggiungi_camere":
@@ -119,7 +119,7 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
          attivita_camere=Activity(
             ActivityType="camere",
             ActivityName=request.POST['activity_name'],
-            IdFarmHouses_id=agriturismo_r.id
+            IdFarmHouses_id=agriturismo_id
          )
          attivita_camere.save()
          gruppo_oggetti=TypeObjects(
@@ -127,14 +127,14 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
             TypeName="camera"
          )
          gruppo_oggetti.save()
-         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
          return redirect(url)
    elif funzione=="aggiungi_ristorante":
       if request.POST:
          attivita_ristorante=Activity(
             ActivityType="ristorante",
             ActivityName=request.POST['activity_name'],
-            IdFarmHouses_id=agriturismo_r.id
+            IdFarmHouses_id=agriturismo_id
          )
          attivita_ristorante.save()
          gruppo_oggetti_tavoli=TypeObjects(
@@ -147,14 +147,14 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
             TypeName="piatto del menù"
          )
          gruppo_oggetti_menu.save()
-         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
          return redirect(url)
    elif funzione=="aggiungi_stalle":
       if request.POST:
          attivita_stalle=Activity(
             ActivityType="stalle",
             ActivityName=request.POST['activity_name'],
-            IdFarmHouses_id=agriturismo_r.id
+            IdFarmHouses_id=agriturismo_id
          )
          attivita_stalle.save()
          gruppo_oggetti_tavoli=TypeObjects(
@@ -162,14 +162,14 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
             TypeName="stalla"
          )
          gruppo_oggetti_tavoli.save()
-         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
          return redirect(url)
    elif funzione=="aggiungi_piscina":
       if request.POST:
          attivita_piscina=Activity(
             ActivityType="piscina",
             ActivityName=request.POST['activity_name'],
-            IdFarmHouses_id=agriturismo_r.id
+            IdFarmHouses_id=agriturismo_id
          )
          attivita_piscina.save()
          gruppo_oggetti_ombrelloni=TypeObjects(
@@ -182,7 +182,7 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
             TypeName="sdraio"
          )
          gruppo_oggetti_sdraio.save()
-         url=f"/principal_objects/{username}/{agriturismo}/attivita/verifica_scegli/None"
+         url=f"/principal_objects/{account_id}/{agriturismo_id}/attivita/verifica_scegli/None"
          return redirect(url)
 
    return render(request, "gestione_attivita.html", context)
@@ -190,22 +190,31 @@ def gestione_attivita(request,username,agriturismo,funzione,filtro):
 
 
 @login_required(login_url='login')
-def gestione_tipo_oggetto(request,username,agriturismo,attivita,funzione,filtro):
+def gestione_tipo_oggetto(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
    context={}
-   context['username']=username
-   context['agriturismo']=agriturismo
-   context['attivita']=attivita
+   
+   #crea una query con l'account selezionato attraverso l'id passato tramite url
+   account=AccountManagers.objects.get(id=account_id)
+   context['account_id']=account.id
+   
+   #crea una query con l'agriturismo
+   agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+   context['agriturismo_name']=agriturismo.FarmHouseName
+   context['agriturismo_id']=agriturismo.id
+
+   #crea una query con la lista delle attività legate all'agriturismo
+   attivita=Activity.objects.get(id=attivita_id)
+   context['attivita_type']=attivita.ActivityType
+   context['attivita_name']=attivita.ActivityName
+   context['attivita_id']=attivita.id
+
+   #crea una lista di tutti i gruppi di oggetti legati all'attività
+   tipi_oggetti=TypeObjects.objects.filter(IdActivity=attivita.id)
+
+   #
    context['funzione']=funzione
    context['filtro']=filtro
 
-   user=User.objects.get(username=username)
-   user_id=user.id
-   account=AccountManagers.objects.get(gestore_id=user_id)
-   account_id=account.id
-   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo.id
-   attivita=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-   attivita_id=attivita.id
    
    if funzione=="aggiungi":
       if request.POST:
@@ -227,25 +236,35 @@ def gestione_tipo_oggetto(request,username,agriturismo,attivita,funzione,filtro)
 
 
 @login_required(login_url='login')
-def gestione_oggetto_singolo(request,username,agriturismo,attivita,tipo_oggetto,funzione,filtro):
+def gestione_oggetto_singolo(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_id,funzione,filtro):
    context={}
-   context['username']=username
-   context['agriturismo']=agriturismo
-   context['attivita']=attivita
-   context['tipo_oggetto']=tipo_oggetto
+
+   #crea una query con l'account selezionato attraverso l'id passato tramite url
+   account=AccountManagers.objects.get(id=account_id)
+   context['account_id']=account.id
+   
+   #crea una query con l'id dell'agriturismo passata tramite url
+   agriturismo=FarmHouses.objects.get(id=agriturismo_id)
+   context['agriturismo_name']=agriturismo.FarmHouseName
+   context['agriturismo_id']=agriturismo.id
+
+   #crea una query con l'id dell'attivita passata tramite url
+   attivita=Activity.objects.get(id=attivita_id)
+   context['attivita_id']=attivita.id
+   context['attivita_type']=attivita.ActivityType
+   context['attivita_name']=attivita.ActivityName
+
+   #crea una query con l'id del gruppo oggetti passata tramite url
+   tipi_oggetti=TypeObjects.objects.get(id=tipo_oggetto_id)
+   context['tipi_oggetti_id']=tipi_oggetti.id
+   context['tipi_oggetti_name']=tipi_oggetti.TypeName
+
+   # crea una lista di tutti gli oggetti legati ad un certo gruppo
+   oggetti=ActivityObject.objects.filter(IdTypeObjects=tipo_oggetto_id)
+
+   #
    context['funzione']=funzione
    context['filtro']=filtro
-
-   user=User.objects.get(username=username)
-   user_id=user.id
-   account=AccountManagers.objects.get(gestore_id=user_id)
-   account_id=account.id
-   agriturismo=FarmHouses.objects.get(IdAccountManagers_id=account_id, FarmHouseName=agriturismo)
-   agriturismo_id=agriturismo.id
-   attivita=Activity.objects.get(IdFarmHouses=agriturismo_id, ActivityName=attivita)
-   attivita_id=attivita.id
-   tipo_oggetto_s=TypeObjects.objects.get(IdActivity=attivita_id, TypeName=tipo_oggetto)
-   tipo_oggetto_id=tipo_oggetto_s.id
 
    
    if funzione=="aggiungi":

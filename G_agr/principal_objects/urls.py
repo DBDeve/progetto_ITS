@@ -5,8 +5,8 @@ from . import views
 
 
 urlpatterns = [
-    path("<str:username>/agriturismo/<str:funzione>/<str:filtro>", views.gestione_agtriturismi,name="gestione_agriturismi"),
-    path("<str:username>/<str:agriturismo>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
-    path("<str:username>/<str:agriturismo>/<str:attivita>/tipo_oggetti/<str:funzione>/<str:filtro>", views.gestione_tipo_oggetto,name="gestione_tipo_oggetto"),
-    path("<str:username>/<str:agriturismo>/<str:attivita>/<str:tipo_oggetti>/oggetto_singolo/<str:funzione>/<str:filtro>", views.gestione_oggetto_singolo,name="gestione_oggetto_singolo"),
+    path("<str:account_id>/agriturismo/<str:funzione>/<str:filtro>", views.gestione_agtriturismi,name="gestione_agriturismi"),
+    path("<str:account_id>/<str:agriturismo_id>/attivita/<str:funzione>/<str:filtro>", views.gestione_attivita,name="gestione_attivita"),
+    path("<str:account_id>/<str:agriturismo_id>/<str:attivita_id>/tipo_oggetti/<str:funzione>/<str:filtro>", views.gestione_tipo_oggetto,name="gestione_tipo_oggetto"),
+    path("<str:account_id>/<str:agriturismo_id>/<str:attivita_id>/<str:tipo_oggetti_id>/oggetto_singolo/<str:funzione>/<str:filtro>", views.gestione_oggetto_singolo,name="gestione_oggetto_singolo"),
 ]
