@@ -71,7 +71,10 @@ def log_in(request):
       #verifica che l'user sia stato autenticato
       if  user is not None:
          login(request, user)
-         url=f"/principal_objects/{user.username}/agriturismo/verifica_aggiungi/None"
+         user_id=user.id
+         account=AccountManagers.objects.get(gestore_id=user_id)
+         account_id=account.id
+         url=f"/principal_objects/{account_id}/agriturismo/verifica_aggiungi/None"
          return redirect(url)
       else:
          #return redirect('http://127.0.0.1:8000/gestione/visualizza/camere/tutte')
