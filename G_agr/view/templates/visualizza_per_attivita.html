@@ -24,15 +24,15 @@
 
 <!-- crea dei pulsanti per la visualizzazione delle liste collegate alle attivita-->
 {% block pulsanti_registri%}
-    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/entrate" class="btn btn-primary" role="button"> entrate </a> 
-    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/uscite" class="btn btn-primary" role="button"> uscite </a> 
-    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/lavoratori" class="btn btn-primary" role="button"> lavoratori </a> 
-    <a href="/view/{{username}}/{{agriturismo_id}}/{{attivita_id}}/clienti " class="btn btn-primary" role="button"> clienti </a> 
+    <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/entrate" class="btn btn-primary" role="button"> entrate </a> 
+    <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/uscite" class="btn btn-primary" role="button"> uscite </a> 
+    <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/lavoratori" class="btn btn-primary" role="button"> lavoratori </a> 
+    <a href="/view/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/clienti " class="btn btn-primary" role="button"> clienti </a> 
 {%endblock%}
 
 
 {% block pulsanti %}
-    <a href="/register_objects/{{username}}/{{agriturismo_id}}/{{attivita_id}}/" class="btn btn-primary" role="button">  aggiungi {{oggetto}} </a>
+    <a href="/register_objects/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/{{lista}}/aggiungi/None" class="btn btn-primary" role="button">  aggiungi {{lista}}  </a>
 {%endblock%}
 
 

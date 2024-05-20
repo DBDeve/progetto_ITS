@@ -25,7 +25,6 @@ def visualizza_per_attivita(request,account_id,agriturismo_id,attivita_id,lista)
     attivita=Activity.objects.get(id=attivita_id)
     context['attivita_id']=attivita.id
     context['attivita_name']=attivita.ActivityType
-     
     
     #crea una query con tutte le attività legate all'agriturismo
     context['lista_attivita_agriturismo']=Activity.objects.filter(IdFarmHouses=agriturismo_id)
@@ -35,12 +34,16 @@ def visualizza_per_attivita(request,account_id,agriturismo_id,attivita_id,lista)
     #crea delle query degli oggetti legati alle attività
     if lista=="entrate":
         context['entrate_attivita']=Earnings.objects.filter(IdActivity_id=attivita_id)
+        context['lista']=lista
     elif lista=="uscite":
         context['uscite_attivita']=Expense.objects.filter(IdActivity_id=attivita_id)
+        context['lista']=lista
     elif lista=="clienti":
         context['clienti_attivita']=Clients.objects.filter(IdActivity_id=attivita_id)
+        context['lista']=lista
     elif lista=="lavoratori":
         context['lavoratori_attivita']=Employee.objects.filter(IdActivity_id=attivita_id)
+        context['lista']=lista
      
     #manda il contenuto delle query alla pagine "visualizza_per_attivita.html"
     return render(request, "visualizza_per_attivita.html", context)
