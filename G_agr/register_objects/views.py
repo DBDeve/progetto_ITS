@@ -11,8 +11,10 @@ from .models import Earnings,Expense,Clients,Employee,Salary
 
 @login_required(login_url='login')
 def gestione_entrate(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
-    
-    context={}    
+
+    context={} 
+
+    context['funzione']=funzione 
     
     #
     account=AccountManagers.objects.get(id=account_id)
@@ -36,6 +38,8 @@ def gestione_entrate(request,account_id,agriturismo_id,attivita_id,funzione,filt
                 Quantity=request.POST['quantity']
             )
             nuova_entrata.save()
+        return render(request, "gestione_entrate.html", context)
+        
     elif funzione=="modifica":
         entrata_da_modificare=Earnings.objects.get(id=filtro)
         if request.POST:
@@ -46,16 +50,19 @@ def gestione_entrate(request,account_id,agriturismo_id,attivita_id,funzione,filt
                 nuova_quantita=request.post['quantity']
                 entrata_da_modificare.Quantity=nuova_quantita
             entrata_da_modificare.save()
+        return render(request, "gestione_entrate.html", context)
     elif funzione=="elimina":
         entrata_da_eliminare=Earnings.objects.get(id=filtro)
         entrata_da_eliminare.delete()
 
 
 @login_required(login_url='login')
-def gestione_uscite(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_id,funzione,filtro):
+def gestione_uscite(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
     
     #
     context={}
+
+    context['funzione']=funzione 
 
     #
     account=AccountManagers.objects.get(id=account_id)
@@ -80,6 +87,7 @@ def gestione_uscite(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_i
                 Quantity=request.POST['quantity']
             )
             nuova_uscita.save()
+            return render(request, "gestione_uscite.html", context)
     elif funzione=="modifica":
         uscita_da_modificare=Expense.objects.get(id=filtro)
         if request.POST:
@@ -90,6 +98,7 @@ def gestione_uscite(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_i
                 nuova_quantita=request.post['quantity']
                 uscita_da_modificare.Quantity=nuova_quantita
             uscita_da_modificare.save()
+        return render(request, "gestione_entrate.html", context)
     elif funzione=="elimina":
         entrata_da_eliminare=Expense.objects.get(id=filtro)
         entrata_da_eliminare.delete()
@@ -98,6 +107,8 @@ def gestione_uscite(request,account_id,agriturismo_id,attivita_id,tipo_oggetto_i
 @login_required(login_url='login')
 def gestione_clienti(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
     context={}
+
+    context['funzione']=funzione 
 
     account=AccountManagers.objects.get(id=account_id)
     context['account_id']=account.id
@@ -121,6 +132,7 @@ def gestione_clienti(request,account_id,agriturismo_id,attivita_id,funzione,filt
                 number_cell=request.POST['number_cell']
             )
             nuovo_cliente.save()
+        return render(request, "gestione_clienti.html", context)
     elif funzione=="modifica":
         cliente_da_modificare=Clients.objects.get(id=filtro)
         if request.POST:
@@ -134,6 +146,8 @@ def gestione_clienti(request,account_id,agriturismo_id,attivita_id,funzione,filt
                 nuovo_numero=request.post['number_cell']
                 cliente_da_modificare.number_cell=nuovo_numero
             cliente_da_modificare.save()
+        return render(request, "gestione_clienti.html", context)
+
     elif funzione=="elimina":
         cliente_da_eliminare=Clients.objects.get(id=filtro)
         cliente_da_eliminare.delete()
@@ -142,6 +156,8 @@ def gestione_clienti(request,account_id,agriturismo_id,attivita_id,funzione,filt
 @login_required(login_url='login')
 def gestione_lavoratori(request,account_id,agriturismo_id,attivita_id,funzione,filtro):
     context={}
+
+    context['funzione']=funzione 
     
     #
     account=AccountManagers.objects.get(id=account_id)
@@ -172,6 +188,8 @@ def gestione_lavoratori(request,account_id,agriturismo_id,attivita_id,funzione,f
                 quantity=request.POST['salary_quantity']
             )
             nuovo_stipendio.save()
+        return render(request, "gestione_lavoratori.html", context)
+
     elif funzione=="modifica":
         lavoratore_da_modificare=Employee.objects.get(id=filtro)
         stipendio_da_modificare=Salary.objects.get(SalaryEmployee=lavoratore_da_modificare.id)
@@ -186,6 +204,8 @@ def gestione_lavoratori(request,account_id,agriturismo_id,attivita_id,funzione,f
                 nuovo_numero=request.post['number_cell']
                 lavoratore_da_modificare.number_cell=nuovo_numero
             lavoratore_da_modificare.save()
+        return render(request, "gestione_lavoratori.html", context)
+
             #inserire modifica stipendio
     elif funzione=="elimina":
         lavoratore_da_eliminare=Employee.objects.get(id=filtro)

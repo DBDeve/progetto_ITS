@@ -1,0 +1,40 @@
+{% extends "modello_form.html" %}
+
+{%block form%}
+    <div class=float-center >
+        <div class="titolo">
+           <h1> {{funzione}} entrata </h1> 
+            {%if  funzione == 'aggiungi'%}
+                <form action="/principal_objects/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/entrate/aggiungi/None" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date"> inserisci la data dell'entrata </label> <br>
+                        <input type="date" class="form-control" name="date" id="date"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity"> la quantità dell'entrata </label> <br>
+                        <input type="number" class="form-control" name="quantity" id="quantity"> 
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+            {%elif funzione == 'modifica'%}
+                <form action="/principal_objects/{{account_id}}/{{agriturismo_id}}/{{attivita_id}}/entrate/modifica/None" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date"> inserisci il nome dell'agriturismo </label> <br>
+                        <input type="text" class="form-control" name="date" id="date"> 
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity"> inserisci l'indirizzo dell'agriturismo </label> <br>
+                        <input type="text" class="form-control" name="quantity" id="quantity"> 
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </form>
+            {%endif%}
+        </div>
+    </div>
+{%endblock%}
