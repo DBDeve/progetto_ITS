@@ -1,0 +1,56 @@
+{% extends templates %}
+
+
+{%block form%}
+    {%if funzione == "aggiungi" %}
+        <form action="/gestione/{{username}}/{{agriturismo}}/prenotazioni/aggiungi/nessuno" method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="stato">seleziona cliente</label>
+                <select class="form-control" id="stato" name="cliente_id" >
+                {%for  cliente in clienti%}
+                <option value="{{cliente.id}}"> {{cliente.name}}</option>
+                {%endfor%}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="stato">seleziona stanza</label>
+                <select class="form-control" id="stato" name="camera_id">
+                    {%for camera in camere%}
+                    <option value="{{camera.id}}"> {{camera.number}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="data_arrivo">data di arrivo </label>
+                <input type="date" class="form-control" name="data_arrivo" >
+            </div>
+
+            <div class="form-group">
+                <label for="data_partenza">data di arrivo </label>
+                <input type="date" class="form-control" name="data_partenza" >
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    {%elif funzione == "modifica" %}
+        <form action="/gestione/{{username}}/{{agriturismo}}/prenotazioni/modifica/{{filtro}}" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="data_arrivo">data di arrivo </label>
+                <input type="date" class="form-control" name="data_arrivo" >
+            </div>
+
+            <div class="form-group">
+                <label for="data_partenza">data di arrivo </label>
+                <input type="date" class="form-control" name="data_partenza" >
+            </div>
+
+            <input type="submit" class="btn btn-primary">
+        </form>
+    {%endif%}
+{%endblock%}
